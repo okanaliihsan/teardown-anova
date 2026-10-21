@@ -35,13 +35,13 @@ X06,a-priori,0.25,0.05,0.8,,1,gecersiz,k=1 (pay df=0),?,?,?,?,?,?,Input error: T
 X07,a-priori,0.25,0.05,0.8,,2.5,sinir,k tam sayi degil,9.9375000,3.0540042,2,156,159,0.8048873,HATA YOK: k=2.5 kabul edildi; sonuclar k=3 (A02) ile birebir ayni -> kesirli k tam sayiya yukari/yakina yuvarlaniyor,screenshots/X07.png
 X08,a-priori,0.25,0.05,0.8,,0,gecersiz,k=0,?,?,?,?,?,?,Input error: There must be at least 2 groups.,screenshots/X08.png
 X09,a-priori,0.25,0.05,0.8,,2.4,sinir,X07 bulgusunun takibi: kesirli k yukari mi (3) en yakina mi (2) yuvarlaniyor,8.0000000,3.9163246,1,126,128,0.8014596,"HATA YOK: k=2.4 -> k=2 gibi hesaplandi (A11 ile ayni). X07 (2.5->3) ile birlikte: en yakin tam sayiya yuvarlama, .5 yukari",screenshots/X09.png
-P01,post-hoc,0.25,0.05,,159,3,tipik,A02 ile tutarlilik (N=159),,,,,,,,screenshots/P01.png
-P02,post-hoc,0.25,0.05,,100,3,sinir,N k'ya bolunmuyor,,,,,,,,screenshots/P02.png
-P03,post-hoc,0.25,0.05,,4,3,sinir,payda df=1,,,,,,,,screenshots/P03.png
-P04,post-hoc,0.25,0.05,,3,3,gecersiz,payda df=0,,,,,,,,screenshots/P04.png
-P05,post-hoc,0.1,0.05,,1000,5,tipik,kucuk etki buyuk N,,,,,,,,screenshots/P05.png
-P06,post-hoc,0.4,0.01,,60,4,tipik,alpha=0.01,,,,,,,,screenshots/P06.png
-P07,post-hoc,0,0.05,,100,3,sinir,f=0 iken guc alpha'ya mi esit,,,,,,,,screenshots/P07.png
+P01,post-hoc,0.25,0.05,,159,3,tipik,A02 ile tutarlilik (N=159),9.9375000,3.0540042,2,156,159,0.8048873,,screenshots/P01.png
+P02,post-hoc,0.25,0.05,,100,3,sinir,N k'ya bolunmuyor,6.2500000,3.0901867,2,97,100,0.5885389,Please note: The total sample size (100) is not a multiple of the number of groups (3). The analysis was based on the average group size.,screenshots/P02.png
+P03,post-hoc,0.25,0.05,,4,3,sinir,payda df=1,0.2500000,199.5,2,1,4,0.0530691,Please note: The total sample size (4) is not a multiple of the number of groups (3). The analysis was based on the average group size. | kritik F ekranda '199.5' (kisa gosterim),screenshots/P03.png
+P04,post-hoc,0.25,0.05,,3,3,gecersiz,payda df=0,?,?,?,?,?,?,Input error: Sample size must be greater than the number of groups (3).,screenshots/P04.png
+P05,post-hoc,0.1,0.05,,1000,5,tipik,kucuk etki buyuk N,10.0000000,2.3808758,4,995,1000,0.7136330,,screenshots/P05.png
+P06,post-hoc,0.4,0.01,,60,4,tipik,alpha=0.01,9.6000000,4.1519411,3,56,60,0.4600839,,screenshots/P06.png
+P07,post-hoc,0,0.05,,100,3,sinir,f=0 iken guc alpha'ya mi esit,0,3.0901867,2,97,100,0.0500000,Please note: The total sample size (100) is not a multiple of the number of groups (3). The analysis was based on the average group size. | lambda ekranda '0',screenshots/P07.png
 P08,post-hoc,0.25,0.05,,2,3,gecersiz,N < k,,,,,,,,screenshots/P08.png
 P09,post-hoc,0.25,0.05,,390,10,DOK,A01 ile tutarlilik,,,,,,,,screenshots/P09.png
 P10,post-hoc,1.0,0.05,,6,3,sinir,"buyuk f, grup basina n=2",,,,,,,,screenshots/P10.png

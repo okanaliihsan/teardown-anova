@@ -7,10 +7,10 @@ Bu dosya `python tests/differential.py` ile üretilir; elle düzenlenmez.
 
 | Ölçü | Değer |
 |---|---|
-| Kâhin vektörü (ölçülen) | 35 |
-| Tam uyum (tüm alanlar / beklenen hata) | 34 / 35 (97.1%) |
-| **N tam eşleşme** (sayısal vektörler) | **26 / 27 (96.3%)** |
-| Henüz toplanmamış vektör | 12 |
+| Kâhin vektörü (ölçülen) | 43 |
+| Tam uyum (tüm alanlar / beklenen hata) | 41 / 43 (95.3%) |
+| **N tam eşleşme** (sayısal vektörler) | **32 / 34 (94.1%)** |
+| Henüz toplanmamış vektör | 7 |
 
 Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmedi.
 
@@ -53,15 +53,18 @@ Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmed
 | X06 | a-priori | 0.25 | 0.05 | 0.8 | 1 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: Number of groups must be at least 2 (got 1). |
 | X07 | a-priori | 0.25 | 0.05 | 0.8 | 2.5 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--groups: Number of groups (at least 2 groups required) must be an integer (got 2.5).'} |
 | X08 | a-priori | 0.25 | 0.05 | 0.8 | 0 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: Number of groups must be at least 2 (got 0). |
-| P01 | | | | | | ⏳ toplanmadı | |
-| P02 | | | | | | ⏳ toplanmadı | |
-| P03 | | | | | | ⏳ toplanmadı | |
-| P04 | | | | | | ⏳ toplanmadı | |
-| P05 | | | | | | ⏳ toplanmadı | |
-| P06 | | | | | | ⏳ toplanmadı | |
-| P07 | | | | | | ⏳ toplanmadı | |
+| X09 | a-priori | 0.25 | 0.05 | 0.8 | 2.4 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--groups: Number of groups (at least 2 groups required) must be an integer (got 2.4).'} |
+| P01 | post-hoc | 0.25 | 0.05 | 159 | 3 | ✅ UYUŞTU | tüm alanlar |
+| P02 | post-hoc | 0.25 | 0.05 | 100 | 3 | ✅ UYUŞTU | tüm alanlar |
+| P03 | post-hoc | 0.25 | 0.05 | 4 | 3 | ✅ UYUŞTU | tüm alanlar |
+| P04 | post-hoc | 0.25 | 0.05 | 3 | 3 | ✅ UYUŞTU | G*Power: Input error: Sample size must be greater than the number of groups (3). | yeniden yazım: --n: Total sample size must be greater than the number of groups (N = 3, k = 3). |
+| P05 | post-hoc | 0.1 | 0.05 | 1000 | 5 | ✅ UYUŞTU | tüm alanlar |
+| P06 | post-hoc | 0.4 | 0.01 | 60 | 4 | ✅ UYUŞTU | tüm alanlar |
+| P07 | post-hoc | 0 | 0.05 | 100 | 3 | ✅ UYUŞTU | tüm alanlar |
 | P08 | | | | | | ⏳ toplanmadı | |
 | P09 | | | | | | ⏳ toplanmadı | |
 | P10 | | | | | | ⏳ toplanmadı | |
 | P11 | | | | | | ⏳ toplanmadı | |
 | P12 | | | | | | ⏳ toplanmadı | |
+| P13 | | | | | | ⏳ toplanmadı | |
+| P14 | | | | | | ⏳ toplanmadı | |
