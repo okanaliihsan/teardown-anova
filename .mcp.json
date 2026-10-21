@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "anova-power": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "anova-mcp.cmd"],
+      "env": {}
+    }
+  }
+}

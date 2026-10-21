@@ -139,9 +139,10 @@ def _num(x):
     return round(float(x), JSON_DECIMALS)
 
 
-def format_result(result: engine.Result, mode: str | None = None) -> dict:
-    """Sonucu JSON sözlüğüne çevirir. `mode` geriye uyumluluk için kabul edilir;
-    güç her iki modda da iki anahtarla yazıldığından çıktıyı etkilemez."""
+def result_to_dict(result: engine.Result, mode: str | None = None) -> dict:
+    """Paylaşılan çıktı biçimleyici (CLI ve MCP). Alan adları NAMES, sıra OUTPUT_ORDER,
+    sayılar JSON_DECIMALS ondalık. `mode` geriye uyumluluk için kabul edilir; güç her
+    iki modda iki anahtarla yazıldığından çıktıyı etkilemez."""
     power = _num(result.power)
     values = {
         "out_n_total": result.n_total,
@@ -162,12 +163,55 @@ def format_result(result: engine.Result, mode: str | None = None) -> dict:
     return out
 
 
+format_result = result_to_dict   # eski ad (Tur 1-3 testleri)
+
+
+def error_to_dict(exc_or_message) -> dict:
+    """Paylaşılan hata biçimleyici. InvalidInputError'da mesajın önüne sorunlu
+    alanın kanonik CLI seçenek adı eklenir (R34): "--alpha: Alpha is outside ..."."""
+    if isinstance(exc_or_message, InvalidInputError):
+        exc = exc_or_message
+        opt = NAMES[FIELD_TO_OPTION[exc.field]] if exc.field in FIELD_TO_OPTION else exc.field
+        message = f"{opt}: {exc.message}"
+    else:
+        message = str(exc_or_message)
+    return {NAMES["out_error"]: message}
+
+
+def run(mode: str, f, alpha, groups, power=None, n=None) -> tuple[dict, int]:
+    """Kanonik mod değeriyle motoru çağırır; (JSON sözlüğü, çıkış kodu) döndürür.
+    CLI ve MCP aynı yolu kullanır; hesap/doğrulama yalnızca engine'de."""
+    try:
+        if mode == NAMES["mode_a_priori"]:
+            if power is None:
+                return error_to_dict(f"{NAMES['opt_power']} is required in "
+                                     f"{NAMES['mode_a_priori']} mode"), EXIT_INPUT_ERROR
+            result = engine.a_priori(f=f, alpha=alpha, power=power, k=groups)
+        elif mode == NAMES["mode_post_hoc"]:
+            if n is None:
+                return error_to_dict(f"{NAMES['opt_n']} is required in "
+                                     f"{NAMES['mode_post_hoc']} mode"), EXIT_INPUT_ERROR
+            result = engine.post_hoc(f=f, alpha=alpha, n_total=n, k=groups)
+        else:
+            return error_to_dict(f"invalid value {mode!r} for {NAMES['opt_mode']}"), EXIT_INPUT_ERROR
+    except InvalidInputError as exc:
+        return error_to_dict(exc), EXIT_INPUT_ERROR
+    except SolverError as exc:
+        return error_to_dict(exc), EXIT_COMPUTE_ERROR
+    return result_to_dict(result, mode), EXIT_OK
+
+
+def to_json_line(obj: dict) -> str:
+    """Tek satır JSON (CLI stdout'u ve MCP text içeriği birebir aynı olsun diye)."""
+    return json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
+
+
 def _emit(obj: dict, stream) -> None:
-    stream.write(json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "\n")
+    stream.write(to_json_line(obj) + "\n")
 
 
 def _error(message: str, code: int, stream) -> int:
-    _emit({NAMES["out_error"]: message}, stream)
+    _emit(error_to_dict(message), stream)
     return code
 
 
@@ -181,27 +225,10 @@ def main(argv=None, stdout=None) -> int:
     except SystemExit as exc:          # --help
         return int(exc.code or 0)
 
-    try:
-        if args.mode == NAMES["mode_a_priori"]:
-            if args.power is None:
-                return _error(f"{NAMES['opt_power']} is required in "
-                              f"{NAMES['mode_a_priori']} mode", EXIT_INPUT_ERROR, stdout)
-            result = engine.a_priori(f=args.f, alpha=args.alpha,
-                                     power=args.power, k=args.groups)
-        else:
-            if args.n is None:
-                return _error(f"{NAMES['opt_n']} is required in "
-                              f"{NAMES['mode_post_hoc']} mode", EXIT_INPUT_ERROR, stdout)
-            result = engine.post_hoc(f=args.f, alpha=args.alpha,
-                                     n_total=args.n, k=args.groups)
-    except InvalidInputError as exc:
-        opt = NAMES[FIELD_TO_OPTION[exc.field]] if exc.field in FIELD_TO_OPTION else exc.field
-        return _error(f"{opt}: {exc.message}", EXIT_INPUT_ERROR, stdout)
-    except SolverError as exc:
-        return _error(str(exc), EXIT_COMPUTE_ERROR, stdout)
-
-    _emit(format_result(result, args.mode), stdout)
-    return EXIT_OK
+    payload, code = run(args.mode, f=args.f, alpha=args.alpha, groups=args.groups,
+                        power=args.power, n=args.n)
+    _emit(payload, stdout)
+    return code
 
 
 def console_main() -> None:

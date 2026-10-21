@@ -64,3 +64,13 @@ gpower-clone --test anova-oneway --mode post-hoc --f 0.25 --alpha 0.05 --n 390 -
 - Kod ve testler.
 - `ASSUMPTIONS.md`: SPEC'te açık kalan her nokta (özellikle U01–U07) için ne varsaydığın.
 - `SESSION2_LOG.md`: kaç tur/iterasyon, hangi testler ilk denemede kırmızıydı ve neden, takıldığın yerler, SPEC'te eksik/yanlış olduğunu düşündüğün yerler. Bu kayıt ödevdeki AGENT_COST.md ve HALLUCINATIONS.md'ye girdi olacak; dürüst ol.
+
+---
+
+## Sonraki turlar (aynı yazım oturumuna gönderilen mesajların özeti)
+
+Yönerge yalnızca ilk prompt'u istiyor; şeffaflık için sonraki turlar da kaydedildi. Hiçbirinde Ghidra/REA çıktısı veya LEDGER içeriği verilmedi.
+
+- **Tur 2 — CLI takma adları.** CONTRACT.md yayımlanmadığı için: grup/N/f/güç seçeneklerinin birden çok yazımı, harf duyarsız mod/test değerleri, bilinmeyen ek seçenekleri (`--tails`, `--ratio`) yok sayma, güç değerini hem `actual_power` hem `power` anahtarıyla yazma. Yalnızca `cli.py` ve `test_cli.py`; `engine.py`'ye dokunulmadı.
+- **Tur 3 — SPEC v1.1.** "SPEC.md'nin sonuna §10 eklendi (R35–R38) ve oracle CSV'si 50 vektörle tamamlandı. Diferansiyel test X07, X09, P13, P14'te uyuşmazlık buldu; SPEC v1.1'i uygula." Kaynak: G*Power arayüzü (`[KÂHİN]`), binary değil.
+- **Tur 4 — MCP adaptörü.** Ödevin MCP isteri aynen verildi. Standart kütüphaneyle stdio JSON-RPC 2.0 sunucusu; iki araç; JSON üretimi CLI ile paylaşılan fonksiyonda; 50 vektörün her birinde CLI ≡ MCP eşdeğerlik testi; `MCP_SCHEMA.md`.

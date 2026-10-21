@@ -1,0 +1,4 @@
+#!/bin/sh
+# MCP sunucusu (stdio) için paket kurulmadan çalışan ince sarmalayıcı.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+PYTHONPATH="$HERE/src${PYTHONPATH:+:$PYTHONPATH}" exec "${PYTHON:-python3}" -m anova_clone.mcp_server "$@"

@@ -144,3 +144,45 @@ seçmiştim. Kâhin değeri olmayan bir senaryoyu bağlayıcı saymak hataydı.
 - Post hoc f aralık metni (alt sınır 0) gözlenmemiş.
 - R37'de kısa gösterimin kuralı ("sondaki sıfırları kırp" mı, "tam sayıysa ondalıksız"
   mı?) belirsiz: 199.5 ile 24.3750000 aynı kuralla açıklanamıyor.
+
+## Tur 4 — MCP adaptörü
+
+Kısıt: ağ ve pip yok, `mcp` SDK'sı kurulamadı. MCP stdio taşıması standart kütüphaneyle
+elle uygulandı: JSON-RPC 2.0, satır başına bir mesaj. `engine.py` değişmedi.
+
+**Yeni / değişen dosyalar:**
+- `src/anova_clone/mcp_server.py`: `initialize` (protocolVersion yankılanır, yoksa
+  2025-06-18), `notifications/initialized` (yanıt yok), `ping`, `tools/list`,
+  `tools/call`. İki araç var: `anova_oneway_a_priori` (f, alpha, power, groups) ve
+  `anova_oneway_post_hoc` (f, alpha, n_total, groups). Açıklamalar TR + EN.
+  - JSON-RPC hata kodları: bilinmeyen yöntem -32601; bozuk JSON -32700 (id null);
+    bilinmeyen araç, eksik ya da sayı olmayan argüman -32602; geçersiz istek -32600.
+  - Batch dizisi de destekleniyor.
+- `cli.py` refaktörü: `result_to_dict`, `error_to_dict`, `run`, `to_json_line` paylaşılan
+  yardımcılar oldu (`format_result` takma ad olarak kaldı). CLI ve MCP aynı yolu çağırıyor;
+  MCP motoru, scipy'yi veya math'i içe aktarmıyor (AST testiyle doğrulanıyor).
+- `anova-mcp`, `anova-mcp.cmd`, `.mcp.json` (göreli `anova-mcp.cmd`), `MCP_SCHEMA.md`.
+- `tests/test_mcp.py`: gerçek alt süreçle el sıkışma, protokol, hata yolları ve
+  sarmalayıcı testleri, şema belgesinin araç ve alanları kapsaması.
+  - Eşdeğerlik testi: 50 vektörün her biri için CLI alt süreci ile tek açık MCP
+    sürecindeki tools/call karşılaştırılıyor. text satırı bayt düzeyinde aynı,
+    structuredContent eşit, isError CLI çıkış koduyla tutarlı.
+  - Dağılım: 40 başarılı, 10 hata vektörü.
+
+**İlk çalıştırmada kırmızı (3):**
+- `MCP_SCHEMA.md` henüz yazılmamıştı (beklenen).
+- "Mantık kopyalanmadı" testi, `"engine."` alt dizesini docstring'deki "engine.py"
+  sözcüğünde buldu. Test yanlıştı; AST tabanlı içe aktarma kontrolüne çevrildi.
+- `.mcp.json` testi `"/c"` bayrağını POSIX'te mutlak yol sandı. Test yanlıştı;
+  düzeltildi.
+- Eşdeğerlik testi ilk denemede geçti.
+
+**Kararlar ve notlar:**
+- Eşdeğerlik testinde CLI'ye `--f=-0.25` biçimi veriliyor. `--f -0.25` biçimi argparse'ta
+  da çalışıyor (negatif sayı seçenek sanılmıyor), ama güvenli olan biçim seçildi.
+- MCP'de sayısal string ("0.25") CLI ile tutarlılık için kabul ediliyor; bool ve sayı
+  olmayan string -32602 veriyor. CLI'de sayı olmayan değer `{"error":...}` ve çıkış kodu
+  2 veriyor. Bu tek bilinçli fark: MCP'de şema ihlali protokol hatası sayıldı.
+- Eksik argümanlar MCP'de -32602 ile protokol hatası; CLI'de `{"error":...}`. Bu da
+  aynı gerekçeyle bilinçli bir fark.
+- Sonuç: 78 test, 78 geçti, 0 atlandı, 0 başarısız.

@@ -27,3 +27,6 @@ venv/
 .env
 *.key
 cleanroom/
+
+# --- Ajan değerlendirmesi geçici dosyaları (mutlak yol içerir) ---
+agent/logs/_*.json
