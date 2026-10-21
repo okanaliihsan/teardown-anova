@@ -34,7 +34,7 @@ X05,a-priori,0.25,0.05,1,,3,gecersiz,guc=1,?,?,?,?,?,?,"Input error: Power is ou
 X06,a-priori,0.25,0.05,0.8,,1,gecersiz,k=1 (pay df=0),?,?,?,?,?,?,Input error: There must be at least 2 groups.,screenshots/X06.png
 X07,a-priori,0.25,0.05,0.8,,2.5,sinir,k tam sayi degil,9.9375000,3.0540042,2,156,159,0.8048873,HATA YOK: k=2.5 kabul edildi; sonuclar k=3 (A02) ile birebir ayni -> kesirli k tam sayiya yukari/yakina yuvarlaniyor,screenshots/X07.png
 X08,a-priori,0.25,0.05,0.8,,0,gecersiz,k=0,?,?,?,?,?,?,Input error: There must be at least 2 groups.,screenshots/X08.png
-X09,a-priori,0.25,0.05,0.8,,2.4,sinir,X07 bulgusunun takibi: kesirli k yukari mi (3) en yakina mi (2) yuvarlaniyor,,,,,,,,screenshots/X09.png
+X09,a-priori,0.25,0.05,0.8,,2.4,sinir,X07 bulgusunun takibi: kesirli k yukari mi (3) en yakina mi (2) yuvarlaniyor,8.0000000,3.9163246,1,126,128,0.8014596,"HATA YOK: k=2.4 -> k=2 gibi hesaplandi (A11 ile ayni). X07 (2.5->3) ile birlikte: en yakin tam sayiya yuvarlama, .5 yukari",screenshots/X09.png
 P01,post-hoc,0.25,0.05,,159,3,tipik,A02 ile tutarlilik (N=159),,,,,,,,screenshots/P01.png
 P02,post-hoc,0.25,0.05,,100,3,sinir,N k'ya bolunmuyor,,,,,,,,screenshots/P02.png
 P03,post-hoc,0.25,0.05,,4,3,sinir,payda df=1,,,,,,,,screenshots/P03.png
