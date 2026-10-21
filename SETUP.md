@@ -1,162 +1,62 @@
-# Kurulum Rehberi (Windows)
+# Kurulum (Windows 11 x64) — gerçekte uygulanan adımlar
 
-Bu rehber, ödevin "KURULUM (ilk iş)" bölümünü adım adım uygular. Tüm komutlar **PowerShell** içindir.
-Her adımın sonunda neyi kontrol edeceğin yazıyor; bir adım hata verirse durup hatayı kaydet (AGENT_COST.md ve süreç günlüğü için de işe yarar).
+Bu dosya, ödevin "KURULUM (ilk iş)" bölümünün bu repoda **nasıl yapıldığını** kaydeder (Sommerville Böl. 7.3: konfigürasyon yönetimi, host-target geliştirme). Komutlar PowerShell içindir.
 
-> Neden Windows? G*Power 3.1.9.7'nin arayüzünden referans değer (kâhin) toplamak zorundayız ve ödev yalnızca Windows sürümünün sökülmesine izin veriyor. REA'nın Ghidra sağlayıcısı Windows x64'te **deneysel** olarak çalışıyor; bu durumu README'de belirteceğiz.
+## Ortam özeti
 
----
+| Bileşen | Sürüm | Not |
+|---|---|---|
+| Host | Windows x64 | REA Ghidra sağlayıcısı Windows'ta deneysel |
+| Hedef binary | G*Power 3.1.9.7, `GPowerNT.exe` | 32-bit (x86) Visual C++ uygulaması; SHA-256 → `docs/BINARY.md` |
+| Node.js | 24.21.0 | |
+| npm | 11.19.0 | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` gerekti |
+| JDK | Temurin 21.0.12 (64-bit) | Makinedeki Java 24 silinmedi; `JAVA_HOME` 21'i gösteriyor |
+| Ghidra | 12.1.4 PUBLIC | REA tam bu sürümü istiyor |
+| REA | rea-agents 6.7.0 | Kanıt: `docs/rea_doctor_ghidra.json` |
+| Ajan | Claude Code 2.1.299 | REA kaydı `rea setup --client claude_code` ile |
 
-## 0. Çalışma klasörleri
+## 1. G*Power
 
-```powershell
-mkdir C:\tools
-mkdir C:\re\gpower        # G*Power binary'sinin sökülecek kopyası (REPO DIŞINDA)
-```
+1. Yalnızca resmi sayfadan (psychologie.hhu.de, G*Power sayfası) Windows zip'i indirildi.
+2. Kurulum programı yok: zip çıkarıldı, `GPowerNT.exe` çalıştırıldı (gerekirse `VC_redist.x86.exe`).
+3. Help → About → `docs/gpower_about.png`.
+4. Hash:
+   ```powershell
+   Get-FileHash "<klasör>\GPowerNT.exe" -Algorithm SHA256
+   ```
 
-**Neden ayrı klasör?** G*Power varsayılan olarak adında `*` ve `( )` geçen bir yola kurulur (`...\G*Power\`). REA'nın Windows sağlayıcısı komut yorumlayıcı karakterleri içeren yolları reddediyor. Ayrıca binary repoya girmemeli (etik kural 2).
+> Dikkat: Klasör yolunda `*`, boşluk veya parantez olmamalı; REA'nın Windows sağlayıcısı bu tür karakterli yolları reddedebiliyor. G*Power ve Ghidra bu yüzden `Desktop\re\` altına çıkarıldı.
 
----
-
-## 1. G*Power 3.1.9.7
-
-1. **Yalnızca resmi sayfadan** indir: https://www.psychologie.hhu.de/arbeitsgruppen/allgemeine-psychologie-und-arbeitspsychologie/gpower
-2. Windows sürümünü (3.1.9.7) kur.
-3. `GPower.exe`'yi sökme klasörüne kopyala ve iki dosyanın da hash'ini al:
-
-```powershell
-# Kurulum yolunu kendi makinene göre düzelt (Program Files veya Program Files (x86))
-$src = Get-ChildItem "C:\Program Files*\G*Power\GPower.exe" | Select-Object -First 1
-Copy-Item $src.FullName C:\re\gpower\GPower.exe
-Get-FileHash $src.FullName              -Algorithm SHA256
-Get-FileHash C:\re\gpower\GPower.exe    -Algorithm SHA256
-```
-
-**Kontrol:** İki hash aynı olmalı. Bu değeri README'ye yazacağız → bana gönder.
-Ayrıca G*Power'ı açıp **Help → About** ekranının görüntüsünü al (sürüm kanıtı, konfigürasyon yönetimi).
-
----
-
-## 2. Node.js (22.19+ veya 24.11+)
+## 2. Node.js, npm, JDK 21
 
 ```powershell
-winget install --exact --id OpenJS.NodeJS.LTS
-# PowerShell'i kapatıp yeniden aç
-node -v
-npm -v
-```
-
-**Kontrol:** `node -v` en az `v22.19` veya `v24.11` göstermeli.
-
----
-
-## 3. JDK 21 (64-bit, tam JDK)
-
-```powershell
+node -v                                              # 22.19+ veya 24.11+
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned  # npm.ps1 engeli için
 winget install --exact --id EclipseAdoptium.Temurin.21.JDK
-# PowerShell'i kapatıp yeniden aç
-java -version
-javac -version
 ```
 
-**Kontrol:** İkisi de `21.x` göstermeli. Kurulum yolunu not et (genelde `C:\Program Files\Eclipse Adoptium\jdk-21...`).
+## 3. Ghidra 12.1.4
 
----
+`github.com/NationalSecurityAgency/ghidra/releases` → `ghidra_12.1.4_PUBLIC_*.zip` → `Desktop\re\` altına çıkarıldı.
 
-## 4. Ghidra 12.1.4
-
-REA **tam olarak** Ghidra 12.1.4 sürümünü istiyor; başka sürüm `rea doctor` kontrolünden geçmez.
-
-1. https://ghidra-sre.org adresinden (GitHub releases sayfasına yönlendirir) `ghidra_12.1.4_PUBLIC_*.zip` dosyasını indir.
-2. `C:\tools\` içine çıkar → sonuç: `C:\tools\ghidra_12.1.4_PUBLIC\`
-
-**Kontrol:** `C:\tools\ghidra_12.1.4_PUBLIC\support\analyzeHeadless.bat` dosyası var olmalı.
-
----
-
-## 5. Ortam değişkenleri (kalıcı)
+## 4. Ortam değişkenleri
 
 ```powershell
-# JDK yolunu 3. adımda not ettiğinle değiştir
-setx GHIDRA_INSTALL_DIR "C:\tools\ghidra_12.1.4_PUBLIC"
-setx JAVA_HOME "C:\Program Files\Eclipse Adoptium\jdk-21.0.X-hotspot"
+setx GHIDRA_INSTALL_DIR "C:\Users\<kullanıcı>\Desktop\re\ghidra_12.1.4_PUBLIC"
+setx JAVA_HOME "C:\Program Files\Eclipse Adoptium\jdk-21.0.12.101-hotspot"
 setx REA_ANALYSIS_PROVIDER "ghidra"
-# PowerShell'i kapatıp yeniden aç
 ```
 
----
+## 5. REA
 
-## 6. Claude Code (ajan)
-
-```powershell
-irm https://claude.ai/install.ps1 | iex
-```
-
-Proje klasöründe (`git clone` ettiğin repo) `claude` yazıp oturum aç. Ücretli bir Claude aboneliği veya API hesabı gerekir.
-Claude Code kullanamıyorsan Codex, Gemini CLI veya Cursor da REA ile çalışıyor; o zaman bana hangisini kullandığını söyle, komutları ona göre düzenlerim.
-
----
-
-## 7. REA
-
-**Uyarı:** Sahte paketler dolaşıyor. Yalnızca `github.com/morluto/rea`, `rea.tools` ve npm'deki `rea-agents` paketi.
+Yalnızca resmi paket: npm `rea-agents` (github.com/morluto/rea, rea.tools).
 
 ```powershell
 npm install --global rea-agents
-rea doctor --provider ghidra --json
-rea providers --json
+rea doctor --provider ghidra --json      # ghidra-* kontrollerinin hepsi ok:true
+rea setup --client claude_code           # MCP kaydı + REA skill'i
 ```
 
-**Kontrol:** `doctor` çıktısında `"healthy": true` görmelisin. Ghidra sürümü, `analyzeHeadless.bat`, `java.exe`, `javac.exe` ve JDK 21 kontrolleri geçmeli.
-Hata alırsan çıktının tamamını bana gönder.
+## 6. Doğrulama (ödev isteri)
 
-Ardından binary'yi tek başına test et:
-
-```powershell
-rea inspect "C:\re\gpower\GPower.exe" --provider ghidra --format json > C:\re\gpower\inspect.json
-```
-
-> `inspect.json` dosyasını **bana gönderme ve repoya koyma.** Temiz oda kuralı: yazım oturumu Ghidra çıktısını görmemeli. Sadece "çalıştı / hata verdi" bilgisini ve hata mesajını paylaş.
-
----
-
-## 8. REA'yı Claude Code'a bağla
-
-Önce otomatik kurulumu dene (PowerShell betik engeli varsa `npx` yerine `npx.cmd` yaz):
-
-```powershell
-npx rea-agents@latest setup --client claude_code
-npx -y rea-agents@latest doctor --client claude_code --json
-```
-
-Otomatik kayıt Windows'ta çalışmazsa elle ekle (repo klasöründeyken):
-
-```powershell
-claude mcp add rea --scope project `
-  -e REA_ANALYSIS_PROVIDER=ghidra `
-  -e GHIDRA_INSTALL_DIR="C:\tools\ghidra_12.1.4_PUBLIC" `
-  -e JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-21.0.X-hotspot" `
-  -- cmd /c npx -y rea-agents@latest mcp
-```
-
-Claude Code'u yeniden başlat.
-
----
-
-## 9. Hocanın istediği kontrol (README'ye girecek)
-
-Claude Code içinde **aynen** şunu sor:
-
-> REA araçları ve Ghidra sağlayıcısı bu oturumda kullanılabilir mi?
-
-Cevabın ekran görüntüsünü `docs/rea_check.png` olarak kaydet.
-
----
-
-## Bana göndereceklerin (kurulum sonunda)
-
-- [ ] GPower.exe SHA-256 hash'i
-- [ ] Help → About ekran görüntüsü (sürüm)
-- [ ] `rea doctor --provider ghidra --json` çıktısı (ya da hatası)
-- [ ] `docs/rea_check.png`
-- [ ] Hangi ajanı kullandığın (Claude Code / diğer)
+Claude Code içinde: *"REA araçları ve Ghidra sağlayıcısı bu oturumda kullanılabilir mi?"* → `docs/rea_check.png`.
