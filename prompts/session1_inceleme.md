@@ -5,7 +5,7 @@
 
 ---
 
-Sen bir tersine mühendislik oturumundasın. Hedef: **G*Power 3.1.9.7 (Windows)**, dosya `C:\re\gpower\GPower.exe`. Bu bir eğitim çalışmasıdır (YZM301 Teardown Sprint); G*Power yazarları Faul, Erdfelder, Lang ve Buchner'e saygıyla, yalnızca algoritmayı ve davranışı anlamak için inceliyoruz.
+Sen bir tersine mühendislik oturumundasın. Hedef: **G*Power 3.1.9.7 (Windows)**, dosya `C:\Users\90553\Desktop\re\gpower\GPower_3.1.9.7_143\GPowerNT.exe` (SHA-256: C63E6A13...EFC812, bkz. docs/BINARY.md). Bu bir eğitim çalışmasıdır (YZM301 Teardown Sprint); G*Power yazarları Faul, Erdfelder, Lang ve Buchner'e saygıyla, yalnızca algoritmayı ve davranışı anlamak için inceliyoruz.
 
 ## Kapsam
 
