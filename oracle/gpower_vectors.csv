@@ -1,31 +1,31 @@
 id,mode,f,alpha,power_in,n_in,k,category,purpose,lambda,critical_F,df1,df2,n_total,actual_power,gpower_message,screenshot
-A01,a-priori,0.25,0.05,0.95,,10,DOK,Kilavuz ornegi (k=10); N'nin k'nin katina yuvarlanip yuvarlanmadigi,,,,,,,,screenshots/A01.png
-A02,a-priori,0.25,0.05,0.8,,3,tipik,Cohen orta etki; minimum N 158 mi 159 (3'un kati) mi,,,,,,,,screenshots/A02.png
-A03,a-priori,0.1,0.05,0.8,,3,tipik,Cohen kucuk etki; yuvarlama ayirt edici,,,,,,,,screenshots/A03.png
-A04,a-priori,0.4,0.05,0.8,,3,tipik,Cohen buyuk etki; yuvarlama ayirt edici,,,,,,,,screenshots/A04.png
-A05,a-priori,0.25,0.05,0.95,,3,tipik,Yuksek guc,,,,,,,,screenshots/A05.png
-A06,a-priori,0.25,0.01,0.8,,3,tipik,alpha=0.01,,,,,,,,screenshots/A06.png
-A07,a-priori,0.25,0.05,0.8,,4,tipik,k=4,,,,,,,,screenshots/A07.png
-A08,a-priori,0.25,0.05,0.8,,5,tipik,k=5; yuvarlama ayirt edici,,,,,,,,screenshots/A08.png
-A09,a-priori,0.35,0.05,0.8,,6,tipik,k=6; yuvarlama ayirt edici,,,,,,,,screenshots/A09.png
-A10,a-priori,0.2,0.05,0.9,,4,tipik,guc=0.90,,,,,,,,screenshots/A10.png
-A11,a-priori,0.25,0.05,0.8,,2,sinir,k=2 (en kucuk gecerli k; t testine denk),,,,,,,,screenshots/A11.png
-A12,a-priori,0.5,0.05,0.9,,3,tipik,orta-buyuk etki,,,,,,,,screenshots/A12.png
-A13,a-priori,0.02,0.05,0.8,,3,sinir,"f cok kucuk; buyuk N, iterasyon/performans",,,,,,,,screenshots/A13.png
-A14,a-priori,0.01,0.05,0.8,,3,sinir,f asiri kucuk; cozucu ust siniri var mi,,,,,,,,screenshots/A14.png
-A15,a-priori,1.5,0.05,0.8,,3,sinir,f buyuk; N alt siniri,,,,,,,,screenshots/A15.png
-A16,a-priori,3.0,0.05,0.8,,3,sinir,f cok buyuk; grup basina n alt siniri (1 mi 2 mi),,,,,,,,screenshots/A16.png
-A17,a-priori,10.0,0.05,0.95,,3,sinir,f asiri buyuk,,,,,,,,screenshots/A17.png
-A18,a-priori,0.25,0.05,0.99,,3,sinir,guc=0.99,,,,,,,,screenshots/A18.png
-A19,a-priori,0.25,0.05,0.999,,3,sinir,guc=0.999,,,,,,,,screenshots/A19.png
-A20,a-priori,0.25,0.1,0.8,,3,tipik,alpha=0.10,,,,,,,,screenshots/A20.png
-A21,a-priori,0.25,0.05,0.05,,3,sinir,guc = alpha (tutarsiz giris),,,,,,,,screenshots/A21.png
-A22,a-priori,0.25,0.05,0.04,,3,sinir,guc < alpha,,,,,,,,screenshots/A22.png
-A23,a-priori,0.25,0.05,0.06,,3,sinir,guc alpha'nin hemen ustunde,,,,,,,,screenshots/A23.png
-A24,a-priori,0.25,0.05,0.8,,20,sinir,cok grup (k=20),,,,,,,,screenshots/A24.png
-A25,a-priori,0.25,0.05,0.8,,100,sinir,asiri cok grup (k=100),,,,,,,,screenshots/A25.png
-A26,a-priori,0.3,0.001,0.95,,4,sinir,cok kucuk alpha,,,,,,,,screenshots/A26.png
-A27,a-priori,0.25,0.5,0.8,,3,sinir,cok buyuk alpha,,,,,,,,screenshots/A27.png
+A01,a-priori,0.25,0.05,0.95,,10,DOK,Kilavuz ornegi (k=10); N'nin k'nin katina yuvarlanip yuvarlanmadigi,24.3750000,1.9045377,9,380,390,0.9523634,,screenshots/A01.png
+A02,a-priori,0.25,0.05,0.8,,3,tipik,Cohen orta etki; minimum N 158 mi 159 (3'un kati) mi,9.9375000,3.0540042,2,156,159,0.8048873,,screenshots/A02.png
+A03,a-priori,0.1,0.05,0.8,,3,tipik,Cohen kucuk etki; yuvarlama ayirt edici,9.6900000,3.0050418,2,966,969,0.8011010,,screenshots/A03.png
+A04,a-priori,0.4,0.05,0.8,,3,tipik,Cohen buyuk etki; yuvarlama ayirt edici,10.5600000,3.1428085,2,63,66,0.8180744,,screenshots/A04.png
+A05,a-priori,0.25,0.05,0.95,,3,tipik,Yuksek guc,15.7500000,3.0320649,2,249,252,0.9514888,,screenshots/A05.png
+A06,a-priori,0.25,0.01,0.8,,3,tipik,alpha=0.01,14.2500000,4.7007255,2,225,228,0.8029054,,screenshots/A06.png
+A07,a-priori,0.25,0.05,0.8,,4,tipik,k=4,11.2500000,2.6559389,3,176,180,0.8039869,,screenshots/A07.png
+A08,a-priori,0.25,0.05,0.8,,5,tipik,k=5; yuvarlama ayirt edici,12.5000000,2.4179625,4,195,200,0.8097710,,screenshots/A08.png
+A09,a-priori,0.35,0.05,0.8,,6,tipik,k=6; yuvarlama ayirt edici,13.9650000,2.2984308,5,108,114,0.8153816,,screenshots/A09.png
+A10,a-priori,0.2,0.05,0.9,,4,tipik,guc=0.90,14.4000000,2.6299872,3,356,360,0.9015736,,screenshots/A10.png
+A11,a-priori,0.25,0.05,0.8,,2,sinir,k=2 (en kucuk gecerli k; t testine denk),8.0000000,3.9163246,1,126,128,0.8014596,,screenshots/A11.png
+A12,a-priori,0.5,0.05,0.9,,3,tipik,orta-buyuk etki,13.5000000,3.1787993,2,51,54,0.9015607,,screenshots/A12.png
+A13,a-priori,0.02,0.05,0.8,,3,sinir,"f cok kucuk; buyuk N, iterasyon/performans",9.6360000,2.9961049,2,24087,24090,0.8000049,,screenshots/A13.png
+A14,a-priori,0.01,0.05,0.8,,3,sinir,f asiri kucuk; cozucu ust siniri var mi,9.6351000,2.9958254,2,96348,96351,0.8000049,,screenshots/A14.png
+A15,a-priori,1.5,0.05,0.8,,3,sinir,f buyuk; N alt siniri,20.2500000,5.1432528,2,6,9,0.8731575,,screenshots/A15.png
+A16,a-priori,3.0,0.05,0.8,,3,sinir,f cok buyuk; grup basina n alt siniri (1 mi 2 mi),54.0000000,9.5520945,2,3,6,0.9488080,,screenshots/A16.png
+A17,a-priori,10.0,0.05,0.95,,3,sinir,f asiri buyuk,600,9.5520945,2,3,6,1.0000000,lambda ekranda ondalik olmadan '600' gosteriliyor (gosterim bicimi bulgusu),screenshots/A17.png
+A18,a-priori,0.25,0.05,0.99,,3,sinir,guc=0.99,21.7500000,3.0218963,2,345,348,0.9904577,,screenshots/A18.png
+A19,a-priori,0.25,0.05,0.999,,3,sinir,guc=0.999,29.4375000,3.0149905,2,468,471,0.9990202,,screenshots/A19.png
+A20,a-priori,0.25,0.1,0.8,,3,tipik,alpha=0.10,7.8750000,2.3462330,2,123,126,0.8008668,,screenshots/A20.png
+A21,a-priori,0.25,0.05,0.05,,3,sinir,guc = alpha (tutarsiz giris),0.3750000,9.5520945,2,3,6,0.0622405,,screenshots/A21.png
+A22,a-priori,0.25,0.05,0.04,,3,sinir,guc < alpha,?,?,?,?,?,?,Input error: Power must be greater than or equal to alpha.,screenshots/A22.png
+A23,a-priori,0.25,0.05,0.06,,3,sinir,guc alpha'nin hemen ustunde,0.3750000,9.5520945,2,3,6,0.0622405,,screenshots/A23.png
+A24,a-priori,0.25,0.05,0.8,,20,sinir,cok grup (k=20),22.5000000,1.6172211,19,340,360,0.8237556,,screenshots/A24.png
+A25,a-priori,0.25,0.05,0.8,,100,sinir,asiri cok grup (k=100),50.0000000,1.2675740,99,700,800,0.8706091,,screenshots/A25.png
+A26,a-priori,0.3,0.001,0.95,,4,sinir,cok kucuk alpha,30.6000000,5.5470564,3,336,340,0.9500838,,screenshots/A26.png
+A27,a-priori,0.30,0.5,0.8,,3,sinir,cok buyuk alpha,2.7000000,0.7112502,2,27,30,0.8033804,Not: planlanan f=0.25 idi; G*Power'a 0.30 girildi (ekran goruntusu). Gecerli vektor olarak f=0.30 ile kaydedildi.,screenshots/A27.png
 X01,a-priori,0,0.05,0.8,,3,gecersiz,Etki buyuklugu f=0,,,,,,,,screenshots/X01.png
 X02,a-priori,-0.25,0.05,0.8,,3,gecersiz,Negatif f,,,,,,,,screenshots/X02.png
 X03,a-priori,0.25,0,0.8,,3,gecersiz,alpha=0,,,,,,,,screenshots/X03.png
