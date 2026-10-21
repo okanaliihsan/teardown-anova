@@ -7,10 +7,10 @@ Bu dosya `python tests/differential.py` ile üretilir; elle düzenlenmez.
 
 | Ölçü | Değer |
 |---|---|
-| Kâhin vektörü (ölçülen) | 43 |
-| Tam uyum (tüm alanlar / beklenen hata) | 41 / 43 (95.3%) |
-| **N tam eşleşme** (sayısal vektörler) | **32 / 34 (94.1%)** |
-| Henüz toplanmamış vektör | 7 |
+| Kâhin vektörü (ölçülen) | 50 |
+| Tam uyum (tüm alanlar / beklenen hata) | 46 / 50 (92.0%) |
+| **N tam eşleşme** (sayısal vektörler) | **36 / 40 (90.0%)** |
+| Henüz toplanmamış vektör | 0 |
 
 Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmedi.
 
@@ -61,10 +61,10 @@ Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmed
 | P05 | post-hoc | 0.1 | 0.05 | 1000 | 5 | ✅ UYUŞTU | tüm alanlar |
 | P06 | post-hoc | 0.4 | 0.01 | 60 | 4 | ✅ UYUŞTU | tüm alanlar |
 | P07 | post-hoc | 0 | 0.05 | 100 | 3 | ✅ UYUŞTU | tüm alanlar |
-| P08 | | | | | | ⏳ toplanmadı | |
-| P09 | | | | | | ⏳ toplanmadı | |
-| P10 | | | | | | ⏳ toplanmadı | |
-| P11 | | | | | | ⏳ toplanmadı | |
-| P12 | | | | | | ⏳ toplanmadı | |
-| P13 | | | | | | ⏳ toplanmadı | |
-| P14 | | | | | | ⏳ toplanmadı | |
+| P08 | post-hoc | 0.25 | 0.05 | 2 | 3 | ✅ UYUŞTU | G*Power: Input error: Sample size must be greater than the number of groups (3). | yeniden yazım: --n: Total sample size must be greater than the number of groups (N = 2, k = 3). |
+| P09 | post-hoc | 0.25 | 0.05 | 390 | 10 | ✅ UYUŞTU | tüm alanlar |
+| P10 | post-hoc | 1.0 | 0.05 | 6 | 3 | ✅ UYUŞTU | tüm alanlar |
+| P11 | post-hoc | 0.25 | 0.05 | 101 | 2 | ✅ UYUŞTU | tüm alanlar |
+| P12 | post-hoc | 0.05 | 0.05 | 30000 | 3 | ✅ UYUŞTU | tüm alanlar |
+| P13 | post-hoc | 0.25 | 0.05 | 159.4 | 3 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--n: Total sample size must be an integer (got 159.4).'} |
+| P14 | post-hoc | 0.25 | 0.05 | 159.6 | 3 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--n: Total sample size must be an integer (got 159.6).'} |

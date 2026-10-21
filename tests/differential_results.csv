@@ -42,10 +42,10 @@ P04,post-hoc,0.25,0.05,3,,3,2,True,UYUŞTU,-,"G*Power: Input error: Sample size 
 P05,post-hoc,0.1,0.05,5,,1000,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 1000, ""n_per_group"": 200, ""actual_power"": 0.713633, ""power"": 0.713633, ""critical"": 2.3808758, ""df1"": 4, ""df2"": 995, ""ncp"": 10.0}"
 P06,post-hoc,0.4,0.01,4,,60,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 60, ""n_per_group"": 15, ""actual_power"": 0.4600839, ""power"": 0.4600839, ""critical"": 4.1519411, ""df1"": 3, ""df2"": 56, ""ncp"": 9.6}"
 P07,post-hoc,0,0.05,3,,100,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 100, ""n_per_group"": null, ""actual_power"": 0.05, ""power"": 0.05, ""critical"": 3.0901867, ""df1"": 2, ""df2"": 97, ""ncp"": 0.0, ""warning"": ""Total sample size is not a multiple of the number of groups (N = 100, k = 3); the analysis is based on the average group size (N / k = 33.3333).""}"
-P08,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
-P09,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
-P10,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
-P11,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
-P12,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
-P13,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
-P14,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P08,post-hoc,0.25,0.05,3,,2,2,True,UYUŞTU,-,"G*Power: Input error: Sample size must be greater than the number of groups (3). | yeniden yazım: --n: Total sample size must be greater than the number of groups (N = 2, k = 3).","{""error"": ""--n: Total sample size must be greater than the number of groups (N = 2, k = 3).""}"
+P09,post-hoc,0.25,0.05,10,,390,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 390, ""n_per_group"": 39, ""actual_power"": 0.9523634, ""power"": 0.9523634, ""critical"": 1.9045377, ""df1"": 9, ""df2"": 380, ""ncp"": 24.375}"
+P10,post-hoc,1.0,0.05,3,,6,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 6, ""n_per_group"": 2, ""actual_power"": 0.2525709, ""power"": 0.2525709, ""critical"": 9.5520945, ""df1"": 2, ""df2"": 3, ""ncp"": 6.0}"
+P11,post-hoc,0.25,0.05,2,,101,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 101, ""n_per_group"": null, ""actual_power"": 0.7012785, ""power"": 0.7012785, ""critical"": 3.9371169, ""df1"": 1, ""df2"": 99, ""ncp"": 6.3125, ""warning"": ""Total sample size is not a multiple of the number of groups (N = 101, k = 2); the analysis is based on the average group size (N / k = 50.5).""}"
+P12,post-hoc,0.05,0.05,3,,30000,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 30000, ""n_per_group"": 10000, ""actual_power"": 1.0, ""power"": 1.0, ""critical"": 2.9960315, ""df1"": 2, ""df2"": 29997, ""ncp"": 75.0}"
+P13,post-hoc,0.25,0.05,3,,159.4,2,True,UYUŞMADI,False,"G*Power sonuç verdi, yeniden yazım hata: {'error': '--n: Total sample size must be an integer (got 159.4).'}","{""error"": ""--n: Total sample size must be an integer (got 159.4).""}"
+P14,post-hoc,0.25,0.05,3,,159.6,2,True,UYUŞMADI,False,"G*Power sonuç verdi, yeniden yazım hata: {'error': '--n: Total sample size must be an integer (got 159.6).'}","{""error"": ""--n: Total sample size must be an integer (got 159.6).""}"

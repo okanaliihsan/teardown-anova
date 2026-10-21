@@ -42,10 +42,10 @@ P04,post-hoc,0.25,0.05,,3,3,gecersiz,payda df=0,?,?,?,?,?,?,Input error: Sample 
 P05,post-hoc,0.1,0.05,,1000,5,tipik,kucuk etki buyuk N,10.0000000,2.3808758,4,995,1000,0.7136330,,screenshots/P05.png
 P06,post-hoc,0.4,0.01,,60,4,tipik,alpha=0.01,9.6000000,4.1519411,3,56,60,0.4600839,,screenshots/P06.png
 P07,post-hoc,0,0.05,,100,3,sinir,f=0 iken guc alpha'ya mi esit,0,3.0901867,2,97,100,0.0500000,Please note: The total sample size (100) is not a multiple of the number of groups (3). The analysis was based on the average group size. | lambda ekranda '0',screenshots/P07.png
-P08,post-hoc,0.25,0.05,,2,3,gecersiz,N < k,,,,,,,,screenshots/P08.png
-P09,post-hoc,0.25,0.05,,390,10,DOK,A01 ile tutarlilik,,,,,,,,screenshots/P09.png
-P10,post-hoc,1.0,0.05,,6,3,sinir,"buyuk f, grup basina n=2",,,,,,,,screenshots/P10.png
-P11,post-hoc,0.25,0.05,,101,2,sinir,"k=2, tek sayi N",,,,,,,,screenshots/P11.png
-P12,post-hoc,0.05,0.05,,30000,3,sinir,cok buyuk N,,,,,,,,screenshots/P12.png
-P13,post-hoc,0.25,0.05,,159.4,3,sinir,"Kesirli N: kesme (159), en yakin (159) mi yukari (160) mi",,,,,,,,screenshots/P13.png
-P14,post-hoc,0.25,0.05,,159.6,3,sinir,Kesirli N: kesme (159) mi en yakin/yukari (160) mi,,,,,,,,screenshots/P14.png
+P08,post-hoc,0.25,0.05,,2,3,gecersiz,N < k,?,?,?,?,?,?,Input error: Sample size must be greater than the number of groups (3).,screenshots/P08.png
+P09,post-hoc,0.25,0.05,,390,10,DOK,A01 ile tutarlilik,24.3750000,1.9045377,9,380,390,0.9523634,,screenshots/P09.png
+P10,post-hoc,1.0,0.05,,6,3,sinir,"buyuk f, grup basina n=2",6.0000000,9.5520945,2,3,6,0.2525709,,screenshots/P10.png
+P11,post-hoc,0.25,0.05,,101,2,sinir,"k=2, tek sayi N",6.3125000,3.9371169,1,99,101,0.7012785,Please note: The total sample size (101) is not a multiple of the number of groups (2). The analysis was based on the average group size.,screenshots/P11.png
+P12,post-hoc,0.05,0.05,,30000,3,sinir,cok buyuk N,75.0000000,2.9960315,2,29997,30000,1.0000000,,screenshots/P12.png
+P13,post-hoc,0.25,0.05,,159.4,3,sinir,"Kesirli N: kesme (159), en yakin (159) mi yukari (160) mi",9.9375000,3.0540042,2,156,159,0.8048873,HATA/UYARI YOK: N=159.4 -> 159 olarak kullanildi (P01 ile ayni),screenshots/P13.png
+P14,post-hoc,0.25,0.05,,159.6,3,sinir,Kesirli N: kesme (159) mi en yakin/yukari (160) mi,10.0000000,3.0536283,2,157,160,0.8075443,Please note: The total sample size (160) is not a multiple of the number of groups (3). The analysis was based on the average group size. | N=159.6 -> 160'a yuvarlandi; uyari metninde 160 yaziyor,screenshots/P14.png

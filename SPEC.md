@@ -341,3 +341,48 @@ Feature: Tek yönlü sabit etkili ANOVA omnibus güç analizi
     Then motor kayan nokta degerleri kisaltmadan dondurur
     And sunum katmani degerleri anlamli basamak esasina gore bicimlendirir
 ```
+
+---
+
+## 10. Sürüm 1.1 — Diferansiyel test sonrası düzeltmeler
+
+Bu bölüm, ilk yeniden yazımın G*Power kâhiniyle karşılaştırılmasından sonra eklendi. Kaynağı binary değil, **G*Power arayüzünden gözlenen kara kutu davranışıdır** (`[KÂHİN]`: `oracle/gpower_vectors.csv` + ekran görüntüleri). Çelişki durumunda bu bölüm öncekilerin önüne geçer.
+
+**R35 (R32'nin yerine geçer)** Grup sayısı **k** ve post hoc'taki toplam örneklem **N**, doğrulamadan ve hesaptan **önce en yakın tam sayıya yuvarlanır; tam .5 yukarı gider.** Kesirli değer hata değildir. Yuvarlanmış değer, sonraki tüm kurallarda (R04, R09, R29 uyarısı, df, λ) kullanılır. (Kaynak: [KÂHİN] X07: k=2.5 → k=3 ile aynı sonuç; X09: k=2.4 → k=2 ile aynı sonuç; P13: N=159.4 → 159; P14: N=159.6 → 160 ve uyarı metninde "160" yazıyor.)
+
+**R36** Hata ve uyarı metinleri, G*Power'da gözlenen metinlerle aynı anlamı taşımalı; mümkünse aynı sözcükler kullanılmalı (Kaynak: [KÂHİN] ekran görüntüleri):
+- "Effect size f is outside the admissible range (1e-06, 50)." (a priori'de f = 0 ve f < 0 için de bu metin çıkar; ayrı bir "sıfır olamaz" metni gösterilmez → U07 çözüldü)
+- "Alpha is outside the admissible range (1e-07, 1)."
+- "Power is outside the admissible range (1e-07, 1)."
+- "Power must be greater than or equal to alpha."
+- "There must be at least 2 groups."
+- "Sample size must be greater than the number of groups (<k>)."
+- Uyarı (post hoc): "The total sample size (<N>) is not a multiple of the number of groups (<k>). The analysis was based on the average group size."
+
+**R37 (R12'yi düzeltir)** G*Power arayüzü sonuçların çoğunu **sabit 7 ondalıkla** gösterir (ör. 24.3750000, 1.0000000); `%g` biçimi gözlenmedi. Birkaç durumda kısa gösterim görülür (λ = 0 → "0", λ = 600 → "600", kritik F = 199.5 → "199.5"). Motor yine tam duyarlıkla döndürür; JSON 7 ondalığa yuvarlar. (Kaynak: [KÂHİN] A01, A17, P03, P07)
+
+**R38** Post hoc'ta f = 0 iken λ = 0 ve güç tam olarak α'dır; N, k'nın katı değilse R29 uyarısı yine eklenir. (Kaynak: [KÂHİN] P07)
+
+```gherkin
+  Scenario Outline: Kesirli grup sayisi en yakin tam sayiya yuvarlanir (R35)
+    Given a priori modu
+    When oracle vektoru <id> girdileri verilir
+    Then hesap gecersiz girdi hatasi vermez
+    And sonuc oracle vektoru <id> ile uyusur
+
+    Examples:
+      | id  |
+      | X07 |
+      | X09 |
+
+  Scenario Outline: Kesirli toplam orneklem en yakin tam sayiya yuvarlanir (R35, R29)
+    Given post hoc modu
+    When oracle vektoru <id> girdileri verilir
+    Then sonuc oracle vektoru <id> ile uyusur
+    And toplam orneklem alani yuvarlanmis degeri gosterir
+
+    Examples:
+      | id  |
+      | P13 |
+      | P14 |
+```
