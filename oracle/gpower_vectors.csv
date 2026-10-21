@@ -1,0 +1,48 @@
+id,mode,f,alpha,power_in,n_in,k,category,purpose,lambda,critical_F,df1,df2,n_total,actual_power,gpower_message,screenshot
+A01,a-priori,0.25,0.05,0.95,,10,DOK,Kilavuz ornegi (k=10); N'nin k'nin katina yuvarlanip yuvarlanmadigi,,,,,,,,screenshots/A01.png
+A02,a-priori,0.25,0.05,0.8,,3,tipik,Cohen orta etki; minimum N 158 mi 159 (3'un kati) mi,,,,,,,,screenshots/A02.png
+A03,a-priori,0.1,0.05,0.8,,3,tipik,Cohen kucuk etki; yuvarlama ayirt edici,,,,,,,,screenshots/A03.png
+A04,a-priori,0.4,0.05,0.8,,3,tipik,Cohen buyuk etki; yuvarlama ayirt edici,,,,,,,,screenshots/A04.png
+A05,a-priori,0.25,0.05,0.95,,3,tipik,Yuksek guc,,,,,,,,screenshots/A05.png
+A06,a-priori,0.25,0.01,0.8,,3,tipik,alpha=0.01,,,,,,,,screenshots/A06.png
+A07,a-priori,0.25,0.05,0.8,,4,tipik,k=4,,,,,,,,screenshots/A07.png
+A08,a-priori,0.25,0.05,0.8,,5,tipik,k=5; yuvarlama ayirt edici,,,,,,,,screenshots/A08.png
+A09,a-priori,0.35,0.05,0.8,,6,tipik,k=6; yuvarlama ayirt edici,,,,,,,,screenshots/A09.png
+A10,a-priori,0.2,0.05,0.9,,4,tipik,guc=0.90,,,,,,,,screenshots/A10.png
+A11,a-priori,0.25,0.05,0.8,,2,sinir,k=2 (en kucuk gecerli k; t testine denk),,,,,,,,screenshots/A11.png
+A12,a-priori,0.5,0.05,0.9,,3,tipik,orta-buyuk etki,,,,,,,,screenshots/A12.png
+A13,a-priori,0.02,0.05,0.8,,3,sinir,"f cok kucuk; buyuk N, iterasyon/performans",,,,,,,,screenshots/A13.png
+A14,a-priori,0.01,0.05,0.8,,3,sinir,f asiri kucuk; cozucu ust siniri var mi,,,,,,,,screenshots/A14.png
+A15,a-priori,1.5,0.05,0.8,,3,sinir,f buyuk; N alt siniri,,,,,,,,screenshots/A15.png
+A16,a-priori,3.0,0.05,0.8,,3,sinir,f cok buyuk; grup basina n alt siniri (1 mi 2 mi),,,,,,,,screenshots/A16.png
+A17,a-priori,10.0,0.05,0.95,,3,sinir,f asiri buyuk,,,,,,,,screenshots/A17.png
+A18,a-priori,0.25,0.05,0.99,,3,sinir,guc=0.99,,,,,,,,screenshots/A18.png
+A19,a-priori,0.25,0.05,0.999,,3,sinir,guc=0.999,,,,,,,,screenshots/A19.png
+A20,a-priori,0.25,0.1,0.8,,3,tipik,alpha=0.10,,,,,,,,screenshots/A20.png
+A21,a-priori,0.25,0.05,0.05,,3,sinir,guc = alpha (tutarsiz giris),,,,,,,,screenshots/A21.png
+A22,a-priori,0.25,0.05,0.04,,3,sinir,guc < alpha,,,,,,,,screenshots/A22.png
+A23,a-priori,0.25,0.05,0.06,,3,sinir,guc alpha'nin hemen ustunde,,,,,,,,screenshots/A23.png
+A24,a-priori,0.25,0.05,0.8,,20,sinir,cok grup (k=20),,,,,,,,screenshots/A24.png
+A25,a-priori,0.25,0.05,0.8,,100,sinir,asiri cok grup (k=100),,,,,,,,screenshots/A25.png
+A26,a-priori,0.3,0.001,0.95,,4,sinir,cok kucuk alpha,,,,,,,,screenshots/A26.png
+A27,a-priori,0.25,0.5,0.8,,3,sinir,cok buyuk alpha,,,,,,,,screenshots/A27.png
+X01,a-priori,0,0.05,0.8,,3,gecersiz,Etki buyuklugu f=0,,,,,,,,screenshots/X01.png
+X02,a-priori,-0.25,0.05,0.8,,3,gecersiz,Negatif f,,,,,,,,screenshots/X02.png
+X03,a-priori,0.25,0,0.8,,3,gecersiz,alpha=0,,,,,,,,screenshots/X03.png
+X04,a-priori,0.25,1,0.8,,3,gecersiz,alpha=1,,,,,,,,screenshots/X04.png
+X05,a-priori,0.25,0.05,1,,3,gecersiz,guc=1,,,,,,,,screenshots/X05.png
+X06,a-priori,0.25,0.05,0.8,,1,gecersiz,k=1 (pay df=0),,,,,,,,screenshots/X06.png
+X07,a-priori,0.25,0.05,0.8,,2.5,gecersiz,k tam sayi degil,,,,,,,,screenshots/X07.png
+X08,a-priori,0.25,0.05,0.8,,0,gecersiz,k=0,,,,,,,,screenshots/X08.png
+P01,post-hoc,0.25,0.05,,159,3,tipik,A02 ile tutarlilik (N=159),,,,,,,,screenshots/P01.png
+P02,post-hoc,0.25,0.05,,100,3,sinir,N k'ya bolunmuyor,,,,,,,,screenshots/P02.png
+P03,post-hoc,0.25,0.05,,4,3,sinir,payda df=1,,,,,,,,screenshots/P03.png
+P04,post-hoc,0.25,0.05,,3,3,gecersiz,payda df=0,,,,,,,,screenshots/P04.png
+P05,post-hoc,0.1,0.05,,1000,5,tipik,kucuk etki buyuk N,,,,,,,,screenshots/P05.png
+P06,post-hoc,0.4,0.01,,60,4,tipik,alpha=0.01,,,,,,,,screenshots/P06.png
+P07,post-hoc,0,0.05,,100,3,sinir,f=0 iken guc alpha'ya mi esit,,,,,,,,screenshots/P07.png
+P08,post-hoc,0.25,0.05,,2,3,gecersiz,N < k,,,,,,,,screenshots/P08.png
+P09,post-hoc,0.25,0.05,,390,10,DOK,A01 ile tutarlilik,,,,,,,,screenshots/P09.png
+P10,post-hoc,1.0,0.05,,6,3,sinir,"buyuk f, grup basina n=2",,,,,,,,screenshots/P10.png
+P11,post-hoc,0.25,0.05,,101,2,sinir,"k=2, tek sayi N",,,,,,,,screenshots/P11.png
+P12,post-hoc,0.05,0.05,,30000,3,sinir,cok buyuk N,,,,,,,,screenshots/P12.png

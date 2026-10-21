@@ -1,0 +1,28 @@
+# --- Etik kural 2: G*Power binary'si repoya KONMAZ ---
+GPower.exe
+*.exe
+*.dll
+GPower*/
+G*Power*/
+
+# --- Ghidra / REA çalışma dosyaları (decompile çıktısı repoya girmez, kural 4) ---
+*.gpr
+*.rep/
+ghidra_projects/
+.rea/
+rea-evidence/
+*.evidence.json
+decompile/
+pseudo_code/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# --- Gizli anahtarlar ---
+.env
+*.key
