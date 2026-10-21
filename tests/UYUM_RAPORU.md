@@ -8,8 +8,8 @@ Bu dosya `python tests/differential.py` ile üretilir; elle düzenlenmez.
 | Ölçü | Değer |
 |---|---|
 | Kâhin vektörü (ölçülen) | 50 |
-| Tam uyum (tüm alanlar / beklenen hata) | 46 / 50 (92.0%) |
-| **N tam eşleşme** (sayısal vektörler) | **36 / 40 (90.0%)** |
+| Tam uyum (tüm alanlar / beklenen hata) | 50 / 50 (100.0%) |
+| **N tam eşleşme** (sayısal vektörler) | **40 / 40 (100.0%)** |
 | Henüz toplanmamış vektör | 0 |
 
 Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmedi.
@@ -45,26 +45,26 @@ Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmed
 | A25 | a-priori | 0.25 | 0.05 | 0.8 | 100 | ✅ UYUŞTU | tüm alanlar |
 | A26 | a-priori | 0.3 | 0.001 | 0.95 | 4 | ✅ UYUŞTU | tüm alanlar |
 | A27 | a-priori | 0.30 | 0.5 | 0.8 | 3 | ✅ UYUŞTU | tüm alanlar |
-| X01 | a-priori | 0 | 0.05 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Effect size f is outside the admissible range (1e-06, 50). | yeniden yazım: --f: Effect size f is out of the allowed range [1e-06, 50] (got 0.0). |
-| X02 | a-priori | -0.25 | 0.05 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Effect size f is outside the admissible range (1e-06, 50). | yeniden yazım: --f: Effect size f is out of the allowed range [1e-06, 50] (got -0.25). |
-| X03 | a-priori | 0.25 | 0 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Alpha is outside the admissible range (1e-07, 1). | yeniden yazım: --alpha: Alpha is out of the allowed range [1e-07, 0.9999999] (got 0.0). |
-| X04 | a-priori | 0.25 | 1 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Alpha is outside the admissible range (1e-07, 1). | yeniden yazım: --alpha: Alpha is out of the allowed range [1e-07, 0.9999999] (got 1.0). |
-| X05 | a-priori | 0.25 | 0.05 | 1 | 3 | ✅ UYUŞTU | G*Power: Input error: Power is outside the admissible range (1e-07, 1). | yeniden yazım: --power: Power is out of the allowed range [1e-07, 0.9999999] (got 1.0). |
-| X06 | a-priori | 0.25 | 0.05 | 0.8 | 1 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: Number of groups must be at least 2 (got 1). |
-| X07 | a-priori | 0.25 | 0.05 | 0.8 | 2.5 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--groups: Number of groups (at least 2 groups required) must be an integer (got 2.5).'} |
-| X08 | a-priori | 0.25 | 0.05 | 0.8 | 0 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: Number of groups must be at least 2 (got 0). |
-| X09 | a-priori | 0.25 | 0.05 | 0.8 | 2.4 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--groups: Number of groups (at least 2 groups required) must be an integer (got 2.4).'} |
+| X01 | a-priori | 0 | 0.05 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Effect size f is outside the admissible range (1e-06, 50). | yeniden yazım: --f: Effect size f is outside the admissible range (1e-06, 50). |
+| X02 | a-priori | -0.25 | 0.05 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Effect size f is outside the admissible range (1e-06, 50). | yeniden yazım: --f: Effect size f is outside the admissible range (1e-06, 50). |
+| X03 | a-priori | 0.25 | 0 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Alpha is outside the admissible range (1e-07, 1). | yeniden yazım: --alpha: Alpha is outside the admissible range (1e-07, 1). |
+| X04 | a-priori | 0.25 | 1 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Alpha is outside the admissible range (1e-07, 1). | yeniden yazım: --alpha: Alpha is outside the admissible range (1e-07, 1). |
+| X05 | a-priori | 0.25 | 0.05 | 1 | 3 | ✅ UYUŞTU | G*Power: Input error: Power is outside the admissible range (1e-07, 1). | yeniden yazım: --power: Power is outside the admissible range (1e-07, 1). |
+| X06 | a-priori | 0.25 | 0.05 | 0.8 | 1 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: There must be at least 2 groups. |
+| X07 | a-priori | 0.25 | 0.05 | 0.8 | 2.5 | ✅ UYUŞTU | tüm alanlar |
+| X08 | a-priori | 0.25 | 0.05 | 0.8 | 0 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: There must be at least 2 groups. |
+| X09 | a-priori | 0.25 | 0.05 | 0.8 | 2.4 | ✅ UYUŞTU | tüm alanlar |
 | P01 | post-hoc | 0.25 | 0.05 | 159 | 3 | ✅ UYUŞTU | tüm alanlar |
 | P02 | post-hoc | 0.25 | 0.05 | 100 | 3 | ✅ UYUŞTU | tüm alanlar |
 | P03 | post-hoc | 0.25 | 0.05 | 4 | 3 | ✅ UYUŞTU | tüm alanlar |
-| P04 | post-hoc | 0.25 | 0.05 | 3 | 3 | ✅ UYUŞTU | G*Power: Input error: Sample size must be greater than the number of groups (3). | yeniden yazım: --n: Total sample size must be greater than the number of groups (N = 3, k = 3). |
+| P04 | post-hoc | 0.25 | 0.05 | 3 | 3 | ✅ UYUŞTU | G*Power: Input error: Sample size must be greater than the number of groups (3). | yeniden yazım: --n: Sample size must be greater than the number of groups (3). |
 | P05 | post-hoc | 0.1 | 0.05 | 1000 | 5 | ✅ UYUŞTU | tüm alanlar |
 | P06 | post-hoc | 0.4 | 0.01 | 60 | 4 | ✅ UYUŞTU | tüm alanlar |
 | P07 | post-hoc | 0 | 0.05 | 100 | 3 | ✅ UYUŞTU | tüm alanlar |
-| P08 | post-hoc | 0.25 | 0.05 | 2 | 3 | ✅ UYUŞTU | G*Power: Input error: Sample size must be greater than the number of groups (3). | yeniden yazım: --n: Total sample size must be greater than the number of groups (N = 2, k = 3). |
+| P08 | post-hoc | 0.25 | 0.05 | 2 | 3 | ✅ UYUŞTU | G*Power: Input error: Sample size must be greater than the number of groups (3). | yeniden yazım: --n: Sample size must be greater than the number of groups (3). |
 | P09 | post-hoc | 0.25 | 0.05 | 390 | 10 | ✅ UYUŞTU | tüm alanlar |
 | P10 | post-hoc | 1.0 | 0.05 | 6 | 3 | ✅ UYUŞTU | tüm alanlar |
 | P11 | post-hoc | 0.25 | 0.05 | 101 | 2 | ✅ UYUŞTU | tüm alanlar |
 | P12 | post-hoc | 0.05 | 0.05 | 30000 | 3 | ✅ UYUŞTU | tüm alanlar |
-| P13 | post-hoc | 0.25 | 0.05 | 159.4 | 3 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--n: Total sample size must be an integer (got 159.4).'} |
-| P14 | post-hoc | 0.25 | 0.05 | 159.6 | 3 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--n: Total sample size must be an integer (got 159.6).'} |
+| P13 | post-hoc | 0.25 | 0.05 | 159.4 | 3 | ✅ UYUŞTU | tüm alanlar |
+| P14 | post-hoc | 0.25 | 0.05 | 159.6 | 3 | ✅ UYUŞTU | tüm alanlar |

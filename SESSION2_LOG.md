@@ -92,3 +92,55 @@ Yalnızca `src/anova_clone/cli.py` ve `tests/test_cli.py` değişti; `engine.py`
 - Bilinen risk: bilinmeyen seçeneklerin yok sayılması yazım hatalarını da sessizce
   yutar (ör. `--alpah`). Zorunlu alanlar eksik kalacağı için bu durumda yine hata
   döner, ancak hata mesajı yazım hatasını değil eksik alanı bildirir.
+
+## Tur 3 — SPEC v1.1 (diferansiyel test bulguları)
+
+Girdi: SPEC.md'ye eklenen §10 (R35–R38, iki yeni Gherkin senaryosu) ve 50 vektörün
+tamamının doldurulduğu oracle CSV'si.
+
+**Not:** Bu tur başında oturumun çalışma dizini `/home/claude/teardown-anova` olarak
+değişmiş görünüyordu. Temiz oda kuralı gereği o klasöre hiç bakılmadı; tüm işlem mutlak
+yollarla `/home/claude/cleanroom` içinde yapıldı.
+
+**Önce:** Eski paket yeni CSV ile 50/50 yeşildi. X07, eski testte hâlâ "hata beklenir"
+olarak kodluydu ve geçiyordu. Yani eski testler diferansiyel bulguyu yakalamıyordu;
+kırmızıyı göstermek için yeni senaryolar gerekti.
+
+**Testler (önce yazıldı, kırmızı görüldü):**
+- `TestSpecV11` (yeni): X07/X09 kesirli k (R35), P13/P14 kesirli N (R35, R29), yarım
+  yukarı yuvarlama (2.5 → 3, 4.5 → 5; bankacı değil), yuvarlamanın doğrulamadan önce
+  yapılması (k = 1.4 → hata, 1.5 → geçerli; N = 3.4 → hata), uyarı metninin birebir
+  G*Power metni olması ve yuvarlanmış N'yi (160) içermesi, uyarısız vektörlerde uyarı
+  olmaması, R38 (P07: λ = 0, güç = α, uyarı var), tüm 40 sayısal vektörün regresyonu.
+- `test_hata_metinleri_gpower_ile_ayni_R36`: "Input error:" kaydı olan 10 vektörde
+  metin birebir.
+- Eski `test_gecersiz_grup_sayilari_reddedilir_R04_R31_R32` testinden X07 çıkarıldı;
+  test `..._X07_cikarildi_R35` olarak yeniden adlandırıldı (gerekçe yorumda).
+- `test_cli.py`: "k=2.5 hata" vakası kaldırıldı; yerine "k=1.4 → 1" ve "N=3.4 → 3 = k"
+  hata vakaları, kesirli k/N'nin uçtan uca yuvarlanması ve alan önekli G*Power metni
+  testleri eklendi.
+
+**İlk çalıştırmada kırmızı:** 8 alt test `round_half_up yok` (AttributeError); X07,
+X09, P13, P14 kesirli değer reddi; 10 hata metni ve 5 uyarı metni uyuşmazlığı (eski
+kendi metinlerim); tüm vektör regresyonunda 36/40. Motor düzeltildikten sonra tek
+kırmızı kaldı: `test_cli` içindeki eski "k=2.5 hata" vakası. Güncellendi.
+
+**engine.py değişiklikleri:** `round_half_up` eklendi; `_as_int` artık kesirliyi
+reddetmiyor, yuvarlıyor; tüm hata ve uyarı metinleri R36 sabitleri (`MSG_*`,
+`NON_MULTIPLE_WARNING`) oldu. Hesap mantığı, çözücü ve CLI adaptörü değişmedi.
+
+**Sonuç:** 61 test, 61 geçti, 0 atlandı, 0 başarısız. Artık "oracle değeri henüz
+toplanmadı" atlaması yok. `require_oracle`/skip mekanizması gelecekteki boş vektörler
+için kodda duruyor.
+
+**Dürüst değerlendirme:** Tur 1'deki X07 kararım (SPEC §9 senaryosunu R32'nin üstünde
+tutup reddetmek) yanlış çıktı. ASSUMPTIONS'ta çelişkiyi işaretlemiştim ama yanlış tarafı
+seçmiştim. Kâhin değeri olmayan bir senaryoyu bağlayıcı saymak hataydı.
+
+**SPEC v1.1'e notlar:**
+- R36'daki metinlerde "Input error: " / "Please note: " öneklerinin metnin parçası olup
+  olmadığı belirtilmemiş; arayüz öneki sayıldı.
+- R35 negatif .5 için yönü tanımlamıyor (pratik etkisi yok).
+- Post hoc f aralık metni (alt sınır 0) gözlenmemiş.
+- R37'de kısa gösterimin kuralı ("sondaki sıfırları kırp" mı, "tam sayıysa ondalıksız"
+  mı?) belirsiz: 199.5 ile 24.3750000 aynı kuralla açıklanamıyor.

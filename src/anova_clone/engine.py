@@ -35,10 +35,18 @@ SOLVER_RTOL = 4.0 * 2.220446049250313e-16   # bağıl makine duyarlığı merteb
 SOLVER_XTOL = 1e-10             # mutlak tolerans (U02)
 MAX_EXPANSIONS = 200            # U03: ~1.6^200 ≈ 1e40; pratikte sınırsız
 
+# --- G*Power'da gözlenen metinler (SPEC v1.1 R36) ----------------------
+# Aralıklar G*Power'ın gösterdiği biçimde yazılır: üst sınır 0.9999999 iken
+# metinde "1" görünür (oracle X03-X05).
+MSG_F_RANGE = "Effect size f is outside the admissible range ({lo:g}, {hi:g})."
+MSG_ALPHA_RANGE = "Alpha is outside the admissible range (1e-07, 1)."
+MSG_POWER_RANGE = "Power is outside the admissible range (1e-07, 1)."
+MSG_POWER_BELOW_ALPHA = "Power must be greater than or equal to alpha."
+MSG_GROUPS = "There must be at least 2 groups."
+MSG_SAMPLE_SIZE = "Sample size must be greater than the number of groups ({k})."
 NON_MULTIPLE_WARNING = (
-    "Total sample size is not a multiple of the number of groups "
-    "(N = {n}, k = {k}); the analysis is based on the average group size "
-    "(N / k = {avg:.6g})."
+    "The total sample size ({n}) is not a multiple of the number of groups ({k}). "
+    "The analysis was based on the average group size."
 )
 
 
@@ -57,45 +65,51 @@ class Result:
 # ---------------------------------------------------------------------------
 # Doğrulama
 # ---------------------------------------------------------------------------
-def _as_real(value, field, exc_type, what):
+def _as_real(value, field, exc_type, message):
+    """Sayı olmayan / sonlu olmayan girdi, alanın G*Power metniyle reddedilir."""
     if isinstance(value, bool) or not isinstance(value, numbers.Real):
-        raise exc_type(field, f"{what} must be a number (got {value!r}).")
+        raise exc_type(field, message)
     x = float(value)
     if math.isnan(x) or math.isinf(x):
-        raise exc_type(field, f"{what} must be a finite number (got {value!r}).")
+        raise exc_type(field, message)
     return x
 
 
-def _as_int(value, field, exc_type, what):
-    """Tam sayı değerli girdiyi int'e çevirir; kesirliyi reddeder (ASSUMPTIONS R32)."""
-    x = _as_real(value, field, exc_type, what)
-    if x != math.floor(x):
-        raise exc_type(field, f"{what} must be an integer (got {value!r}).")
-    return int(x)
+def round_half_up(x: float) -> int:
+    """En yakın tam sayıya yuvarlar; tam .5 yukarı gider (R35).
+
+    Python'un round() fonksiyonu bankacı yuvarlaması yapar (2.5 -> 2), bu yüzden
+    kullanılmaz. `x - floor(x)` kayan noktada kesindir; `floor(x + 0.5)`'in
+    0.49999999999999994 gibi değerlerdeki hatası burada oluşmaz.
+    """
+    lo = math.floor(x)
+    return int(lo + 1 if x - lo >= 0.5 else lo)
+
+
+def _as_int(value, field, exc_type, message):
+    """R35: k ve N doğrulamadan önce en yakın tam sayıya (.5 yukarı) yuvarlanır."""
+    return round_half_up(_as_real(value, field, exc_type, message))
 
 
 def _check_k(k) -> int:
-    k_int = _as_int(k, "k", GroupCountError,
-                    "Number of groups (at least 2 groups required)")
+    k_int = _as_int(k, "k", GroupCountError, MSG_GROUPS)
     if k_int < K_MIN:
-        raise GroupCountError("k", f"Number of groups must be at least {K_MIN} (got {k_int}).")
+        raise GroupCountError("k", MSG_GROUPS)
     return k_int
 
 
-def _check_prob(x, field, exc_type, label) -> float:
-    v = _as_real(x, field, exc_type, label)
+def _check_prob(x, field, exc_type, message) -> float:
+    v = _as_real(x, field, exc_type, message)
     if not (PROB_MIN <= v <= PROB_MAX):
-        raise exc_type(field, f"{label} is out of the allowed range "
-                              f"[{PROB_MIN:g}, {PROB_MAX}] (got {v!r}).")
+        raise exc_type(field, message)
     return v
 
 
 def _check_f(f, f_min) -> float:
-    v = _as_real(f, "f", EffectSizeRangeError, "Effect size f")
+    message = MSG_F_RANGE.format(lo=f_min, hi=F_MAX)
+    v = _as_real(f, "f", EffectSizeRangeError, message)
     if not (f_min <= v <= F_MAX):
-        raise EffectSizeRangeError(
-            "f", f"Effect size f is out of the allowed range "
-                 f"[{f_min:g}, {F_MAX:g}] (got {v!r}).")
+        raise EffectSizeRangeError("f", message)
     return v
 
 
@@ -204,11 +218,10 @@ def round_up_to_multiple(n_continuous: float, k: int) -> int:
 def a_priori(f: float, alpha: float, power: float, k: int) -> Result:
     """A priori: gücü hedefe ulaştıran en küçük k katı N (R20-R26)."""
     k = _check_k(k)
-    alpha = _check_prob(alpha, "alpha", AlphaRangeError, "Alpha")
-    power = _check_prob(power, "power", PowerRangeError, "Power")
+    alpha = _check_prob(alpha, "alpha", AlphaRangeError, MSG_ALPHA_RANGE)
+    power = _check_prob(power, "power", PowerRangeError, MSG_POWER_RANGE)
     if power < alpha:
-        raise PowerBelowAlphaError("power",
-                                   "Power must be greater than or equal to alpha.")
+        raise PowerBelowAlphaError("power", MSG_POWER_BELOW_ALPHA)
     f = _check_f(f, F_MIN_A_PRIORI)
 
     n_cont = solve_continuous_n(f, alpha, power, k)
@@ -222,13 +235,12 @@ def a_priori(f: float, alpha: float, power: float, k: int) -> Result:
 # ---------------------------------------------------------------------------
 def post_hoc(f: float, alpha: float, n_total: int, k: int) -> Result:
     k = _check_k(k)
-    alpha = _check_prob(alpha, "alpha", AlphaRangeError, "Alpha")
+    alpha = _check_prob(alpha, "alpha", AlphaRangeError, MSG_ALPHA_RANGE)
     f = _check_f(f, F_MIN_POST_HOC)
-    n = _as_int(n_total, "n_total", SampleSizeError, "Total sample size")
+    n = _as_int(n_total, "n_total", SampleSizeError, MSG_SAMPLE_SIZE.format(k=k))
     if not n > k:
-        raise SampleSizeError("n_total", "Total sample size must be greater than "
-                                         f"the number of groups (N = {n}, k = {k}).")
+        raise SampleSizeError("n_total", MSG_SAMPLE_SIZE.format(k=k))
     warning = None
-    if n % k != 0:
-        warning = NON_MULTIPLE_WARNING.format(n=n, k=k, avg=n / k)
+    if n % k != 0:                      # R29; R38: f = 0 iken de eklenir
+        warning = NON_MULTIPLE_WARNING.format(n=n, k=k)
     return _compute(f, alpha, n, k, warning=warning)

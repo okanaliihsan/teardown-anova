@@ -198,10 +198,118 @@ class TestInvalidInputs(unittest.TestCase):
     def test_guc_birim_degeri_reddedilir_R06_R31(self):
         self.assert_error("X05", PowerRangeError, "power")
 
-    def test_gecersiz_grup_sayilari_reddedilir_R04_R31_R32(self):
-        for vid in ("X06", "X07", "X08"):
+    def test_gecersiz_grup_sayilari_reddedilir_R04_R31__X07_cikarildi_R35(self):
+        # SPEC v1.1: R32 yerine R35 geçti. X07 (k=2.5) artık hata değil, k=3'e
+        # yuvarlanıp hesaplanır (bkz. TestSpecV11). Burada yalnızca X06, X08 kalır.
+        for vid in ("X06", "X08"):
             with self.subTest(vector=vid):
                 self.assert_error(vid, GroupCountError, "k")
+
+    def test_hata_metinleri_gpower_ile_ayni_R36(self):
+        """'Input error: ...' kaydı olan her vektörde motor aynı metni üretir."""
+        from oracle import VECTORS
+        prefix = "Input error: "
+        checked = 0
+        for vid, row in VECTORS.items():
+            msg = row["gpower_message"].strip()
+            if not msg.startswith(prefix):
+                continue
+            expected = msg[len(prefix):].split(" | ")[0].strip()
+            with self.subTest(vector=vid):
+                with self.assertRaises(InvalidInputError) as ctx:
+                    run_vector(vid)
+                self.assertEqual(str(ctx.exception), expected)
+                checked += 1
+        self.assertGreaterEqual(checked, 9)
+
+
+# --------------------------------------------------------------------------
+# SPEC v1.1 (bölüm 10): diferansiyel test bulguları
+# --------------------------------------------------------------------------
+class TestSpecV11(OracleMixin, unittest.TestCase):
+
+    def test_kesirli_grup_sayisi_en_yakin_tamsayiya_yuvarlanir_R35(self):
+        for vid in ("X07", "X09"):
+            with self.subTest(vector=vid):
+                self.require_oracle(vid)
+                try:
+                    r = run_vector(vid)
+                except InvalidInputError as exc:
+                    self.fail(f"{vid}: geçersiz girdi hatası beklenmiyordu: {exc}")
+                self.assert_matches(vid, r)
+
+    def test_kesirli_toplam_orneklem_en_yakin_tamsayiya_yuvarlanir_R35_R29(self):
+        for vid in ("P13", "P14"):
+            with self.subTest(vector=vid):
+                row = self.require_oracle(vid)
+                r = run_vector(vid)
+                self.assert_matches(vid, r)
+                # toplam örneklem alanı yuvarlanmış değeri gösterir
+                self.assertEqual(r.n_total, int(row["n_total"]))
+                self.assertIsInstance(r.n_total, int)
+
+    def test_yarim_yukari_yuvarlama_bankaci_yuvarlamasi_degil_R35(self):
+        cases = {2.5: 3, 3.5: 4, 4.5: 5, 2.4: 2, 2.6: 3, 3.0: 3, 159.4: 159, 159.6: 160}
+        for x, expected in cases.items():
+            with self.subTest(x=x):
+                self.assertEqual(engine.round_half_up(x), expected)
+        # 4.5 -> 5 ile k=5 (post hoc): bölünebilir, uyarı yok; 2.5 -> 3 grup
+        r = engine.post_hoc(0.25, 0.05, 100.0, 4.5)
+        self.assertEqual(r.df1, 4)
+        self.assertIsNone(r.warning)
+
+    def test_yuvarlama_dogrulamadan_once_yapilir_R35_R04_R09(self):
+        with self.assertRaises(GroupCountError):
+            engine.a_priori(0.25, 0.05, 0.8, 1.4)        # -> 1
+        engine.a_priori(0.25, 0.05, 0.8, 1.5)            # -> 2, geçerli
+        with self.assertRaises(SampleSizeError):
+            engine.post_hoc(0.25, 0.05, 3.4, 3)          # -> 3 = k
+        self.assertEqual(engine.post_hoc(0.25, 0.05, 3.5, 3).n_total, 4)
+
+    def test_uyari_metni_gpower_ile_ayni_ve_yuvarlanmis_N_icerir_R36_R29(self):
+        from oracle import VECTORS
+        prefix = "Please note: "
+        checked = 0
+        for vid, row in VECTORS.items():
+            msg = row["gpower_message"].strip()
+            if not msg.startswith(prefix):
+                continue
+            expected = msg[len(prefix):].split(" | ")[0].strip()
+            with self.subTest(vector=vid):
+                self.assertEqual(run_vector(vid).warning, expected)
+                checked += 1
+        self.assertGreaterEqual(checked, 5)
+        self.assertIn("(160)", run_vector("P14").warning)
+
+    def test_uyarisiz_vektorlerde_uyari_yok_R26_R29(self):
+        from oracle import VECTORS
+        for vid, row in VECTORS.items():
+            if row["df1"].strip() in ("", "?"):
+                continue
+            if row["gpower_message"].strip().startswith("Please note: "):
+                continue
+            with self.subTest(vector=vid):
+                self.assertIsNone(run_vector(vid).warning)
+
+    def test_post_hoc_f_sifir_guc_alpha_ve_uyari_R38(self):
+        row = self.require_oracle("P07")
+        r = run_vector("P07")
+        self.assertEqual(r.ncp, 0.0)
+        self.assertAlmostEqual(r.power, float(row["alpha"]), places=12)
+        self.assertIsNotNone(r.warning)
+        self.assert_matches("P07", r)
+
+    def test_tum_oracle_vektorleri_uyusur_R14_R38(self):
+        """Sayısal çıktısı olan 40 vektörün tümü (A, P, X07, X09) için regresyon."""
+        from oracle import VECTORS
+        count = 0
+        for vid, row in VECTORS.items():
+            if row["df1"].strip() in ("", "?"):
+                continue
+            with self.subTest(vector=vid):
+                self.assert_matches(vid, run_vector(vid))
+                count += 1
+        self.assertEqual(count, 40)  # 26 A + X07, X09 + 12 P
 
 
 # --------------------------------------------------------------------------

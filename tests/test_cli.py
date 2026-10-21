@@ -92,8 +92,11 @@ class TestCli(unittest.TestCase):
             "alpha=1": a_priori_args(alpha="1"),
             "power=1": a_priori_args(power="1"),
             "k=1": a_priori_args(groups="1"),
-            "k=2.5": a_priori_args(groups="2.5"),
+            # "k=2.5" çıkarıldı: SPEC v1.1 R35 ile kesirli k yuvarlanır (2.5 -> 3),
+            # hata değildir; yerine "k=1.4" (-> 1) eklendi.
+            "k=1.4 (R35 -> 1)": a_priori_args(groups="1.4"),
             "N=k": post_hoc_args(n="3", groups="3"),
+            "N=3.4 (R35 -> 3 = k)": post_hoc_args(n="3.4", groups="3"),
             "sayi degil": a_priori_args(f="abc"),
             "eksik --power": [a for a in a_priori_args()[:8]] + [N["opt_groups"], "3"],
             "bilinmeyen test": [N["opt_test"], "t-test"] + a_priori_args()[2:],
@@ -105,6 +108,24 @@ class TestCli(unittest.TestCase):
                 out = self.assert_single_line_json(p)
                 self.assertEqual(list(out), [N["out_error"]])
                 self.assertTrue(out[N["out_error"]])
+
+    def test_kesirli_k_ve_N_yuvarlanir_R35(self):
+        # X07: k=2.5 -> 3, sonuç A02 ile aynı
+        p = run_cli(*a_priori_args(power="0.8", groups="2.5"))
+        self.assertEqual(p.returncode, 0, p.stdout)
+        out = self.assert_single_line_json(p)
+        self.assertEqual(out[N["out_n_total"]], int(vector("X07")["n_total"]))
+        # P14: N=159.6 -> 160, uyarı metninde 160
+        p = run_cli(*post_hoc_args(n="159.6", groups="3"))
+        self.assertEqual(p.returncode, 0, p.stdout)
+        out = self.assert_single_line_json(p)
+        self.assertEqual(out[N["out_n_total"]], 160)
+        self.assertIn("(160)", out[N["out_warning"]])
+
+    def test_hata_metni_gpower_metnini_alan_onekiyle_tasir_R34_R36(self):
+        p = run_cli(*a_priori_args(alpha="0"))
+        self.assertEqual(json.loads(p.stdout)[N["out_error"]],
+                         f"{N['opt_alpha']}: Alpha is outside the admissible range (1e-07, 1).")
 
     def test_hata_mesaji_sorunlu_alani_belirtir_R34(self):
         p = run_cli(*a_priori_args(alpha="0"))
