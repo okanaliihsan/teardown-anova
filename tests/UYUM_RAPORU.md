@@ -7,10 +7,10 @@ Bu dosya `python tests/differential.py` ile üretilir; elle düzenlenmez.
 
 | Ölçü | Değer |
 |---|---|
-| Kâhin vektörü (ölçülen) | 27 |
-| Tam uyum (tüm alanlar / beklenen hata) | 27 / 27 (100.0%) |
-| **N tam eşleşme** (sayısal vektörler) | **26 / 26 (100.0%)** |
-| Henüz toplanmamış vektör | 20 |
+| Kâhin vektörü (ölçülen) | 35 |
+| Tam uyum (tüm alanlar / beklenen hata) | 34 / 35 (97.1%) |
+| **N tam eşleşme** (sayısal vektörler) | **26 / 27 (96.3%)** |
+| Henüz toplanmamış vektör | 12 |
 
 Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmedi.
 
@@ -45,14 +45,14 @@ Kütüphane kâhini (`oracle/library/statsmodels_vectors.csv`) henüz üretilmed
 | A25 | a-priori | 0.25 | 0.05 | 0.8 | 100 | ✅ UYUŞTU | tüm alanlar |
 | A26 | a-priori | 0.3 | 0.001 | 0.95 | 4 | ✅ UYUŞTU | tüm alanlar |
 | A27 | a-priori | 0.30 | 0.5 | 0.8 | 3 | ✅ UYUŞTU | tüm alanlar |
-| X01 | | | | | | ⏳ toplanmadı | |
-| X02 | | | | | | ⏳ toplanmadı | |
-| X03 | | | | | | ⏳ toplanmadı | |
-| X04 | | | | | | ⏳ toplanmadı | |
-| X05 | | | | | | ⏳ toplanmadı | |
-| X06 | | | | | | ⏳ toplanmadı | |
-| X07 | | | | | | ⏳ toplanmadı | |
-| X08 | | | | | | ⏳ toplanmadı | |
+| X01 | a-priori | 0 | 0.05 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Effect size f is outside the admissible range (1e-06, 50). | yeniden yazım: --f: Effect size f is out of the allowed range [1e-06, 50] (got 0.0). |
+| X02 | a-priori | -0.25 | 0.05 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Effect size f is outside the admissible range (1e-06, 50). | yeniden yazım: --f: Effect size f is out of the allowed range [1e-06, 50] (got -0.25). |
+| X03 | a-priori | 0.25 | 0 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Alpha is outside the admissible range (1e-07, 1). | yeniden yazım: --alpha: Alpha is out of the allowed range [1e-07, 0.9999999] (got 0.0). |
+| X04 | a-priori | 0.25 | 1 | 0.8 | 3 | ✅ UYUŞTU | G*Power: Input error: Alpha is outside the admissible range (1e-07, 1). | yeniden yazım: --alpha: Alpha is out of the allowed range [1e-07, 0.9999999] (got 1.0). |
+| X05 | a-priori | 0.25 | 0.05 | 1 | 3 | ✅ UYUŞTU | G*Power: Input error: Power is outside the admissible range (1e-07, 1). | yeniden yazım: --power: Power is out of the allowed range [1e-07, 0.9999999] (got 1.0). |
+| X06 | a-priori | 0.25 | 0.05 | 0.8 | 1 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: Number of groups must be at least 2 (got 1). |
+| X07 | a-priori | 0.25 | 0.05 | 0.8 | 2.5 | ❌ UYUŞMADI | G*Power sonuç verdi, yeniden yazım hata: {'error': '--groups: Number of groups (at least 2 groups required) must be an integer (got 2.5).'} |
+| X08 | a-priori | 0.25 | 0.05 | 0.8 | 0 | ✅ UYUŞTU | G*Power: Input error: There must be at least 2 groups. | yeniden yazım: --groups: Number of groups must be at least 2 (got 0). |
 | P01 | | | | | | ⏳ toplanmadı | |
 | P02 | | | | | | ⏳ toplanmadı | |
 | P03 | | | | | | ⏳ toplanmadı | |
