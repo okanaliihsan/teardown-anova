@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anova-clone"
+version = "0.1.0"
+description = "Tek yönlü sabit etkili ANOVA omnibus güç analizi (G*Power davranış klonu)"
+requires-python = ">=3.11"
+dependencies = ["numpy", "scipy"]
+
+[project.scripts]
+gpower-clone = "anova_clone.cli:console_main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,48 @@
+id,mode,f,alpha,k,power_in,n_in,exit,one_line_json,status,n_match,detail,cli
+A01,a-priori,0.25,0.05,10,0.95,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 390, ""n_per_group"": 39, ""actual_power"": 0.9523634, ""power"": 0.9523634, ""critical"": 1.9045377, ""df1"": 9, ""df2"": 380, ""ncp"": 24.375}"
+A02,a-priori,0.25,0.05,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 159, ""n_per_group"": 53, ""actual_power"": 0.8048873, ""power"": 0.8048873, ""critical"": 3.0540042, ""df1"": 2, ""df2"": 156, ""ncp"": 9.9375}"
+A03,a-priori,0.1,0.05,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 969, ""n_per_group"": 323, ""actual_power"": 0.801101, ""power"": 0.801101, ""critical"": 3.0050418, ""df1"": 2, ""df2"": 966, ""ncp"": 9.69}"
+A04,a-priori,0.4,0.05,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 66, ""n_per_group"": 22, ""actual_power"": 0.8180744, ""power"": 0.8180744, ""critical"": 3.1428085, ""df1"": 2, ""df2"": 63, ""ncp"": 10.56}"
+A05,a-priori,0.25,0.05,3,0.95,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 252, ""n_per_group"": 84, ""actual_power"": 0.9514888, ""power"": 0.9514888, ""critical"": 3.0320649, ""df1"": 2, ""df2"": 249, ""ncp"": 15.75}"
+A06,a-priori,0.25,0.01,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 228, ""n_per_group"": 76, ""actual_power"": 0.8029054, ""power"": 0.8029054, ""critical"": 4.7007255, ""df1"": 2, ""df2"": 225, ""ncp"": 14.25}"
+A07,a-priori,0.25,0.05,4,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 180, ""n_per_group"": 45, ""actual_power"": 0.8039869, ""power"": 0.8039869, ""critical"": 2.6559389, ""df1"": 3, ""df2"": 176, ""ncp"": 11.25}"
+A08,a-priori,0.25,0.05,5,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 200, ""n_per_group"": 40, ""actual_power"": 0.809771, ""power"": 0.809771, ""critical"": 2.4179625, ""df1"": 4, ""df2"": 195, ""ncp"": 12.5}"
+A09,a-priori,0.35,0.05,6,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 114, ""n_per_group"": 19, ""actual_power"": 0.8153816, ""power"": 0.8153816, ""critical"": 2.2984308, ""df1"": 5, ""df2"": 108, ""ncp"": 13.965}"
+A10,a-priori,0.2,0.05,4,0.9,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 360, ""n_per_group"": 90, ""actual_power"": 0.9015736, ""power"": 0.9015736, ""critical"": 2.6299872, ""df1"": 3, ""df2"": 356, ""ncp"": 14.4}"
+A11,a-priori,0.25,0.05,2,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 128, ""n_per_group"": 64, ""actual_power"": 0.8014596, ""power"": 0.8014596, ""critical"": 3.9163246, ""df1"": 1, ""df2"": 126, ""ncp"": 8.0}"
+A12,a-priori,0.5,0.05,3,0.9,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 54, ""n_per_group"": 18, ""actual_power"": 0.9015607, ""power"": 0.9015607, ""critical"": 3.1787993, ""df1"": 2, ""df2"": 51, ""ncp"": 13.5}"
+A13,a-priori,0.02,0.05,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 24090, ""n_per_group"": 8030, ""actual_power"": 0.8000049, ""power"": 0.8000049, ""critical"": 2.9961049, ""df1"": 2, ""df2"": 24087, ""ncp"": 9.636}"
+A14,a-priori,0.01,0.05,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 96351, ""n_per_group"": 32117, ""actual_power"": 0.8000049, ""power"": 0.8000049, ""critical"": 2.9958254, ""df1"": 2, ""df2"": 96348, ""ncp"": 9.6351}"
+A15,a-priori,1.5,0.05,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 9, ""n_per_group"": 3, ""actual_power"": 0.8731575, ""power"": 0.8731575, ""critical"": 5.1432528, ""df1"": 2, ""df2"": 6, ""ncp"": 20.25}"
+A16,a-priori,3.0,0.05,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 6, ""n_per_group"": 2, ""actual_power"": 0.948808, ""power"": 0.948808, ""critical"": 9.5520945, ""df1"": 2, ""df2"": 3, ""ncp"": 54.0}"
+A17,a-priori,10.0,0.05,3,0.95,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 6, ""n_per_group"": 2, ""actual_power"": 1.0, ""power"": 1.0, ""critical"": 9.5520945, ""df1"": 2, ""df2"": 3, ""ncp"": 600.0}"
+A18,a-priori,0.25,0.05,3,0.99,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 348, ""n_per_group"": 116, ""actual_power"": 0.9904577, ""power"": 0.9904577, ""critical"": 3.0218963, ""df1"": 2, ""df2"": 345, ""ncp"": 21.75}"
+A19,a-priori,0.25,0.05,3,0.999,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 471, ""n_per_group"": 157, ""actual_power"": 0.9990202, ""power"": 0.9990202, ""critical"": 3.0149905, ""df1"": 2, ""df2"": 468, ""ncp"": 29.4375}"
+A20,a-priori,0.25,0.1,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 126, ""n_per_group"": 42, ""actual_power"": 0.8008668, ""power"": 0.8008668, ""critical"": 2.346233, ""df1"": 2, ""df2"": 123, ""ncp"": 7.875}"
+A21,a-priori,0.25,0.05,3,0.05,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 6, ""n_per_group"": 2, ""actual_power"": 0.0622405, ""power"": 0.0622405, ""critical"": 9.5520945, ""df1"": 2, ""df2"": 3, ""ncp"": 0.375}"
+A22,a-priori,0.25,0.05,3,0.04,,2,True,UYUŞTU,-,G*Power: Input error: Power must be greater than or equal to alpha. | yeniden yazım: --power: Power must be greater than or equal to alpha.,"{""error"": ""--power: Power must be greater than or equal to alpha.""}"
+A23,a-priori,0.25,0.05,3,0.06,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 6, ""n_per_group"": 2, ""actual_power"": 0.0622405, ""power"": 0.0622405, ""critical"": 9.5520945, ""df1"": 2, ""df2"": 3, ""ncp"": 0.375}"
+A24,a-priori,0.25,0.05,20,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 360, ""n_per_group"": 18, ""actual_power"": 0.8237556, ""power"": 0.8237556, ""critical"": 1.6172211, ""df1"": 19, ""df2"": 340, ""ncp"": 22.5}"
+A25,a-priori,0.25,0.05,100,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 800, ""n_per_group"": 8, ""actual_power"": 0.8706091, ""power"": 0.8706091, ""critical"": 1.267574, ""df1"": 99, ""df2"": 700, ""ncp"": 50.0}"
+A26,a-priori,0.3,0.001,4,0.95,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 340, ""n_per_group"": 85, ""actual_power"": 0.9500838, ""power"": 0.9500838, ""critical"": 5.5470564, ""df1"": 3, ""df2"": 336, ""ncp"": 30.6}"
+A27,a-priori,0.30,0.5,3,0.8,,0,True,UYUŞTU,True,tüm alanlar,"{""n_total"": 30, ""n_per_group"": 10, ""actual_power"": 0.8033804, ""power"": 0.8033804, ""critical"": 0.7112502, ""df1"": 2, ""df2"": 27, ""ncp"": 2.7}"
+X01,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+X02,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+X03,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+X04,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+X05,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+X06,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+X07,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+X08,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P01,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P02,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P03,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P04,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P05,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P06,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P07,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P08,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P09,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P10,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P11,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
+P12,,,,,,,,,TOPLANMADI,,Kâhin değeri yok,
