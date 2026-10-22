@@ -1,0 +1,2030 @@
+[
+  {
+    "id": "Q01",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_018b36T7JkMMY9gTqCdzbU15",
+          "tokens_in": 16398,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.05,
+            "power": 0.8,
+            "groups": 3
+          },
+          "id": "toolu_01PLNWyifSnQ7jn6xyAYxsAg",
+          "tokens_in": 17127,
+          "tokens_out": 33,
+          "output": "{\"ncp\":9.9375,\"critical_f\":3.054004173787931,\"df1\":2,\"df2\":156,\"n_total\":159,\"actual_power\":0.804887285301069,\"n_per_group\":53}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":9.9375,\"critical_f\":3.054004173787931,\"df1\":2,\"df2\":156,\"n_total\":159,\"actual_power\":0.804887285301069,\"n_per_group\":53}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25 (orta), α = 0.05, hedef güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 159 (grup başına n = 53); gerçek güç = 0.8049 (λ = 9.94, kritik F = 3.054, df = 2/156)",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 450,
+      "cache_creation_input_tokens": 17402,
+      "cache_read_input_tokens": 33521,
+      "cost_usd": 0.2020605,
+      "duration_ms": 9068,
+      "num_turns": 3,
+      "wall_seconds": 18.63,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q02",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_013ZkFX2QadabCpyAy3hwm3D",
+          "tokens_in": 16410,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.2,
+            "alpha": 0.05,
+            "power": 0.9,
+            "groups": 4
+          },
+          "id": "toolu_01V1Fbei4k5BsrJ2L3vQcuwS",
+          "tokens_in": 17138,
+          "tokens_out": 32,
+          "output": "{\"ncp\":14.400000000000002,\"critical_f\":2.6299871624013114,\"df1\":3,\"df2\":356,\"n_total\":360,\"actual_power\":0.9015735582976799,\"n_per_group\":90}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":14.400000000000002,\"critical_f\":2.6299871624013114,\"df1\":3,\"df2\":356,\"n_total\":360,\"actual_power\":0.9015735582976799,\"n_per_group\":90}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler: f = 0.20, α = 0.05, hedef güç = 0.90, grup sayısı = 4\nSonuç: Toplam N = 360 (grup başına n = 90); gerçek güç = 0.9016 (λ = 14.40, kritik F = 2.630, df = 3, 356)",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 6,
+      "output_tokens": 446,
+      "cache_creation_input_tokens": 7689,
+      "cache_read_input_tokens": 43273,
+      "cost_usd": 0.1097065,
+      "duration_ms": 8392,
+      "num_turns": 3,
+      "wall_seconds": 15.06,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q03",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01JfFGpugcaipVjrZtuB9XPZ",
+          "tokens_in": 16419,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.05,
+            "power": 0.8,
+            "groups": 5
+          },
+          "id": "toolu_01X8gWBF576yLohDyRKrUJzD",
+          "tokens_in": 17127,
+          "tokens_out": 33,
+          "output": "{\"ncp\":12.5,\"critical_f\":2.4179625418439827,\"df1\":4,\"df2\":195,\"n_total\":200,\"actual_power\":0.8097710425777999,\"n_per_group\":40}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":12.5,\"critical_f\":2.4179625418439827,\"df1\":4,\"df2\":195,\"n_total\":200,\"actual_power\":0.8097710425777999,\"n_per_group\":40}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler: f = 0.25 (orta), α = 0.05, hedef güç = 0.80, grup sayısı = 5\nSonuç: Toplam N = 200 (grup başına n = 40); gerçek güç = 0.8098 (λ = 12.5, kritik F = 2.418, df = 4, 195)",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 6,
+      "output_tokens": 430,
+      "cache_creation_input_tokens": 7674,
+      "cache_read_input_tokens": 43271,
+      "cost_usd": 0.10915550000000002,
+      "duration_ms": 7964,
+      "num_turns": 3,
+      "wall_seconds": 14.51,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q04",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_017Jso881VKvYPNbFH367zfg",
+          "tokens_in": 16430,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.4,
+            "alpha": 0.05,
+            "power": 0.8,
+            "groups": 3
+          },
+          "id": "toolu_01GdGePqCYbxg8cJ9fivPJiM",
+          "tokens_in": 17172,
+          "tokens_out": 33,
+          "output": "{\"ncp\":10.560000000000002,\"critical_f\":3.1428085170760176,\"df1\":2,\"df2\":63,\"n_total\":66,\"actual_power\":0.8180744237014582,\"n_per_group\":22}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":10.560000000000002,\"critical_f\":3.1428085170760176,\"df1\":2,\"df2\":63,\"n_total\":66,\"actual_power\":0.8180744237014582,\"n_per_group\":22}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.40 (büyük), α = 0.05, hedef güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 66 (grup başına n = 22); gerçek güç = 0.8181 (λ = 10.56, kritik F = 3.1428, df = 2, 63)\nVarsayım: \"Cohen'e göre büyük etki\" → ANOVA'da f = 0.40; gruplar eşit büyüklükte ve bağımsız kabul edildi.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 530,
+      "cache_creation_input_tokens": 7723,
+      "cache_read_input_tokens": 43327,
+      "cost_usd": 0.11217350000000001,
+      "duration_ms": 10151,
+      "num_turns": 3,
+      "wall_seconds": 16.72,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q05",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01RvXJc2ggJkGeo4BJEwdEcZ",
+          "tokens_in": 16463,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.01,
+            "power": 0.8,
+            "groups": 3
+          },
+          "id": "toolu_01NdYCkoYRaD9nzij9Z6SwSq",
+          "tokens_in": 17195,
+          "tokens_out": 33,
+          "output": "{\"ncp\":14.25,\"critical_f\":4.700725540476048,\"df1\":2,\"df2\":225,\"n_total\":228,\"actual_power\":0.8029053714625832,\"n_per_group\":76}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":14.25,\"critical_f\":4.700725540476048,\"df1\":2,\"df2\":225,\"n_total\":228,\"actual_power\":0.8029053714625832,\"n_per_group\":76}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.96\nParametreler: f = 0.25, α = 0.01, hedef güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 228 (grup başına n = 76); gerçek güç = 0.8029 (λ = 14.25, kritik F = 4.7007, df = 2/225)",
+      "label": "anova-oneway",
+      "confidence": 0.96,
+      "input_tokens": 6,
+      "output_tokens": 450,
+      "cache_creation_input_tokens": 7741,
+      "cache_read_input_tokens": 43383,
+      "cost_usd": 0.11038150000000002,
+      "duration_ms": 8424,
+      "num_turns": 3,
+      "wall_seconds": 15.58,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q06",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01PWwMZVSe4JKaZZ4ELQGxDm",
+          "tokens_in": 16482,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "post-hoc",
+            "f": 0.25,
+            "alpha": 0.05,
+            "n_total": 100,
+            "groups": 3
+          },
+          "id": "toolu_01H1eiC9EsFXyZCTQ8cnStih",
+          "tokens_in": 17181,
+          "tokens_out": 33,
+          "output": "{\"ncp\":6.25,\"critical_f\":3.090186675154859,\"df1\":2,\"df2\":97,\"power\":0.5885389408443868,\"n_total\":100,\"n_per_group\":null,\"warning\":\"The total sample size (100) is not a multiple of the number of groups (3). The analysis was based on the average group size.\"}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":6.25,\"critical_f\":3.090186675154859,\"df1\":2,\"df2\":97,\"power\":0.5885389408443868,\"n_total\":100,\"n_per_group\":null,\"warning\":\"The total sample size (100) is not a multiple of the number of groups (3). The analysis was based on the average group size.\"}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25 (orta), α = 0.05, N = 100, grup sayısı = 3 (post-hoc)\nSonuç: Ulaşılan güç = 0.5885 (≈ %59); λ = 6.25, kritik F = 3.0902, df1 = 2, df2 = 97\n\nUyarı (araçtan): Toplam N = 100, grup sayısı 3'ün tam katı değil; analiz ortalama grup büyüklüğüne göre yapıldı. Not: %59 güç, 0.80 hedefinin altında — anlamsız sonuç çıktıysa güç düşüklüğü göz önünde bulundurulmalı.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 544,
+      "cache_creation_input_tokens": 7766,
+      "cache_read_input_tokens": 43388,
+      "cost_usd": 0.112984,
+      "duration_ms": 12883,
+      "num_turns": 3,
+      "wall_seconds": 22.48,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q07",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_015SPcdYX3VkGyNncx87Agbk",
+          "tokens_in": 16503,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "post-hoc",
+            "f": 0.1,
+            "alpha": 0.05,
+            "n_total": 1000,
+            "groups": 5
+          },
+          "id": "toolu_01YU1CtA4qjANeZ7pS7uzXef",
+          "tokens_in": 17244,
+          "tokens_out": 33,
+          "output": "{\"ncp\":10.000000000000002,\"critical_f\":2.3808758069291818,\"df1\":4,\"df2\":995,\"power\":0.7136330377199774,\"n_total\":1000,\"n_per_group\":200}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":10.000000000000002,\"critical_f\":2.3808758069291818,\"df1\":4,\"df2\":995,\"power\":0.7136330377199774,\"n_total\":1000,\"n_per_group\":200}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.10, α = 0.05, N = 1000 (5 grup, grup başına n = 200), post-hoc\nSonuç: Güç = 0.7136 (λ = 10.00, kritik F = 2.3809, df1 = 4, df2 = 995)\n\nNot: Elde edilen güç yaygın 0.80 eşiğinin altında; 0.80 isteniyorsa a-priori hesapla gereken N'i çıkarabilirim.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 517,
+      "cache_creation_input_tokens": 7795,
+      "cache_read_input_tokens": 43472,
+      "cost_usd": 0.11264099999999999,
+      "duration_ms": 10311,
+      "num_turns": 3,
+      "wall_seconds": 19.05,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q08",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01RAW64MugbspA8w8TYSUvF4",
+          "tokens_in": 16537,
+          "tokens_out": 2,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.05,
+            "power": 0.95,
+            "groups": 10
+          },
+          "id": "toolu_016CctDBZxEfRNaAXJFRmaUC",
+          "tokens_in": 17261,
+          "tokens_out": 33,
+          "output": "{\"ncp\":24.375,\"critical_f\":1.9045377336382991,\"df1\":9,\"df2\":380,\"n_total\":390,\"actual_power\":0.9523634097317225,\"n_per_group\":39}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":24.375,\"critical_f\":1.9045377336382991,\"df1\":9,\"df2\":380,\"n_total\":390,\"actual_power\":0.9523634097317225,\"n_per_group\":39}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.05, hedef güç = 0.95, grup sayısı = 10\nSonuç: Toplam N = 390 (grup başına n = 39); gerçek güç = 0.9524 (λ = 24.375, kritik F = 1.9045, df = 9, 380)",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 443,
+      "cache_creation_input_tokens": 7808,
+      "cache_read_input_tokens": 43523,
+      "cost_usd": 0.11094650000000002,
+      "duration_ms": 9970,
+      "num_turns": 3,
+      "wall_seconds": 18.48,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q09",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "t2-indep",
+    "parsed": {
+      "tool_calls": [],
+      "tool_results": [],
+      "text": "ETİKET: t2-indep | GÜVEN: 0.95\nParametreler: d = 0.5, α = 0.05, güç = 0.95, 2 bağımsız grup — ancak test ailesi bağımsız örneklem t testi.\nSonuç: Hesaplama yapılmadı. Bu araç yalnızca tek yönlü sabit etkili ANOVA (omnibus) desteklediği için bağımsız örneklem t testi için güç/örneklem hesabı yapamıyorum.\n\nNot: İki grubu ANOVA omnibus olarak kurgulamak isterseniz Cohen'in f'si cinsinden etki büyüklüğü gerekir (d'yi doğrudan kullanamam); f değerini ve grup sayısını belirtirseniz hesaplayabilirim.",
+      "label": "t2-indep",
+      "confidence": 0.95,
+      "input_tokens": 2,
+      "output_tokens": 281,
+      "cache_creation_input_tokens": 6827,
+      "cache_read_input_tokens": 9729,
+      "cost_usd": 0.0801695,
+      "duration_ms": 7639,
+      "num_turns": 1,
+      "wall_seconds": 16.51,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q10",
+    "mode": "mcp",
+    "lang": "tr",
+    "expected_label": "ambiguous",
+    "parsed": {
+      "tool_calls": [],
+      "tool_results": [],
+      "text": "ETİKET: ambiguous | GÜVEN: 0.90\nEksik: etki büyüklüğü (Cohen f veya küçük/orta/büyük), α ve hedef güç.\nGrup sayısı 3 (üç grup ortalaması → tek yönlü ANOVA) biliniyor, ama hesap için diğer üçü gerekli.\n\nŞunu söylerseniz hemen hesaplarım: ör. \"orta etki (f=0.25), α=0.05, güç=0.80\" — ya da sadece \"standart\" derseniz α=0.05 / güç=0.80 varsayımıyla ilerleyebilirim (etki büyüklüğünü yine belirtmeniz gerekir).",
+      "label": "ambiguous",
+      "confidence": 0.9,
+      "input_tokens": 2,
+      "output_tokens": 244,
+      "cache_creation_input_tokens": 6795,
+      "cache_read_input_tokens": 9729,
+      "cost_usd": 0.0789245,
+      "duration_ms": 6080,
+      "num_turns": 1,
+      "wall_seconds": 15.58,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q01",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_018Gr3eniPMRab8Y9J7Mupks",
+          "tokens_in": 16600,
+          "tokens_out": 25,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.05,
+            "power": 0.8,
+            "groups": 3
+          },
+          "id": "toolu_01Cjvp52LMRaScgUnH6j4os9",
+          "tokens_in": 17284,
+          "tokens_out": 33,
+          "output": "{\"ncp\":9.9375,\"critical_f\":3.054004173787931,\"df1\":2,\"df2\":156,\"n_total\":159,\"actual_power\":0.804887285301069,\"n_per_group\":53}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":9.9375,\"critical_f\":3.054004173787931,\"df1\":2,\"df2\":156,\"n_total\":159,\"actual_power\":0.804887285301069,\"n_per_group\":53}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler: f = 0.25 (orta), α = 0.05, hedef güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 159 (grup başına n = 53); gerçek güç = 0.8049 (λ = 9.9375, kritik F = 3.054, df1 = 2, df2 = 156)",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 6,
+      "output_tokens": 413,
+      "cache_creation_input_tokens": 7830,
+      "cache_read_input_tokens": 43609,
+      "cost_usd": 0.11045950000000002,
+      "duration_ms": 9709,
+      "num_turns": 3,
+      "wall_seconds": 17.17,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q02",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01VY9N3kvUmq7w4b6pNq33kF",
+          "tokens_in": 16611,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.2,
+            "alpha": 0.05,
+            "power": 0.9,
+            "groups": 4
+          },
+          "id": "toolu_01HvFjxgUUSgbjw1JBhjoqzv",
+          "tokens_in": 17340,
+          "tokens_out": 33,
+          "output": "{\"ncp\":14.400000000000002,\"critical_f\":2.6299871624013114,\"df1\":3,\"df2\":356,\"n_total\":360,\"actual_power\":0.9015735582976799,\"n_per_group\":90}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":14.400000000000002,\"critical_f\":2.6299871624013114,\"df1\":3,\"df2\":356,\"n_total\":360,\"actual_power\":0.9015735582976799,\"n_per_group\":90}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.20, α = 0.05, hedef güç = 0.90, grup sayısı = 4 (tek yönlü ANOVA, omnibus F)\nSonuç: Toplam N = 360 (grup başına n = 90); gerçek güç = 0.9016 (λ = 14.40, kritik F = 2.6300, df1 = 3, df2 = 356)",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 474,
+      "cache_creation_input_tokens": 7891,
+      "cache_read_input_tokens": 43676,
+      "cost_usd": 0.11262799999999999,
+      "duration_ms": 9540,
+      "num_turns": 3,
+      "wall_seconds": 17.22,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q03",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01SLab7hnscUU8nGQBo5pbzw",
+          "tokens_in": 16629,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.05,
+            "power": 0.8,
+            "groups": 5
+          },
+          "id": "toolu_01ELmwRUR6Ff9G8gSutwgJhy",
+          "tokens_in": 17346,
+          "tokens_out": 33,
+          "output": "{\"ncp\":12.5,\"critical_f\":2.4179625418439827,\"df1\":4,\"df2\":195,\"n_total\":200,\"actual_power\":0.8097710425777999,\"n_per_group\":40}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":12.5,\"critical_f\":2.4179625418439827,\"df1\":4,\"df2\":195,\"n_total\":200,\"actual_power\":0.8097710425777999,\"n_per_group\":40}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.05, hedef güç = 0.80, grup sayısı = 5\nSonuç: Toplam N = 200 (grup başına n = 40); gerçek güç = 0.8098 (λ = 12.5, kritik F = 2.4180, df1 = 4, df2 = 195)",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 442,
+      "cache_creation_input_tokens": 7893,
+      "cache_read_input_tokens": 43700,
+      "cost_usd": 0.11186,
+      "duration_ms": 7842,
+      "num_turns": 3,
+      "wall_seconds": 15.23,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q04",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01NUQprfraDwuYkAhgEV5PGR",
+          "tokens_in": 16643,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.4,
+            "alpha": 0.05,
+            "power": 0.8,
+            "groups": 3
+          },
+          "id": "toolu_011Mg69VmGvu31qQa17c9D1b",
+          "tokens_in": 17364,
+          "tokens_out": 33,
+          "output": "{\"ncp\":10.560000000000002,\"critical_f\":3.1428085170760176,\"df1\":2,\"df2\":63,\"n_total\":66,\"actual_power\":0.8180744237014582,\"n_per_group\":22}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":10.560000000000002,\"critical_f\":3.1428085170760176,\"df1\":2,\"df2\":63,\"n_total\":66,\"actual_power\":0.8180744237014582,\"n_per_group\":22}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.40 (Cohen \"büyük\"), α = 0.05, hedef güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 66 (grup başına n = 22); gerçek güç = 0.8181 (λ = 10.56, kritik F = 3.1428, df1 = 2, df2 = 63)\n\nVarsayım: \"Cohen'e göre büyük etki\" → f = 0.40; gruplar eşit büyüklükte.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 501,
+      "cache_creation_input_tokens": 7915,
+      "cache_read_input_tokens": 43732,
+      "cost_usd": 0.113571,
+      "duration_ms": 10639,
+      "num_turns": 3,
+      "wall_seconds": 19.76,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q05",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01RAa87vVk6KUqC3pcQGSBuz",
+          "tokens_in": 16670,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.01,
+            "power": 0.8,
+            "groups": 3
+          },
+          "id": "toolu_01LBZWNBKXYTwGEzo8KLazeu",
+          "tokens_in": 17377,
+          "tokens_out": 32,
+          "output": "{\"ncp\":14.25,\"critical_f\":4.700725540476048,\"df1\":2,\"df2\":225,\"n_total\":228,\"actual_power\":0.8029053714625832,\"n_per_group\":76}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":14.25,\"critical_f\":4.700725540476048,\"df1\":2,\"df2\":225,\"n_total\":228,\"actual_power\":0.8029053714625832,\"n_per_group\":76}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler: f = 0.25 (orta), α = 0.01, hedef güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 228 (grup başına n = 76); gerçek güç = 0.8029 (λ = 14.25, kritik F = 4.7007, df1 = 2, df2 = 225)\n\nα'yı 0.05'ten 0.01'e çekmek gereken örneklemi belirgin şekilde artırır (0.05'te aynı senaryo ~159'dur).",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 6,
+      "output_tokens": 497,
+      "cache_creation_input_tokens": 7923,
+      "cache_read_input_tokens": 43772,
+      "cost_usd": 0.113571,
+      "duration_ms": 10270,
+      "num_turns": 3,
+      "wall_seconds": 17.34,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q06",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01WSBsEHCfLsEDQ5k24RvGsm",
+          "tokens_in": 16692,
+          "tokens_out": 25,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "post-hoc",
+            "f": 0.25,
+            "alpha": 0.05,
+            "n_total": 100,
+            "groups": 3
+          },
+          "id": "toolu_01LyxFbp3BSZqvL13XiHn84x",
+          "tokens_in": 17376,
+          "tokens_out": 33,
+          "output": "{\"ncp\":6.25,\"critical_f\":3.090186675154859,\"df1\":2,\"df2\":97,\"power\":0.5885389408443868,\"n_total\":100,\"n_per_group\":null,\"warning\":\"The total sample size (100) is not a multiple of the number of groups (3). The analysis was based on the average group size.\"}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":6.25,\"critical_f\":3.090186675154859,\"df1\":2,\"df2\":97,\"power\":0.5885389408443868,\"n_total\":100,\"n_per_group\":null,\"warning\":\"The total sample size (100) is not a multiple of the number of groups (3). The analysis was based on the average group size.\"}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.05, N = 100, grup sayısı = 3 (post-hoc)\nSonuç: Ulaşılan güç = 0.589 (λ = 6.25; kritik F = 3.090; df1 = 2, df2 = 97)\n\nUyarı: Toplam örneklem (100) grup sayısının (3) tam katı değil; analiz ortalama grup büyüklüğüne göre yapıldı. Not: 0.80'in altında bir güç, yani gerçek bir orta düzey etkiyi kaçırma riski yüksek.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 499,
+      "cache_creation_input_tokens": 7961,
+      "cache_read_input_tokens": 43793,
+      "cost_usd": 0.1140115,
+      "duration_ms": 10374,
+      "num_turns": 3,
+      "wall_seconds": 18.77,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q07",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01NN1sVAr4pf5nFSZUZK6EGu",
+          "tokens_in": 16717,
+          "tokens_out": 3,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "post-hoc",
+            "f": 0.1,
+            "alpha": 0.05,
+            "n_total": 1000,
+            "groups": 5
+          },
+          "id": "toolu_01C1NvuDVJmVDVi4Fmucccrg",
+          "tokens_in": 17445,
+          "tokens_out": 33,
+          "output": "{\"ncp\":10.000000000000002,\"critical_f\":2.3808758069291818,\"df1\":4,\"df2\":995,\"power\":0.7136330377199774,\"n_total\":1000,\"n_per_group\":200}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":10.000000000000002,\"critical_f\":2.3808758069291818,\"df1\":4,\"df2\":995,\"power\":0.7136330377199774,\"n_total\":1000,\"n_per_group\":200}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.10 (küçük), α = 0.05, N = 1000 (5 grup, grup başına n = 200)\nSonuç: Ulaşılan güç = 0.7136 (λ = 10.00, kritik F = 2.3809, df1 = 4, df2 = 995)\n\nNot: Güç 0.80'in altında; bu etki büyüklüğünde 0.80'e ulaşmak için gereken N'i isterseniz a-priori hesabı yapabilirim.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 6,
+      "output_tokens": 512,
+      "cache_creation_input_tokens": 7996,
+      "cache_read_input_tokens": 43887,
+      "cost_usd": 0.11473350000000002,
+      "duration_ms": 10335,
+      "num_turns": 3,
+      "wall_seconds": 19.76,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q08",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:mcp__anova-power__power_analysis",
+            "max_results": 1
+          },
+          "id": "toolu_01YLCsidTpQ1bVtEy9WeYw9z",
+          "tokens_in": 16746,
+          "tokens_out": 4,
+          "output": ""
+        },
+        {
+          "name": "mcp__anova-power__power_analysis",
+          "input": {
+            "test": "anova-oneway",
+            "mode": "a-priori",
+            "f": 0.25,
+            "alpha": 0.05,
+            "power": 0.95,
+            "groups": 10
+          },
+          "id": "toolu_01886JMamqfvaNom1s8MYamC",
+          "tokens_in": 17472,
+          "tokens_out": 33,
+          "output": "{\"ncp\":24.375,\"critical_f\":1.9045377336382991,\"df1\":9,\"df2\":380,\"n_total\":390,\"actual_power\":0.9523634097317225,\"n_per_group\":39}"
+        }
+      ],
+      "tool_results": [
+        "",
+        "{\"ncp\":24.375,\"critical_f\":1.9045377336382991,\"df1\":9,\"df2\":380,\"n_total\":390,\"actual_power\":0.9523634097317225,\"n_per_group\":39}"
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler: f = 0.25, α = 0.05, hedef güç = 0.95, grup sayısı = 10\nSonuç: Toplam N = 390 (grup başına n = 39); gerçek güç = 0.9524 (λ = 24.375, kritik F = 1.9045, df1 = 9, df2 = 380)",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 6,
+      "output_tokens": 451,
+      "cache_creation_input_tokens": 8019,
+      "cache_read_input_tokens": 43943,
+      "cost_usd": 0.11346649999999998,
+      "duration_ms": 9394,
+      "num_turns": 3,
+      "wall_seconds": 18.24,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": true,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q09",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "t2-indep",
+    "parsed": {
+      "tool_calls": [],
+      "tool_results": [],
+      "text": "ETİKET: t2-indep | GÜVEN: 0.95\nBu araç yalnızca tek yönlü sabit etkili ANOVA (omnibus) analizini destekler; bağımsız iki örneklem t testi (d = 0.5) kapsam dışı olduğu için hesaplama yapmadım.\nİsterseniz aynı karşılaştırmayı 2 gruplu tek yönlü ANOVA olarak kurabilirim — bunun için etki büyüklüğünü Cohen'in f'si cinsinden vermeniz gerekir (iki grupta f = d/2, yani d = 0.5 → f = 0.25; onaylarsanız α = 0.05, güç = 0.95, grup = 2 ile aracı çağırayım). Not: ANOVA omnibus testi iki grupta çift yönlü t testine denk gelir, tek yönlü hipotez isterseniz uygun olmaz.",
+      "label": "t2-indep",
+      "confidence": 0.95,
+      "input_tokens": 2,
+      "output_tokens": 320,
+      "cache_creation_input_tokens": 7038,
+      "cache_read_input_tokens": 9729,
+      "cost_usd": 0.0832545,
+      "duration_ms": 9064,
+      "num_turns": 1,
+      "wall_seconds": 18.34,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q10",
+    "mode": "mcp",
+    "lang": "en",
+    "expected_label": "ambiguous",
+    "parsed": {
+      "tool_calls": [],
+      "tool_results": [],
+      "text": "ETİKET: ambiguous | GÜVEN: 0.60\nEksik: etki büyüklüğü (Cohen f ya da küçük/orta/büyük), α ve hedef güç.\nÜç grup ortalaması karşılaştırması ANOVA'ya uygun görünüyor, ancak hesap için bu üç bilgi gerekli — \"standart\" derseniz α=0.05 ve güç=0.80 varsayıp f değerini sizden alabilirim.",
+      "label": "ambiguous",
+      "confidence": 0.6,
+      "input_tokens": 2,
+      "output_tokens": 165,
+      "cache_creation_input_tokens": 7018,
+      "cache_read_input_tokens": 9729,
+      "cost_usd": 0.07917949999999999,
+      "duration_ms": 5297,
+      "num_turns": 1,
+      "wall_seconds": 13.8,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q01",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01JesBCDNMZJvfLm2QwgeCJW",
+          "tokens_in": 17091,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A02.png"
+          },
+          "id": "toolu_01N5qnVEiV6rUkVfMWvNEWuN",
+          "tokens_in": 17091,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler (A02 ekranından): f = 0.25, α = 0.05, güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 159 (grup başına 53); gerçek güç = 0.8048873 (λ = 9.9375000, kritik F = 3.0540042, df = 2 / 156)\n\nNot: Bu oturumda MCP aracı yok; sayılar G*Power 3.1.9.7 ekran görüntüsü A02'den okundu (A01 farklı bir hesaba — 10 grup, %95 güç — aitti ve kullanılmadı).",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 4,
+      "output_tokens": 513,
+      "cache_creation_input_tokens": 9074,
+      "cache_read_input_tokens": 26818,
+      "cost_usd": 0.11699399999999999,
+      "duration_ms": 9289,
+      "num_turns": 3,
+      "wall_seconds": 14.3,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q02",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_013gnrgSw2qgYbZzRKmBMieU",
+          "tokens_in": 17102,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A10.png"
+          },
+          "id": "toolu_01JkWeTSrb74GX8sapCquUo3",
+          "tokens_in": 17102,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler (A10.png ekranından): f = 0.20, α = 0.05, güç = 0.90, grup sayısı = 4\nSonuç: Toplam N = 360 (grup başına 90); gerçek güç = 0.9015736 (λ = 14.4000000, kritik F = 2.6299872, df = 3 / 356)\n\nNot: Değerler G*Power 3.1.9.7 \"ANOVA: Fixed effects, omnibus, one-way / A priori\" ekranından okundu; A01.png farklı bir hesaba ait (f=0.25, k=10) olduğu için kullanılmadı.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 412,
+      "cache_creation_input_tokens": 9085,
+      "cache_read_input_tokens": 26829,
+      "cost_usd": 0.11458449999999999,
+      "duration_ms": 7483,
+      "num_turns": 3,
+      "wall_seconds": 12.08,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q03",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01XY71PBvcszcmhbvJ2z9bit",
+          "tokens_in": 17110,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A08.png"
+          },
+          "id": "toolu_01UehKX7oh4q3gtLcnpJjaXj",
+          "tokens_in": 17110,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler (A08 ekranı): f = 0.25, α = 0.05, güç = 0.80, grup sayısı = 5\nSonuç: Toplam örneklem = 200; gerçek güç = 0.8097710 (λ = 12.5000000, kritik F = 2.4179625, df1 = 4, df2 = 195)\n\nNot: Grup başına dağılım ekranda gösterilmiyor; eşit dağıtımda 200/5 = 40 olur. (A01 ekranı farklı bir hesaba aitti: 10 grup, güç 0.95 → N = 390; sizin sorunuzla ilgisi yok.)",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 4,
+      "output_tokens": 581,
+      "cache_creation_input_tokens": 9093,
+      "cache_read_input_tokens": 26837,
+      "cost_usd": 0.11889349999999999,
+      "duration_ms": 11069,
+      "num_turns": 3,
+      "wall_seconds": 15.54,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q04",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_0139YDiGSA65mZp6wdj3wXAC",
+          "tokens_in": 17120,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A04.png"
+          },
+          "id": "toolu_01MUX1YoBumDfqyNeMucRumF",
+          "tokens_in": 17120,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.40 (Cohen \"büyük\"), α = 0.05, güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 66 (grup başına 22); gerçek güç = 0.8180744 (λ = 10.56, kritik F = 3.1428085, df = 2/63)\n\nVarsayım: \"Büyük etki\" → Cohen'in f = 0.40; α ve güç standart değerler (0.05 / 0.80). Değerler G*Power 3.1.9.7 ekran görüntüsünden (A04) okunmuştur; grup başına n, eşit dağılımlı 66/3 olarak ekrandaki toplam N'den okunmuştur.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 445,
+      "cache_creation_input_tokens": 9103,
+      "cache_read_input_tokens": 26847,
+      "cost_usd": 0.11559849999999999,
+      "duration_ms": 8122,
+      "num_turns": 3,
+      "wall_seconds": 13.57,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q05",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01CeoDnVqnnSBh1f9WESWrrx",
+          "tokens_in": 17152,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A06.png"
+          },
+          "id": "toolu_012RwmZcgBb6fxi6TA8zNcmY",
+          "tokens_in": 17152,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.01, güç = 0.80, grup sayısı = 3 (A priori, F testi – ANOVA sabit etkiler, omnibus, tek yönlü)\nSonuç: Toplam N = 228 (grup başına 76); gerçek güç = 0.8029054. Ek çıktılar: λ = 14.25, kritik F = 4.7007255, pay df = 2, payda df = 225.\n\nNot: Değerler A06.png ekran görüntüsündeki G*Power 3.1.9.7 çıktısından okunmuştur; uyarı mesajı görünmüyor.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 417,
+      "cache_creation_input_tokens": 9135,
+      "cache_read_input_tokens": 26879,
+      "cost_usd": 0.11523449999999999,
+      "duration_ms": 8057,
+      "num_turns": 3,
+      "wall_seconds": 12.21,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q06",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01JSVPa2DVojQcmz97JnCEnB",
+          "tokens_in": 17170,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\P02.png"
+          },
+          "id": "toolu_019jbJvtiSEzSa1hu38sBxcd",
+          "tokens_in": 17170,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.05, N = 100, grup sayısı = 3 (post hoc)\nSonuç: Güç (1−β) = 0.5885389; λ = 6.2500000, kritik F = 3.0901867, df = 2 / 97\n\nNot (G*Power uyarısı): \"Toplam örneklem (100) grup sayısının (3) katı değil; analiz ortalama grup büyüklüğüne göre yapıldı.\" Ayrıca P02'de f ve α alanları uyarı penceresinin arkasında kaldığı için ekrandan okunamadı — bunlar sizin verdiğiniz değerler olarak alındı; çıktılar (λ, df) bu girdilerle tutarlı görünüyor.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 677,
+      "cache_creation_input_tokens": 9153,
+      "cache_read_input_tokens": 26897,
+      "cost_usd": 0.12192349999999999,
+      "duration_ms": 11424,
+      "num_turns": 3,
+      "wall_seconds": 16.3,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q07",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_018o2gtSPxePxNeQHedmCQRN",
+          "tokens_in": 17190,
+          "tokens_out": 5,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\P05.png"
+          },
+          "id": "toolu_01WDtV3ZpMs8VNf6GVXCoYSQ",
+          "tokens_in": 17190,
+          "tokens_out": 5,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.10, α = 0.05, N = 1000, grup sayısı = 5 (post-hoc, G*Power 3.1.9.7 ekran görüntüsü P05)\nSonuç: Güç (1−β) = 0.7136330; λ = 10.0000000, kritik F = 2.3808758, df = 4 / 995 (grup başına n = 200)\n\nNot: Güç %80'in altında; küçük etkiyi yakalamak için N artırılmalı (A01'deki eski hesap farklı parametrelere ait, kullanılmadı).",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 465,
+      "cache_creation_input_tokens": 9240,
+      "cache_read_input_tokens": 26917,
+      "cost_usd": 0.1175035,
+      "duration_ms": 8870,
+      "num_turns": 3,
+      "wall_seconds": 13.25,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q08",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01DezjFtmU9j2FWu2fun52sJ",
+          "tokens_in": 17223,
+          "tokens_out": 5,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler (ekrandan): Effect size f = 0.25 | α = 0.05 | Power = 0.95 | Grup sayısı = 10\nSonuç: Toplam N = 390 (grup başına 39); gerçek güç = 0.9523634 (λ = 24.3750000, kritik F = 1.9045377, df = 9 / 380)\n\nNot: Belirtilen iki ekran görüntüsü yolu aynı dosyaydı (A01.png); bu görüntü zaten sizin parametrelerinizle hesaplanmış \"A priori\" sonucunu gösterdiği için değerler doğrudan oradan okundu.",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 4,
+      "output_tokens": 452,
+      "cache_creation_input_tokens": 8375,
+      "cache_read_input_tokens": 26950,
+      "cost_usd": 0.108545,
+      "duration_ms": 9294,
+      "num_turns": 2,
+      "wall_seconds": 13.44,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q09",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "t2-indep",
+    "parsed": {
+      "tool_calls": [],
+      "tool_results": [],
+      "text": "ETİKET: t2-indep | GÜVEN: 0.95\nİstenen: d = 0.5, α = 0.05, güç %95, iki bağımsız grup — bu bir bağımsız örneklem t testi.\nSonuç: Hesaplama yapılmadı — bu asistan yalnızca tek yönlü sabit etkili ANOVA (omnibus, 2+ grup ortalaması) analizini destekliyor; iki bağımsız grup t testi kapsam dışı. Ekran görüntüsünü de açmadım, çünkü desteklenmeyen test ailesi için sayı okumam/raporlamam doğru olmaz.\n\nNot: Soruyu ANOVA olarak kurgulamak isterseniz (örn. ilaç/plasebo + üçüncü bir kol, ya da iki grubu tek yönlü ANOVA omnibus testiyle), Cohen'in f'si cinsinden etki büyüklüğü (d = 0.5 → f değil), α, güç ve grup sayısını verin; d'yi f'ye kendi başıma çevirmem.",
+      "label": "t2-indep",
+      "confidence": 0.95,
+      "input_tokens": 2,
+      "output_tokens": 487,
+      "cache_creation_input_tokens": 7473,
+      "cache_read_input_tokens": 9729,
+      "cost_usd": 0.09177949999999999,
+      "duration_ms": 14403,
+      "num_turns": 1,
+      "wall_seconds": 18.68,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q10",
+    "mode": "gui",
+    "lang": "tr",
+    "expected_label": "ambiguous",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01WSFZDaegSYohUhP3da4ABo",
+          "tokens_in": 17171,
+          "tokens_out": 2,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        ""
+      ],
+      "text": "ETİKET: ambiguous | GÜVEN: 0.45\nEksik parametreler: etki büyüklüğü (Cohen f), α ve hedef güç. Sadece grup sayısı = 3 verildi.\nSonuç: Hesaplama yapılamadı — ekrandaki G*Power penceresinde 10 gruplu, f=0.25, α=0.05, güç=0.95 ile yapılmış **önceki bir hesap** duruyor (toplam N=390); bu sizin çalışmanıza ait değil, aktaramam.\n\nLütfen şunları belirtin: beklenen etki büyüklüğü (küçük/orta/büyük ya da f değeri), α (örn. 0.05) ve hedef güç (örn. 0.80). Bunları verirseniz ekranda f, α, güç ve grup sayısı=3 ile hesaplatılmış yeni bir görüntüden sonucu okuyabilirim.",
+      "label": "ambiguous",
+      "confidence": 0.45,
+      "input_tokens": 4,
+      "output_tokens": 636,
+      "cache_creation_input_tokens": 8518,
+      "cache_read_input_tokens": 26898,
+      "cost_usd": 0.11454900000000001,
+      "duration_ms": 12664,
+      "num_turns": 2,
+      "wall_seconds": 16.78,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": false,
+      "correct": false
+    }
+  },
+  {
+    "id": "Q01",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01DhQMUAjDnnEHpr1oqdYdLy",
+          "tokens_in": 17283,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A02.png"
+          },
+          "id": "toolu_018eWqZs1x8NCev46Fpv55TL",
+          "tokens_in": 17283,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.05, güç = 0.80, grup sayısı = 3 (A priori, tek yönlü ANOVA — A02 ekranı)\nSonuç: Toplam N = 159; gerçek güç = 0.8048873 (λ = 9.9375000, kritik F = 3.0540042, df1 = 2, df2 = 156)\n\nNot: 159 üç gruba eşit bölünmediği için ekranda grup başına n gösterilmiyor; pratikte 160 (kol başına 53) alınması uygun olur.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 395,
+      "cache_creation_input_tokens": 9266,
+      "cache_read_input_tokens": 27010,
+      "cost_usd": 0.11606,
+      "duration_ms": 9482,
+      "num_turns": 3,
+      "wall_seconds": 13.77,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q02",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01BJoEnsrMrMi3Wbe8AcvCax",
+          "tokens_in": 17293,
+          "tokens_out": 5,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A10.png"
+          },
+          "id": "toolu_01CKE3JXnGSZRuoUUoLvik9Q",
+          "tokens_in": 17293,
+          "tokens_out": 5,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.20, α = 0.05, güç = 0.90, grup sayısı = 4 (A priori, ANOVA: Fixed effects, omnibus, one-way)\nSonuç: Toplam N = 360 (grup başına 90); gerçek güç = 0.9015736 (λ = 14.44, kritik F = 2.6299872, df = 3 / 356)\n\nDeğerler G*Power 3.1.9.7 ekran görüntüsünden (A10.png) okunmuştur; uyarı mesajı yok.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 388,
+      "cache_creation_input_tokens": 9278,
+      "cache_read_input_tokens": 27020,
+      "cost_usd": 0.11601000000000002,
+      "duration_ms": 7033,
+      "num_turns": 3,
+      "wall_seconds": 11.33,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q03",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_019QSSecAqwXyqccrgLNAEX4",
+          "tokens_in": 17310,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A08.png"
+          },
+          "id": "toolu_01WEhSdD5siskLMGAv2zq3ox",
+          "tokens_in": 17310,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.05, güç = 0.80, grup sayısı = 5 (A08 ekranı)\nSonuç: Toplam N = 200 (grup başına 40); gerçek güç = 0.8097710 (λ = 12.5, kritik F = 2.4179625, df = 4/195)\n\nNot: A01 ekranı önceki bir hesaba ait (10 grup, güç 0.95, N = 390) olduğu için kullanılmadı.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 367,
+      "cache_creation_input_tokens": 9293,
+      "cache_read_input_tokens": 27037,
+      "cost_usd": 0.1156435,
+      "duration_ms": 6765,
+      "num_turns": 3,
+      "wall_seconds": 11.2,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q04",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01AraosVmYmb8bQcjw72snXB",
+          "tokens_in": 17323,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A04.png"
+          },
+          "id": "toolu_01He4SsXSMfrfyGxAgAgZ4Bp",
+          "tokens_in": 17323,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.40 (Cohen büyük), α = 0.05, güç = 0.80, grup sayısı = 3\nSonuç: Toplam N = 66 (grup başına 22); gerçek güç = 0.8180744 (λ = 10.56, kritik F = 3.1428085, df = 2 / 63)\nVarsayım: \"büyük etki\" Cohen'in f = 0.40'ına çevrildi; değerler A04.png ekran görüntüsünden okundu.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 371,
+      "cache_creation_input_tokens": 9306,
+      "cache_read_input_tokens": 27050,
+      "cost_usd": 0.11588,
+      "duration_ms": 6694,
+      "num_turns": 3,
+      "wall_seconds": 11.05,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q05",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01XdZY1AxRLSuRhrkgrfzkhC",
+          "tokens_in": 17349,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A06.png"
+          },
+          "id": "toolu_01LoUibNDbboDbdhg21qVvJf",
+          "tokens_in": 17349,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.01, güç = 0.80, grup sayısı = 3 (A priori, F tests – ANOVA: Fixed effects, omnibus, one-way)\nSonuç: Toplam N = 228 (grup başına 76); gerçek güç = 0.8029054 (λ = 14.25, kritik F = 4.7007255, df = 2/225)\n\nNot: Değerler A06.png ekran görüntüsündeki G*Power 3.1.9.7 çıktısından okunmuştur; uyarı mesajı görünmüyor.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 399,
+      "cache_creation_input_tokens": 9332,
+      "cache_read_input_tokens": 27076,
+      "cost_usd": 0.11685299999999998,
+      "duration_ms": 7002,
+      "num_turns": 3,
+      "wall_seconds": 11.33,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q06",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01Q7S7r3VS1JJ42SyoWLq4kE",
+          "tokens_in": 17370,
+          "tokens_out": 2,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\P02.png"
+          },
+          "id": "toolu_01ASrTTqKfBRPnyWvPXF1gvi",
+          "tokens_in": 17370,
+          "tokens_out": 2,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.25, α = 0.05, N = 100, grup sayısı = 3 (ekranda N ve grup sayısı görünüyor; f ve α alanları uyarı penceresiyle kapalı, λ = 6.2500000 girilen f = 0.25 ile tutarlı)\nSonuç: Güç (1−β) = 0.5885389; λ = 6.2500000, kritik F = 3.0901867, df = 2 / 97\n\nUyarı (G*Power): Toplam örneklem (100) grup sayısının (3) katı değil; analiz ortalama grup büyüklüğüne göre yapıldı. Güç ~0.59, yani 0.80 hedefinin belirgin şekilde altında.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 604,
+      "cache_creation_input_tokens": 9355,
+      "cache_read_input_tokens": 27097,
+      "cost_usd": 0.12221850000000001,
+      "duration_ms": 10732,
+      "num_turns": 3,
+      "wall_seconds": 15.14,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q07",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01THLP9uX5WPL8syNHaFSnW4",
+          "tokens_in": 17394,
+          "tokens_out": 1,
+          "output": ""
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\P05.png"
+          },
+          "id": "toolu_019n3pd9F9bLkRPcHvtUQgyt",
+          "tokens_in": 17394,
+          "tokens_out": 1,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        "",
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.95\nParametreler: f = 0.10, α = 0.05, N = 1000, grup sayısı = 5 (post hoc)\nSonuç: Güç (1−β) = 0.7136330 (λ = 10.0000000, kritik F = 2.3808758, df1 = 4, df2 = 995)\n\nNot: Ekrandaki değerler G*Power 3.1.9.7 post-hoc çıktısından okunmuştur; elde edilen güç 0.80'in altındadır.",
+      "label": "anova-oneway",
+      "confidence": 0.95,
+      "input_tokens": 4,
+      "output_tokens": 365,
+      "cache_creation_input_tokens": 9377,
+      "cache_read_input_tokens": 27121,
+      "cost_usd": 0.1164755,
+      "duration_ms": 8494,
+      "num_turns": 3,
+      "wall_seconds": 12.76,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q08",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "anova-oneway",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01Q9TREeRxWRzr6gnVNbXf5s",
+          "tokens_in": 17422,
+          "tokens_out": 5,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        ""
+      ],
+      "text": "ETİKET: anova-oneway | GÜVEN: 0.97\nParametreler: f = 0.25, α = 0.05, güç = 0.95, grup sayısı = 10\nSonuç (G*Power 3.1.9.7 ekranından okundu): Toplam N = 390; gerçek güç = 0.9523634 (λ = 24.3750000, kritik F = 1.9045377, df = 9 / 380)\n\nNot: Ekranda grup başına n ayrıca gösterilmiyor; sadece toplam örneklem verilmiş. Yalnızca tek bir ekran görüntüsü (A01.png) mevcuttu ve değerler zaten girilmiş + hesaplanmış haldeydi.",
+      "label": "anova-oneway",
+      "confidence": 0.97,
+      "input_tokens": 4,
+      "output_tokens": 482,
+      "cache_creation_input_tokens": 8555,
+      "cache_read_input_tokens": 27149,
+      "cost_usd": 0.1111945,
+      "duration_ms": 9245,
+      "num_turns": 2,
+      "wall_seconds": 13.57,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": null,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q09",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "t2-indep",
+    "parsed": {
+      "tool_calls": [],
+      "tool_results": [],
+      "text": "ETİKET: t2-indep | GÜVEN: 0.97\nParametreler: d = 0.5, α = 0.05, güç = 0.95, 2 bağımsız grup — ancak bu bir bağımsız örneklem t testi.\nSonuç: Hesaplanmadı. Bu oturumdaki destek yalnızca tek yönlü sabit etkili ANOVA (omnibus) ile sınırlı; iki bağımsız grup için t testi desteklenmiyor, bu yüzden G*Power ekranını okumadım ve sayı vermiyorum.\n\nNot: Aynı karşılaştırmayı tek yönlü ANOVA olarak kurmak isterseniz (2 grup, Cohen'in f'si — d = 0.5 ≠ f = 0.5), f değerini ya da \"küçük/orta/büyük\" etiketini belirtin; o zaman uygun ekranı okuyup sonucu iletebilirim.",
+      "label": "t2-indep",
+      "confidence": 0.97,
+      "input_tokens": 2,
+      "output_tokens": 418,
+      "cache_creation_input_tokens": 7674,
+      "cache_read_input_tokens": 9729,
+      "cost_usd": 0.09206450000000001,
+      "duration_ms": 9951,
+      "num_turns": 1,
+      "wall_seconds": 14.14,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": true,
+      "correct": true
+    }
+  },
+  {
+    "id": "Q10",
+    "mode": "gui",
+    "lang": "en",
+    "expected_label": "ambiguous",
+    "parsed": {
+      "tool_calls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "C:\\Users\\90553\\Desktop\\re\\teardown-anova\\oracle\\screenshots\\A01.png"
+          },
+          "id": "toolu_01LQMKdsvNdjb9iCFsNu73L1",
+          "tokens_in": 17384,
+          "tokens_out": 3,
+          "output": ""
+        }
+      ],
+      "tool_results": [
+        ""
+      ],
+      "text": "ETİKET: ambiguous | GÜVEN: 0.90\nEksik parametreler: etki büyüklüğü (Cohen'in f'si), α ve hedef güç. Yalnızca grup sayısı (3) belli.\nSonuç: Hesaplanamaz — ekrandaki G*Power penceresi önceki bir analize ait (f=0.25, α=0.05, güç=0.95, 10 grup → N=390); bu sizin çalışmanız değil, o sayıyı kullanmayın.\nLütfen şunları belirtin: beklenen etki büyüklüğü (küçük=0.10 / orta=0.25 / büyük=0.40 ya da sayısal f), α (ör. 0.05) ve istenen güç (ör. 0.80); bunlarla ekranı güncelleyip sonucu okuyabilirim.",
+      "label": "ambiguous",
+      "confidence": 0.9,
+      "input_tokens": 4,
+      "output_tokens": 689,
+      "cache_creation_input_tokens": 8816,
+      "cache_read_input_tokens": 27111,
+      "cost_usd": 0.1189605,
+      "duration_ms": 14865,
+      "num_turns": 2,
+      "wall_seconds": 19.42,
+      "exit_code": 0
+    },
+    "score": {
+      "label_ok": true,
+      "tool_ok": true,
+      "params_ok": null,
+      "answer_ok": false,
+      "correct": false
+    }
+  }
+]
