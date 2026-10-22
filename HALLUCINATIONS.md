@@ -66,4 +66,4 @@ Aşağıdaki her madde için: ajan **ne iddia etti**, **gerçek ne çıktı**, *
 
 ## Ayrıca: "kâhin de yanılabilir"
 
-Kütüphane kâhini (statsmodels 0.14.0, öğrencinin Anaconda ortamı) post hoc güçte 68/120 vektörde yeniden yazımdan 1e-6 mertebesinde (en fazla 1.1e-5) farklı çıktı. Bağımsız bir hakem (Poisson karışımı + düzenlenmiş tamamlayıcı beta, `tests/differential.py: poisson_series_power`) her durumda **yeniden yazımla** aynı çıktı; G*Power kâhini de yeniden yazımla 7 ondalık uyumlu. Bu bir ajan halüsinasyonu değil, ama aynı dersi veriyor: tek bir kaynağa körü körüne güvenme, uyuşmazlığı açıkla.
+Kütüphane kâhini (statsmodels 0.14.0, öğrencinin Anaconda ortamı) post hoc güçte 51/120 vektörde yeniden yazımdan sözleşme toleransını (1e-6) aşan, en fazla 1.2e-5 fark verdi. Bağımsız bir hakem (Poisson karışımı + düzenlenmiş tamamlayıcı beta, `tests/differential.py: poisson_series_power`) her durumda **yeniden yazımla** aynı çıktı; G*Power kâhini de yeniden yazımla 7 ondalık uyumlu. Bu bir ajan halüsinasyonu değil, ama aynı dersi veriyor: tek bir kaynağa körü körüne güvenme, uyuşmazlığı açıkla.
