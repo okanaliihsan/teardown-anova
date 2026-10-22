@@ -160,7 +160,7 @@ Ayrıntılar: [`HALLUCINATIONS.md`](HALLUCINATIONS.md), [`AGENT_COST.md`](AGENT_
 
 ## Demo
 
-**60 saniyelik CLI videosu:** _DEMO_LINK_  
+**60 saniyelik CLI videosu:** [docs/demo.mp4](docs/demo.mp4)  
 Senaryo ve komutlar: [`docs/DEMO.md`](docs/DEMO.md)
 
 ## Repo haritası (yönergedeki teslim listesi)
