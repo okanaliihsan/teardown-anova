@@ -6,9 +6,19 @@
       "tr": "Yeni bir antihipertansif ilacın üç farklı dozunu karşılaştıracağız, her hasta tek bir kola randomize edilecek. Orta düzeyde bir etki (f = 0.25) bekliyoruz. α = 0.05 ve %80 güç için toplam kaç hasta gerekir?",
       "en": "We will compare three doses of a new antihypertensive drug; each patient is randomised to one arm. We expect a medium effect (f = 0.25). How many patients in total do we need for alpha = 0.05 and 80% power?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_a_priori",
-      "expected_params": {"f": 0.25, "alpha": 0.05, "power": 0.80, "groups": 3},
-      "expected": {"n_total": 159, "actual_power": 0.8048873},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "a-priori",
+        "f": 0.25,
+        "alpha": 0.05,
+        "power": 0.8,
+        "groups": 3
+      },
+      "expected": {
+        "n_total": 159,
+        "actual_power": 0.8048873
+      },
       "oracle_id": "A02"
     },
     {
@@ -16,9 +26,19 @@
       "tr": "Dört farklı diyet programının açlık kan şekerine etkisini karşılaştırmak istiyorum. Etki büyüklüğü f = 0.20, anlamlılık düzeyi 0.05, istenen güç %90. Örneklem büyüklüğü ne olmalı?",
       "en": "I want to compare the effect of four different diet programmes on fasting blood glucose. Effect size f = 0.20, significance level 0.05, desired power 90%. What should the sample size be?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_a_priori",
-      "expected_params": {"f": 0.20, "alpha": 0.05, "power": 0.90, "groups": 4},
-      "expected": {"n_total": 360, "actual_power": 0.9015736},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "a-priori",
+        "f": 0.2,
+        "alpha": 0.05,
+        "power": 0.9,
+        "groups": 4
+      },
+      "expected": {
+        "n_total": 360,
+        "actual_power": 0.9015736
+      },
       "oracle_id": "A10"
     },
     {
@@ -26,9 +46,19 @@
       "tr": "Diz protezi sonrası beş farklı fizyoterapi protokolünü ağrı skoru üzerinden karşılaştıracağız. f = 0.25, α = 0.05, güç = 0.80. Toplam hasta sayısı?",
       "en": "After knee replacement we will compare five physiotherapy protocols on pain score. f = 0.25, alpha = 0.05, power = 0.80. Total number of patients?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_a_priori",
-      "expected_params": {"f": 0.25, "alpha": 0.05, "power": 0.80, "groups": 5},
-      "expected": {"n_total": 200, "actual_power": 0.8097710},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "a-priori",
+        "f": 0.25,
+        "alpha": 0.05,
+        "power": 0.8,
+        "groups": 5
+      },
+      "expected": {
+        "n_total": 200,
+        "actual_power": 0.809771
+      },
       "oracle_id": "A08"
     },
     {
@@ -36,9 +66,19 @@
       "tr": "Üç tedavi kolu arasında Cohen'e göre büyük bir etki bekliyoruz. Standart α (0.05) ve %80 güçle kaç hastaya ihtiyacımız var?",
       "en": "We expect a large effect according to Cohen across three treatment arms. With standard alpha (0.05) and 80% power, how many patients do we need?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_a_priori",
-      "expected_params": {"f": 0.40, "alpha": 0.05, "power": 0.80, "groups": 3},
-      "expected": {"n_total": 66, "actual_power": 0.8180744},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "a-priori",
+        "f": 0.4,
+        "alpha": 0.05,
+        "power": 0.8,
+        "groups": 3
+      },
+      "expected": {
+        "n_total": 66,
+        "actual_power": 0.8180744
+      },
       "oracle_id": "A04"
     },
     {
@@ -46,9 +86,19 @@
       "tr": "Üç dozluk bir faz II çalışmada daha sıkı bir anlamlılık düzeyi kullanmak istiyoruz: α = 0.01. Etki f = 0.25, güç %80. Toplam N kaç?",
       "en": "In a three-dose phase II study we want a stricter significance level: alpha = 0.01. Effect f = 0.25, power 80%. What is the total N?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_a_priori",
-      "expected_params": {"f": 0.25, "alpha": 0.01, "power": 0.80, "groups": 3},
-      "expected": {"n_total": 228, "actual_power": 0.8029054},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "a-priori",
+        "f": 0.25,
+        "alpha": 0.01,
+        "power": 0.8,
+        "groups": 3
+      },
+      "expected": {
+        "n_total": 228,
+        "actual_power": 0.8029054
+      },
       "oracle_id": "A06"
     },
     {
@@ -56,9 +106,19 @@
       "tr": "Çalışmamız bitti: üç grupta toplam 100 hasta var. Etki büyüklüğünü f = 0.25 kabul edersek, α = 0.05 ile çalışmanın gücü neydi?",
       "en": "Our study is finished: there are 100 patients in total across three groups. Assuming f = 0.25, what was the power of the study at alpha = 0.05?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_post_hoc",
-      "expected_params": {"f": 0.25, "alpha": 0.05, "n_total": 100, "groups": 3},
-      "expected": {"power": 0.5885389, "warning": true},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "post-hoc",
+        "f": 0.25,
+        "alpha": 0.05,
+        "n_total": 100,
+        "groups": 3
+      },
+      "expected": {
+        "power": 0.5885389,
+        "warning": true
+      },
       "oracle_id": "P02"
     },
     {
@@ -66,9 +126,18 @@
       "tr": "Beş kollu çok merkezli bir çalışmada 1000 hastamız var. Küçük bir etki (f = 0.10) için α = 0.05'te elde ettiğimiz güç ne kadar?",
       "en": "We have 1000 patients in a five-arm multicentre study. For a small effect (f = 0.10) at alpha = 0.05, what power have we achieved?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_post_hoc",
-      "expected_params": {"f": 0.10, "alpha": 0.05, "n_total": 1000, "groups": 5},
-      "expected": {"power": 0.7136330},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "post-hoc",
+        "f": 0.1,
+        "alpha": 0.05,
+        "n_total": 1000,
+        "groups": 5
+      },
+      "expected": {
+        "power": 0.713633
+      },
       "oracle_id": "P05"
     },
     {
@@ -76,9 +145,19 @@
       "tr": "On farklı hastanenin ortalama yatış sürelerini karşılaştıran bir çalışma planlıyoruz. f = 0.25, α = 0.05, güç %95 olsun. Toplamda kaç hasta gerekir?",
       "en": "We are planning a study comparing the mean length of stay across ten hospitals. Let f = 0.25, alpha = 0.05, power 95%. How many patients are needed in total?",
       "expected_label": "anova-oneway",
-      "expected_tool": "anova_oneway_a_priori",
-      "expected_params": {"f": 0.25, "alpha": 0.05, "power": 0.95, "groups": 10},
-      "expected": {"n_total": 390, "actual_power": 0.9523634},
+      "expected_tool": "power_analysis",
+      "expected_params": {
+        "test": "anova-oneway",
+        "mode": "a-priori",
+        "f": 0.25,
+        "alpha": 0.05,
+        "power": 0.95,
+        "groups": 10
+      },
+      "expected": {
+        "n_total": 390,
+        "actual_power": 0.9523634
+      },
       "oracle_id": "A01"
     },
     {
@@ -88,7 +167,9 @@
       "expected_label": "t2-indep",
       "expected_tool": null,
       "expected_params": null,
-      "expected": {"no_tool_call": true},
+      "expected": {
+        "no_tool_call": true
+      },
       "oracle_id": null,
       "note": "Bu araç yalnızca tek yönlü ANOVA'yı destekler; ajan aracı çağırmamalı ve desteklenmediğini söylemeli."
     },
@@ -99,7 +180,9 @@
       "expected_label": "ambiguous",
       "expected_tool": null,
       "expected_params": null,
-      "expected": {"no_tool_call": true},
+      "expected": {
+        "no_tool_call": true
+      },
       "oracle_id": null,
       "note": "Etki büyüklüğü, α ve güç verilmemiş; ajan tahmin etmemeli, sormalı."
     }

@@ -24,119 +24,57 @@ INVALID_PARAMS = -32602
 INTERNAL_ERROR = -32603
 
 # ---------------------------------------------------------------------------
-# Araç şeması (tek kaynak; MCP_SCHEMA.md bununla eşleşir, testte doğrulanır)
+# Araç şeması (sözleşme: tek araç `power_analysis`, CLI ile aynı alan adları)
 # ---------------------------------------------------------------------------
-_F = {"type": "number",
-      "description": "Cohen's f etki büyüklüğü / effect size "
-                     "(küçük/small .10, orta/medium .25, büyük/large .40)"}
-_ALPHA = {"type": "number",
-          "description": "Anlamlılık düzeyi α / significance level, örn./e.g. 0.05"}
-_GROUPS = {"type": "number",
-           "description": "Grup sayısı k (≥2) / number of groups; kesirliyse en yakına yuvarlanır"}
-_POWER = {"type": "number",
-          "description": "Hedef güç 1−β / target power, örn./e.g. 0.80"}
-_N = {"type": "number",
-      "description": "Toplam örneklem N (tüm gruplar) / total sample size, > groups"}
+TOOL_NAME = "power_analysis"
 
-OUTPUT_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "n_total": {"type": "integer"},
-        "n_per_group": {"type": ["integer", "null"]},
-        "actual_power": {"type": "number"},
-        "power": {"type": "number"},
-        "critical": {"type": "number"},
-        "df1": {"type": "integer"},
-        "df2": {"type": "integer"},
-        "ncp": {"type": "number"},
-        "warning": {"type": "string"},
-        "error": {"type": "string"},
+TOOL = {
+    "name": TOOL_NAME,
+    "description": (
+        "G*Power uyumlu güç analizi / power analysis. test='anova-oneway' (tek yönlü ANOVA, "
+        "sabit etkili, omnibus F). mode='a-priori': gerekli N (f, alpha, power, groups); "
+        "mode='post-hoc': ulaşılan güç (f, alpha, n_total, groups). Moda ilgisiz alan "
+        "verilmemeli. Hatalar {error, code, field} JSON'u döner."),
+    "inputSchema": {
+        "type": "object",
+        "properties": {
+            "test": {"type": "string",
+                     "description": "Test ailesi / test family; desteklenen: anova-oneway"},
+            "mode": {"type": "string",
+                     "description": "Hesap modu / analysis mode: a-priori | post-hoc"},
+            "f": {"type": "number",
+                  "description": "Cohen's f etki büyüklüğü / effect size (küçük .10, orta .25, "
+                                 "büyük .40); > 0; her iki mod"},
+            "alpha": {"type": "number",
+                      "description": "Anlamlılık düzeyi / significance level, (0,1); her iki mod"},
+            "power": {"type": "number",
+                      "description": "Hedef güç 1−β / target power, (0,1); yalnızca a-priori"},
+            "groups": {"type": "number",
+                       "description": "Grup sayısı / number of groups, tam sayı ≥ 2; her iki mod"},
+            "n_total": {"type": "number",
+                        "description": "Toplam örneklem / total sample size, tam sayı > groups; "
+                                       "yalnızca post-hoc"},
+        },
+        "required": ["test", "mode"],
     },
 }
 
-TOOLS = [
-    {
-        "name": "anova_oneway_a_priori",
-        "description": ("Tek yönlü ANOVA (sabit etkili, omnibus F): hedef güç için gereken "
-                        "örneklem büyüklüğü N. / One-way ANOVA a priori: required sample size."),
-        "inputSchema": {
-            "type": "object",
-            "properties": {"f": _F, "alpha": _ALPHA, "power": _POWER, "groups": _GROUPS},
-            "required": ["f", "alpha", "power", "groups"],
-        },
-        "outputSchema": OUTPUT_SCHEMA,
-        "_mode": cli.NAMES["mode_a_priori"],
-    },
-    {
-        "name": "anova_oneway_post_hoc",
-        "description": ("Tek yönlü ANOVA (sabit etkili, omnibus F): verilen N ile ulaşılan "
-                        "istatistiksel güç. / One-way ANOVA post hoc: achieved power."),
-        "inputSchema": {
-            "type": "object",
-            "properties": {"f": _F, "alpha": _ALPHA, "n_total": _N, "groups": _GROUPS},
-            "required": ["f", "alpha", "n_total", "groups"],
-        },
-        "outputSchema": OUTPUT_SCHEMA,
-        "_mode": cli.NAMES["mode_post_hoc"],
-    },
-]
-_TOOLS_BY_NAME = {t["name"]: t for t in TOOLS}
 
-
-def _public(tool: dict) -> dict:
-    return {k: v for k, v in tool.items() if not k.startswith("_")}
-
-
-# ---------------------------------------------------------------------------
-# Araç çağrısı
-# ---------------------------------------------------------------------------
 class _ParamsError(Exception):
     pass
 
 
-def _number_arg(args: dict, name: str):
-    """Argümanı sayıya çevirir. Sayı olmayan değerlerin anlamsal kontrolü
-    engine'de yapılır; burada yalnızca JSON tipinden Python float'a geçiş var.
-    Sayısal string ("0.25") CLI ile aynı davranış için kabul edilir."""
-    if name not in args or args[name] is None:
-        raise _ParamsError(f"missing required argument: {name}")
-    v = args[name]
-    if isinstance(v, bool):
-        raise _ParamsError(f"argument {name} must be a number")
-    if isinstance(v, (int, float)):
-        return float(v)
-    if isinstance(v, str):
-        try:
-            return float(v)
-        except ValueError:
-            pass
-    raise _ParamsError(f"argument {name} must be a number")
-
-
-def call_tool(name: str, arguments: dict | None) -> dict:
-    """tools/call sonucunu (MCP CallToolResult) döndürür. Bilinmeyen araç/eksik
-    argüman -> _ParamsError (JSON-RPC -32602)."""
-    tool = _TOOLS_BY_NAME.get(name)
-    if tool is None:
+def call_tool(name: str, arguments) -> dict:
+    """tools/call sonucu. Bilinmeyen araç / nesne olmayan arguments -> -32602.
+    Alan hataları (eksik, bilinmeyen, geçersiz değer...) sözleşme hata JSON'u olarak
+    `isError: true` ile döner (CLI ile aynı)."""
+    if name != TOOL_NAME:
         raise _ParamsError(f"unknown tool: {name}")
     if arguments is None:
         arguments = {}
     if not isinstance(arguments, dict):
         raise _ParamsError("arguments must be an object")
-    for req in tool["inputSchema"]["required"]:
-        if req not in arguments or arguments[req] is None:
-            raise _ParamsError(f"missing required argument: {req}")
-
-    mode = tool["_mode"]
-    f = _number_arg(arguments, "f")
-    alpha = _number_arg(arguments, "alpha")
-    groups = _number_arg(arguments, "groups")
-    if mode == cli.NAMES["mode_a_priori"]:
-        payload, code = cli.run(mode, f=f, alpha=alpha, groups=groups,
-                                power=_number_arg(arguments, "power"))
-    else:
-        payload, code = cli.run(mode, f=f, alpha=alpha, groups=groups,
-                                n=_number_arg(arguments, "n_total"))
+    payload, code, _stderr = cli.run(dict(arguments))
     return {
         "content": [{"type": "text", "text": cli.to_json_line(payload)}],
         "structuredContent": payload,
@@ -179,7 +117,7 @@ def handle_message(msg) -> dict | None:
         if method == "ping":
             return _ok(msg_id, {})
         if method == "tools/list":
-            return _ok(msg_id, {"tools": [_public(t) for t in TOOLS]})
+            return _ok(msg_id, {"tools": [TOOL]})
         if method == "tools/call":
             if not isinstance(params, dict) or not isinstance(params.get("name"), str):
                 return _err(msg_id, INVALID_PARAMS, "tools/call requires a tool name")

@@ -50,6 +50,7 @@ Kaynak: Claude Code `/cost` ekranı → `docs/session1_cost.png`; ajanın kendi 
 | 2 | CLI takma adları (CONTRACT.md yayımlanmadığı için) | 118,418 | 6 | 1 dk 51 sn |
 | 3 | SPEC v1.1 (diferansiyel test bulguları) | 149,760 | 16 | 4 dk 33 sn |
 | 4 | MCP adaptörü | 177,031 | 14 | 5 dk 49 sn |
+| 5 | Hocanın CONTRACT.md'sine uyum (CLI/MCP yeniden; engine'e dokunulmadı) | 230,108 | 23 | 8 dk 48 sn |
 
 Not: Alt ajan sayaçları önbellek kırılımı vermiyor; "toplam token" bağlamdaki toplam boyutu yansıtır. Her tur aynı oturumun devamı olduğu için bağlam birikiyor.
 
@@ -76,4 +77,4 @@ Not: Alt ajan sayaçları önbellek kırılımı vermiyor; "toplam token" bağla
 3. **Kâhini incelemeden ÖNCE toplamak.** Oturum 1 bittiğinde kâhin değerleri henüz yoktu, bu yüzden `[AJAN]` iddialarını (L48 gibi) orada sınayamadı. Önce kâhin toplansaydı H1/H2 inceleme oturumunda yakalanırdı.
 4. **`[AJAN]` etiketli kuralları SPEC'te "geçici" diye işaretlemek.** H1, `[AJAN]` düzeyindeki bir iddianın SPEC'e kesin kural gibi geçmesinden doğdu. Yazım ajanına "kâhin değeri olmayan senaryoyu bağlayıcı sayma" demek H4'ü önlerdi.
 5. **Doğru işe doğru model.** Sınıflandırma (test ailesi seçimi) için hızlı/ucuz bir model (Haiku sınıfı) yeterli; derin akıl yürütme yalnızca spec çıkarmak ve kanıt yorumlamak için gerekli. Hesap ise hiç LLM gerektirmiyor (CLI/MCP).
-6. **CONTRACT.md'yi ilk gün istemek.** Yayımlanmamış sözleşme yüzünden CLI'ye takma ad katmanı eklendi (tur 2); bu, sözleşme bilinseydi gereksiz olurdu.
+6. **CONTRACT.md'yi ilk gün istemek.** Sözleşme geç yayımlandı. Biz de beklerken CLI'ye "her yazımı kabul et, bilinmeyeni yok say" katmanı ekledik (tur 2). Sözleşme ise tam tersini istiyor: tanınmayan alan `UNKNOWN_PARAM` hatası olmalı. Tur 2 bu yüzden tamamen geri alındı (tur 5). Tahmin edilen bir sözleşmeye yatırım yapmak yerine sözleşme yalnızca bir adaptörde toplandı. Bu tasarım sayesinde değişiklik motora dokunmadan iki dosyada kaldı.

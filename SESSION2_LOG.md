@@ -186,3 +186,49 @@ elle uygulandı: JSON-RPC 2.0, satır başına bir mesaj. `engine.py` değişmed
 - Eksik argümanlar MCP'de -32602 ile protokol hatası; CLI'de `{"error":...}`. Bu da
   aynı gerekçeyle bilinçli bir fark.
 - Sonuç: 78 test, 78 geçti, 0 atlandı, 0 başarısız.
+
+## Tur 5 — Hocanın sözleşmesi
+
+Kaynak: `CONTRACT_NOTES.md` (CONTRACT.md v1.0.0 özeti). `engine.py`'nin hesap mantığına
+dokunulmadı. Yalnızca `errors.py`'deki hata sınıflarına sözleşme `code` özniteliği eklendi.
+
+**Değişiklikler:**
+- `cli.py` baştan yazıldı. `run(params) -> (payload, exit_code, stderr_text)` CLI ve
+  MCP'nin tek ortak yolu.
+  - argv elle ayrıştırılıyor; argparse ve Tur 2'deki takma adlar ile "bilinmeyeni yok
+    say" davranışı kaldırıldı.
+  - `--version` eklendi.
+  - Sayılar yuvarlanmıyor. `critical` → `critical_f`, çift güç anahtarı kalktı;
+    post-hoc'ta uyarı hem JSON'da hem stderr'de.
+  - Hata JSON'u `{error, code, field}`; NO_SOLUTION için çıkış 1.
+- `mcp_server.py`: tek araç `power_analysis`, `required: ["test","mode"]`. Alan
+  hataları artık -32602 değil, sözleşme hata JSON'u + `isError`. Bilinmeyen araç adı ve
+  bozuk JSON-RPC hâlâ protokol hatası.
+- Testler:
+  - `test_cli.py` sözleşmeye göre yeniden yazıldı: her hata kodu, çıkış kodları,
+    `--version`, tek satır stdout, stderr uyarısı, yuvarlama yokluğu, anahtar setleri,
+    2 referans vektörün 1e-6 toleransı, 3 bonus mod vektörü (→ UNSUPPORTED), 50 oracle
+    vektörü sözleşme kabuğu üzerinden.
+  - `test_mcp.py` yeniden yazıldı: tek araç, eşdeğerlik (50 oracle + 5 referans + 10 ek
+    vaka).
+  - `test_spec.py`: yalnızca R12 çıktı biçimi testi güncellendi (JSON artık yuvarlamıyor);
+    G*Power davranış testleri olduğu gibi duruyor (X07/X09/P13/P14/P07 motor düzeyinde).
+- `MCP_SCHEMA.md` yeniden yazıldı (örnekler gerçek çıktı). `ASSUMPTIONS.md`'ye
+  "Sözleşme ↔ G*Power ayrılıkları" bölümü eklendi.
+
+**İlk denemede kırmızı:**
+- `test_cli.test_missing_param`: test yardımcısı `argv_from` `test` anahtarı yokken
+  KeyError verdi; test kodu hatasıydı.
+- `test_mcp.test_mcp_schema_md`: belgede hata alanları tablo halinde değildi; tablo
+  eklendi.
+- Ürün kodunda ilk denemede kırmızı test olmadı.
+
+**Referans vektör farkları:** a-priori en büyük mutlak fark 2.74e-08 (`actual_power`);
+post-hoc 2.34e-08 (`critical_f`). İkisi de sözleşme tablosunun 7 ondalığa yuvarlanmış
+olmasından kaynaklanıyor. Tamsayılar (n_total 305, df1, df2) tam eşleşiyor.
+
+**Sonuç:** 80 test, 80 geçti, 0 atlandı, 0 başarısız.
+
+**Açık nokta:** Sözleşmedeki "Power, alpha değerinden büyük olmalı" örneği katı eşitsizlik
+gibi okunabilir. G*Power güç = α'yı kabul ettiği için bu korundu (A21). Gizli vektörlerde
+güç = α varsa sözleşme INCONSISTENT bekleyebilir; bu risk ASSUMPTIONS.md'ye yazıldı.

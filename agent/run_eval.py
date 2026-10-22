@@ -41,7 +41,8 @@ RESULTS = AGENT / "EVAL_RESULTS.json"
 REPORT = AGENT / "EVAL_REPORT.md"
 
 SERVER = "anova-power"
-TOOLS = [f"mcp__{SERVER}__anova_oneway_a_priori", f"mcp__{SERVER}__anova_oneway_post_hoc"]
+TOOLS = [f"mcp__{SERVER}__power_analysis"]
+CALLS_LOG = ROOT / "logs" / "agent_calls.jsonl"   # CONTRACT.md §8: zorunlu araç çağrı kaydı
 DENY = "Bash,Write,Edit,NotebookEdit,WebFetch,WebSearch,Task,Agent,Glob,Grep"
 LABEL_RE = re.compile(r"ET[İI]KET\s*:\s*([A-Za-z0-9\-]+)\s*\|\s*G[ÜU]VEN\s*:\s*([0-9]*[.,]?[0-9]+)", re.I)
 
@@ -125,9 +126,15 @@ def parse_log(path: Path) -> dict:
             continue
         t = ev.get("type")
         if t == "assistant":
-            for b in ev.get("message", {}).get("content", []):
+            msg = ev.get("message", {})
+            u = msg.get("usage", {}) or {}
+            for b in msg.get("content", []):
                 if b.get("type") == "tool_use":
-                    tool_calls.append({"name": b.get("name"), "input": b.get("input")})
+                    tool_calls.append({"name": b.get("name"), "input": b.get("input"), "id": b.get("id"),
+                                       "tokens_in": (u.get("input_tokens", 0) or 0)
+                                       + (u.get("cache_read_input_tokens", 0) or 0)
+                                       + (u.get("cache_creation_input_tokens", 0) or 0),
+                                       "tokens_out": u.get("output_tokens", 0) or 0})
         elif t == "user":
             for b in ev.get("message", {}).get("content", []) if isinstance(ev.get("message", {}).get("content"), list) else []:
                 if b.get("type") == "tool_result":
@@ -135,6 +142,9 @@ def parse_log(path: Path) -> dict:
                     if isinstance(c, list):
                         c = "".join(x.get("text", "") for x in c if isinstance(x, dict))
                     tool_results.append(c)
+                    for tc in tool_calls:
+                        if tc.get("id") == b.get("tool_use_id"):
+                            tc["output"] = c
         elif t == "result":
             result = ev
         elif t == "_runner":
@@ -183,8 +193,14 @@ def score(q: dict, p: dict, mode: str) -> dict:
         out["tool_ok"] = call is not None
         if call:
             args = call["input"] or {}
-            out["params_ok"] = all(abs(float(args.get(k, -1)) - float(v)) < 1e-9
-                                   for k, v in q["expected_params"].items())
+            def same(a, b):
+                if isinstance(b, str):
+                    return str(a) == b
+                try:
+                    return abs(float(a) - float(b)) < 1e-9
+                except (TypeError, ValueError):
+                    return False
+            out["params_ok"] = all(same(args.get(k), v) for k, v in q["expected_params"].items())
         else:
             out["params_ok"] = False
     else:
@@ -193,10 +209,38 @@ def score(q: dict, p: dict, mode: str) -> dict:
     if "n_total" in exp:
         out["answer_ok"] = _num_in_text(exp["n_total"], p["text"])
     else:
-        out["answer_ok"] = _num_in_text(exp["power"], p["text"], 4) or _num_in_text(exp["power"], p["text"], 7)
+        pw = exp["power"]
+        out["answer_ok"] = (_num_in_text(pw, p["text"], 4) or _num_in_text(pw, p["text"], 3)
+                            or _num_in_text(pw, p["text"], 7) or _num_in_text(pw * 100, p["text"], 1)
+                            or _num_in_text(pw * 100, p["text"], 2))
     out["correct"] = bool(label_ok and out["answer_ok"] and (out["tool_ok"] in (True, None))
                           and (out["params_ok"] in (True, None)))
     return out
+
+
+def write_calls_log(records: list[dict], qs: dict) -> None:
+    """CONTRACT.md §8 biçimi: ts, question, tool_input, tool_output, tokens_in, tokens_out.
+    Yalnızca MCP aracı çağrıları (GUI yolundaki ekran görüntüsü okumaları ayrı loglarda)."""
+    from datetime import datetime
+    CALLS_LOG.parent.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for r in records:
+        log = LOGS / f"{r['mode']}_{r['lang']}_{r['id']}.jsonl"
+        ts = datetime.fromtimestamp(log.stat().st_mtime).astimezone().isoformat(timespec="seconds")
+        for c in r["parsed"]["tool_calls"]:
+            if not (c.get("name") or "").startswith(f"mcp__{SERVER}__"):
+                continue
+            try:
+                out = json.loads(c.get("output") or "{}")
+            except json.JSONDecodeError:
+                out = {"_raw": c.get("output")}
+            rows.append({"ts": ts, "question": qs[r["id"]][r["lang"]], "tool_input": c.get("input") or {},
+                         "tool_output": out, "tokens_in": int(c.get("tokens_in") or 0),
+                         "tokens_out": int(c.get("tokens_out") or 0),
+                         "question_id": r["id"], "lang": r["lang"]})
+    with CALLS_LOG.open("w", encoding="utf-8") as fh:
+        for row in rows:
+            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
 def build_report(records: list[dict]) -> str:
@@ -296,6 +340,7 @@ def main() -> int:
 
     LOGS.mkdir(parents=True, exist_ok=True)
     qs = json.loads(QUESTIONS.read_text(encoding="utf-8"))["questions"]
+    qs_all = {q["id"]: q for q in qs}
     if args.only:
         qs = [q for q in qs if q["id"] in args.only]
     claude = None if args.report_only else find_claude()
@@ -317,6 +362,7 @@ def main() -> int:
                 s = records[-1]["score"]
                 print(f"    etiket={parsed['label']} doğru_cevap={s['correct']} süre={parsed['duration_ms']}ms")
 
+    write_calls_log(records, qs_all)
     RESULTS.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
     REPORT.write_text(build_report(records), encoding="utf-8")
     print(f"Rapor: {REPORT}")

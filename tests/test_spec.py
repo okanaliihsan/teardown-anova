@@ -406,11 +406,12 @@ class TestOutputFormat(unittest.TestCase):
         crit = stats.f.isf(0.05, 2, 156)
         self.assertEqual(r.critical_f, crit)
         self.assertEqual(r.ncp, 0.25 ** 2 * 159)
-        self.assertNotEqual(r.power, round(r.power, cli.JSON_DECIMALS))
-        # Sunum katmanı biçimlendirir
-        payload = cli.format_result(r, mode="post-hoc")
-        self.assertEqual(payload[cli.NAMES["out_power_post_hoc"]],
-                         round(r.power, cli.JSON_DECIMALS))
+        self.assertNotEqual(r.power, round(r.power, 7))
+        # Tur 5 (hocanın sözleşmesi): sunum katmanı da YUVARLAMAZ, tam double yazar.
+        # (Tur 1-4'te JSON 7 ondalığa yuvarlanıyordu; sözleşme bunu kaldırdı.)
+        payload = cli.result_to_dict(r, cli.MODE_POST_HOC)
+        self.assertEqual(payload["power"], r.power)
+        self.assertEqual(payload["critical_f"], r.critical_f)
 
 
 if __name__ == "__main__":

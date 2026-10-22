@@ -1,233 +1,254 @@
-"""İnce CLI adaptörü: argüman ayrıştır -> engine çağır -> tek satır JSON yaz.
+"""CLI adaptörü — hocanın CLI sözleşmesi (CONTRACT.md v1.0.0, CONTRACT_NOTES.md).
 
-Hiçbir formül, aralık kontrolü veya hesap mantığı burada yoktur. Tüm dış adlar
-(CLI seçenekleri ve takma adları, test/mod değerleri, JSON alanları) aşağıdaki
-NAMES ve ALIASES sözlüklerindedir; CONTRACT.md gelince yalnızca orası değişmelidir.
+Katmanlar:
+  argv -> parse_argv() -> params (dict, ham değerler)
+  params -> run() -> (payload, exit_code, stderr_text)      <- CLI ve MCP ortak yolu
+  run(): sözleşme doğrulaması (test/mod, alan kümesi, değer tipi, §5 aralıkları)
+         -> engine.a_priori / engine.post_hoc (G*Power kuralları, formüller)
+         -> sözleşme çıktı sözlüğü (sayılar YUVARLANMADAN)
+
+Formül ve G*Power'a özgü doğrulama yalnızca engine.py'dedir. Bu modül yalnızca
+sözleşmenin dış kabuğunu uygular: adlar, tipler, §5 aralıkları, hata kodları.
 """
 from __future__ import annotations
 
-import argparse
 import json
+import math
+import platform
+import re
 import sys
 
 from . import engine
 from .errors import InvalidInputError, SolverError
 
 # ---------------------------------------------------------------------------
-# Tek ad sözlüğü (geçici sözleşme)
+# Sözleşme sabitleri (tek yer)
 # ---------------------------------------------------------------------------
-NAMES = {
-    # komut adı
-    "prog": "gpower-clone",
-    # seçeneklerin kanonik (mesajlarda gösterilen) adları
-    "opt_test": "--test",
-    "opt_mode": "--mode",
-    "opt_f": "--f",
-    "opt_alpha": "--alpha",
-    "opt_power": "--power",
-    "opt_n": "--n",
-    "opt_groups": "--groups",
-    # seçenek değerlerinin kanonik adları
-    "test_anova_oneway": "anova-oneway",
-    "mode_a_priori": "a-priori",
-    "mode_post_hoc": "post-hoc",
-    # JSON çıktı alanları
-    "out_n_total": "n_total",
-    "out_n_per_group": "n_per_group",
-    "out_power_a_priori": "actual_power",
-    "out_power_post_hoc": "power",
-    "out_critical": "critical",
-    "out_df1": "df1",
-    "out_df2": "df2",
-    "out_ncp": "ncp",
-    "out_warning": "warning",
-    "out_error": "error",
+CONTRACT_VERSION = "1.0.0"
+TEAM_NAME = "teardown-anova"
+
+TEST_ANOVA = "anova-oneway"
+MODE_A_PRIORI = "a-priori"
+MODE_POST_HOC = "post-hoc"
+
+# Moda göre izinli (= gerekli) alanlar, sözleşmedeki sırayla
+MODE_FIELDS = {
+    MODE_A_PRIORI: ("f", "alpha", "power", "groups"),
+    MODE_POST_HOC: ("f", "alpha", "n_total", "groups"),
 }
+INTEGER_FIELDS = frozenset({"groups", "n_total"})
+CONTROL_FIELDS = ("test", "mode")
 
-# Takma adlar. Seçenekler büyük/küçük harf DUYARLI (--n ve --N ayrı yazımlar,
-# ikisi de aynı hedefe gider); değerler büyük/küçük harf DUYARSIZ eşlenir.
-ALIASES = {
-    "opt_test": ["--test"],
-    "opt_mode": ["--mode"],
-    "opt_f": ["--f", "--effect-size", "--es"],
-    "opt_alpha": ["--alpha"],
-    "opt_power": ["--power", "--target-power"],
-    "opt_n": ["--n", "--n-total", "--n_total", "--total-n", "--sample-size", "--N"],
-    "opt_groups": ["--groups", "--k", "--k-groups", "--num-groups", "--number-of-groups"],
-    "test_anova_oneway": ["anova-oneway", "anova_oneway", "anova"],
-    "mode_a_priori": ["a-priori", "apriori", "a_priori"],
-    "mode_post_hoc": ["post-hoc", "posthoc", "post_hoc"],
-}
-
-# JSON'daki alan sırası (güç her iki modda iki anahtarla yazılır)
-OUTPUT_ORDER = ["out_n_total", "out_n_per_group", "out_power_a_priori",
-                "out_power_post_hoc", "out_critical", "out_df1", "out_df2",
-                "out_ncp", "out_warning"]
-
-# Motor alan adı -> dışarıya gösterilecek seçenek adı (hata mesajları için)
-FIELD_TO_OPTION = {
-    "f": "opt_f",
-    "alpha": "opt_alpha",
-    "power": "opt_power",
-    "n_total": "opt_n",
-    "k": "opt_groups",
-}
-
-# JSON'daki sayıların ondalık basamak sayısı
-JSON_DECIMALS = 7
+# Sözleşmede tanımlı ama bu motorun desteklemediği kimlikler (mesaj için)
+OTHER_TESTS = ("t2-indep", "t-paired", "chi2-contingency", "multireg-r2")
+BONUS_MODES = ("compromise", "criterion", "sensitivity")
 
 EXIT_OK = 0
-EXIT_INPUT_ERROR = 2
-EXIT_COMPUTE_ERROR = 3
+EXIT_NO_SOLUTION = 1
+EXIT_INVALID = 2
+
+# Motorun alan adı -> sözleşme alan adı
+ENGINE_FIELD = {"f": "f", "alpha": "alpha", "power": "power",
+                "k": "groups", "n_total": "n_total"}
+
+# Sözleşme §5 aralıkları. Mesajlar G*Power metinleriyle aynı (R36) olabildiği
+# yerde aynı; G*Power'ın kabul edip sözleşmenin reddettiği post hoc f = 0 için
+# ayrı metin kullanılır.
+_NUMBER_RE = re.compile(r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$")
 
 
-class _ArgError(Exception):
-    pass
+class ContractError(Exception):
+    def __init__(self, code: str, field, message: str, exit_code: int = EXIT_INVALID):
+        super().__init__(message)
+        self.code, self.field, self.message, self.exit_code = code, field, message, exit_code
 
 
-class _Parser(argparse.ArgumentParser):
-    def error(self, message):  # argparse'ın stderr'e yazıp çıkmasını engelle
-        raise _ArgError(message)
+# ---------------------------------------------------------------------------
+# Çıktı yardımcıları
+# ---------------------------------------------------------------------------
+def to_json_line(obj: dict) -> str:
+    """Tek satır JSON; float'lar json'un varsayılan repr'i ile (tam double)."""
+    return json.dumps(obj, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
 
 
-def _number(text: str) -> float:
-    try:
-        return float(text)
-    except ValueError:
-        raise argparse.ArgumentTypeError(f"not a number: {text!r}")
+def error_to_dict(code: str, field, message: str) -> dict:
+    return {"error": message, "code": code, "field": field}
 
 
-def _value_map(*keys: str) -> dict[str, str]:
-    """Küçük harfli takma ad -> kanonik değer."""
-    return {alias.lower(): NAMES[key] for key in keys for alias in ALIASES[key]}
-
-
-def _choice(keys, option_key):
-    mapping = _value_map(*keys)
-
-    def convert(text: str) -> str:
-        try:
-            return mapping[text.strip().lower()]
-        except KeyError:
-            allowed = ", ".join(a for k in keys for a in ALIASES[k])
-            raise argparse.ArgumentTypeError(
-                f"invalid value {text!r} for {NAMES[option_key]} (allowed: {allowed})")
-    return convert
-
-
-def build_parser() -> argparse.ArgumentParser:
-    # allow_abbrev=False: --e gibi kısaltmalar takma adlar arasında belirsizlik yaratmasın,
-    # bilinmeyen seçenekler de yanlışlıkla bir takma ada önek-eşlenmesin.
-    p = _Parser(prog=NAMES["prog"], add_help=True, allow_abbrev=False)
-    p.add_argument(*ALIASES["opt_test"], dest="test", required=True,
-                   type=_choice(["test_anova_oneway"], "opt_test"))
-    p.add_argument(*ALIASES["opt_mode"], dest="mode", required=True,
-                   type=_choice(["mode_a_priori", "mode_post_hoc"], "opt_mode"))
-    p.add_argument(*ALIASES["opt_f"], dest="f", type=_number, required=True)
-    p.add_argument(*ALIASES["opt_alpha"], dest="alpha", type=_number, required=True)
-    p.add_argument(*ALIASES["opt_power"], dest="power", type=_number)
-    p.add_argument(*ALIASES["opt_n"], dest="n", type=_number)
-    p.add_argument(*ALIASES["opt_groups"], dest="groups", type=_number, required=True)
-    return p
-
-
-def _num(x):
-    if x is None:
-        return None
-    if isinstance(x, int):
-        return x
-    return round(float(x), JSON_DECIMALS)
-
-
-def result_to_dict(result: engine.Result, mode: str | None = None) -> dict:
-    """Paylaşılan çıktı biçimleyici (CLI ve MCP). Alan adları NAMES, sıra OUTPUT_ORDER,
-    sayılar JSON_DECIMALS ondalık. `mode` geriye uyumluluk için kabul edilir; güç her
-    iki modda iki anahtarla yazıldığından çıktıyı etkilemez."""
-    power = _num(result.power)
-    values = {
-        "out_n_total": result.n_total,
-        "out_n_per_group": result.n_per_group,
-        "out_power_a_priori": power,
-        "out_power_post_hoc": power,
-        "out_critical": _num(result.critical_f),
-        "out_df1": result.df1,
-        "out_df2": result.df2,
-        "out_ncp": _num(result.ncp),
-        "out_warning": result.warning,
+def result_to_dict(result: engine.Result, mode: str) -> dict:
+    out = {
+        "ncp": float(result.ncp),
+        "critical_f": float(result.critical_f),
+        "df1": int(result.df1),
+        "df2": int(result.df2),
     }
-    out = {}
-    for key in OUTPUT_ORDER:
-        if key == "out_warning" and values[key] is None:
-            continue
-        out[NAMES[key]] = values[key]
+    if mode == MODE_A_PRIORI:
+        out["n_total"] = int(result.n_total)
+        out["actual_power"] = float(result.power)
+        out["n_per_group"] = result.n_per_group
+    else:
+        out["power"] = float(result.power)
+        out["n_total"] = int(result.n_total)
+        out["n_per_group"] = result.n_per_group
+        if result.warning is not None:
+            out["warning"] = result.warning
     return out
 
 
-format_result = result_to_dict   # eski ad (Tur 1-3 testleri)
+def version_dict() -> dict:
+    import scipy
+    return {"contract_version": CONTRACT_VERSION, "name": TEAM_NAME,
+            "engine": f"Python {platform.python_version()} + scipy {scipy.__version__}"}
 
 
-def error_to_dict(exc_or_message) -> dict:
-    """Paylaşılan hata biçimleyici. InvalidInputError'da mesajın önüne sorunlu
-    alanın kanonik CLI seçenek adı eklenir (R34): "--alpha: Alpha is outside ..."."""
-    if isinstance(exc_or_message, InvalidInputError):
-        exc = exc_or_message
-        opt = NAMES[FIELD_TO_OPTION[exc.field]] if exc.field in FIELD_TO_OPTION else exc.field
-        message = f"{opt}: {exc.message}"
+# ---------------------------------------------------------------------------
+# Sözleşme doğrulaması
+# ---------------------------------------------------------------------------
+def _check_test_mode(params: dict) -> str:
+    for name in CONTROL_FIELDS:
+        if params.get(name) is None:
+            raise ContractError("MISSING_PARAM", name, f"Missing required parameter: {name}.")
+    test, mode = params["test"], params["mode"]
+    if not isinstance(test, str) or test != TEST_ANOVA:
+        raise ContractError("UNSUPPORTED", "test",
+                            f"Unsupported test: {test!s}. Supported: {TEST_ANOVA}.")
+    if not isinstance(mode, str) or mode not in MODE_FIELDS:
+        raise ContractError("UNSUPPORTED", "mode",
+                            f"Unsupported mode: {mode!s}. Supported: "
+                            f"{MODE_A_PRIORI}, {MODE_POST_HOC}.")
+    return mode
+
+
+def _check_field_set(params: dict, mode: str) -> None:
+    allowed = MODE_FIELDS[mode]
+    for name in params:
+        if name in CONTROL_FIELDS or params[name] is None:
+            continue
+        if name not in allowed:
+            raise ContractError("UNKNOWN_PARAM", name,
+                                f"Unknown or irrelevant parameter for {mode}: {name}.")
+    for name in allowed:
+        if params.get(name) is None:
+            raise ContractError("MISSING_PARAM", name,
+                                f"Missing required parameter for {mode}: {name}.")
+
+
+def _parse_value(name: str, raw):
+    """Ham değeri (CLI: str, MCP: number/str) sayıya çevirir. Tamsayı alanlarda
+    tam sayı değerli ondalık (3.0) kabul edilir, kesirli (2.5) INVALID_VALUE."""
+    if isinstance(raw, bool):
+        x = None
+    elif isinstance(raw, (int, float)):
+        x = float(raw)
+    elif isinstance(raw, str) and _NUMBER_RE.match(raw.strip()):
+        x = float(raw.strip())
     else:
-        message = str(exc_or_message)
-    return {NAMES["out_error"]: message}
+        x = None
+    if x is None or not math.isfinite(x):
+        raise ContractError("INVALID_VALUE", name, f"Value of {name} is not a valid number.")
+    if name in INTEGER_FIELDS:
+        if x != math.floor(x):
+            raise ContractError("INVALID_VALUE", name, f"Value of {name} must be an integer.")
+        return int(x)
+    return x
 
 
-def run(mode: str, f, alpha, groups, power=None, n=None) -> tuple[dict, int]:
-    """Kanonik mod değeriyle motoru çağırır; (JSON sözlüğü, çıkış kodu) döndürür.
-    CLI ve MCP aynı yolu kullanır; hesap/doğrulama yalnızca engine'de."""
-    try:
-        if mode == NAMES["mode_a_priori"]:
-            if power is None:
-                return error_to_dict(f"{NAMES['opt_power']} is required in "
-                                     f"{NAMES['mode_a_priori']} mode"), EXIT_INPUT_ERROR
-            result = engine.a_priori(f=f, alpha=alpha, power=power, k=groups)
-        elif mode == NAMES["mode_post_hoc"]:
-            if n is None:
-                return error_to_dict(f"{NAMES['opt_n']} is required in "
-                                     f"{NAMES['mode_post_hoc']} mode"), EXIT_INPUT_ERROR
-            result = engine.post_hoc(f=f, alpha=alpha, n_total=n, k=groups)
+# G*Power'ın da reddettiği durumlarda motorun G*Power metni (R36) kullanılır;
+# yalnızca sözleşmenin reddettiği post hoc f = 0 için ayrı metin vardır.
+MSG_F_ZERO_CONTRACT = "Effect size f must be greater than 0."
+
+
+def _check_range(name: str, value, values: dict, mode: str) -> None:
+    """Sözleşme §5. alpha, power (0,1) açık; f > 0; groups, n_total ≥ 2."""
+    if name == "alpha" and not 0.0 < value < 1.0:
+        raise ContractError("OUT_OF_RANGE", name, engine.MSG_ALPHA_RANGE)
+    if name == "power" and not 0.0 < value < 1.0:
+        raise ContractError("OUT_OF_RANGE", name, engine.MSG_POWER_RANGE)
+    if name == "f" and not value > 0.0:
+        if mode == MODE_POST_HOC and value == 0.0:
+            message = MSG_F_ZERO_CONTRACT
         else:
-            return error_to_dict(f"invalid value {mode!r} for {NAMES['opt_mode']}"), EXIT_INPUT_ERROR
-    except InvalidInputError as exc:
-        return error_to_dict(exc), EXIT_INPUT_ERROR
-    except SolverError as exc:
-        return error_to_dict(exc), EXIT_COMPUTE_ERROR
-    return result_to_dict(result, mode), EXIT_OK
+            lo = engine.F_MIN_A_PRIORI if mode == MODE_A_PRIORI else engine.F_MIN_POST_HOC
+            message = engine.MSG_F_RANGE.format(lo=lo, hi=engine.F_MAX)
+        raise ContractError("OUT_OF_RANGE", name, message)
+    if name == "groups" and value < 2:
+        raise ContractError("OUT_OF_RANGE", name, engine.MSG_GROUPS)
+    if name == "n_total" and value < 2:
+        raise ContractError("OUT_OF_RANGE", name,
+                            engine.MSG_SAMPLE_SIZE.format(k=values["groups"]))
 
 
-def to_json_line(obj: dict) -> str:
-    """Tek satır JSON (CLI stdout'u ve MCP text içeriği birebir aynı olsun diye)."""
-    return json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
-
-
-def _emit(obj: dict, stream) -> None:
-    stream.write(to_json_line(obj) + "\n")
-
-
-def _error(message: str, code: int, stream) -> int:
-    _emit(error_to_dict(message), stream)
-    return code
-
-
-def main(argv=None, stdout=None) -> int:
-    stdout = stdout or sys.stdout
+def run(params: dict) -> tuple[dict, int, str | None]:
+    """Sözleşme girişi: params (alan adı -> ham değer). Dönüş: (stdout sözlüğü,
+    çıkış kodu, stderr metni ya da None). CLI ve MCP bu fonksiyonu kullanır."""
     try:
-        # Bilinmeyen ek seçenekler (ör. --tails, --ratio) yok sayılır; JSON'a girmez.
-        args, _ignored = build_parser().parse_known_args(argv)
-    except _ArgError as exc:
-        return _error(str(exc), EXIT_INPUT_ERROR, stdout)
-    except SystemExit as exc:          # --help
-        return int(exc.code or 0)
+        mode = _check_test_mode(params)
+        _check_field_set(params, mode)
+        values = {n: _parse_value(n, params[n]) for n in MODE_FIELDS[mode]}
+        for n in MODE_FIELDS[mode]:
+            _check_range(n, values[n], values, mode)
+        try:
+            if mode == MODE_A_PRIORI:
+                result = engine.a_priori(f=values["f"], alpha=values["alpha"],
+                                         power=values["power"], k=values["groups"])
+            else:
+                result = engine.post_hoc(f=values["f"], alpha=values["alpha"],
+                                         n_total=values["n_total"], k=values["groups"])
+        except InvalidInputError as exc:
+            raise ContractError(exc.code, ENGINE_FIELD.get(exc.field, exc.field), exc.message)
+        except SolverError as exc:
+            raise ContractError(SolverError.code, None, str(exc), EXIT_NO_SOLUTION)
+    except ContractError as exc:
+        return error_to_dict(exc.code, exc.field, exc.message), exc.exit_code, None
+    except Exception as exc:  # pragma: no cover - beklenmeyen iç hata
+        return (error_to_dict("NO_SOLUTION", None, f"Internal error: {exc}"),
+                EXIT_NO_SOLUTION, None)
+    payload = result_to_dict(result, mode)
+    return payload, EXIT_OK, payload.get("warning")
 
-    payload, code = run(args.mode, f=args.f, alpha=args.alpha, groups=args.groups,
-                        power=args.power, n=args.n)
-    _emit(payload, stdout)
+
+# ---------------------------------------------------------------------------
+# argv -> params
+# ---------------------------------------------------------------------------
+def parse_argv(argv: list[str]) -> dict:
+    """`--ad değer` ya da `--ad=değer`. Negatif sayılar değer olarak kabul edilir
+    (`--f -0.25`). argparse kullanılmaz: stdout'a kendi metnini yazmasın diye."""
+    params: dict = {}
+    i = 0
+    while i < len(argv):
+        tok = argv[i]
+        if not tok.startswith("--") or len(tok) == 2:
+            raise ContractError("UNKNOWN_PARAM", None, f"Unexpected argument: {tok}.")
+        name, eq, value = tok[2:].partition("=")
+        if not eq:
+            nxt = argv[i + 1] if i + 1 < len(argv) else None
+            if nxt is None or (nxt.startswith("--") and not _NUMBER_RE.match(nxt)):
+                raise ContractError("INVALID_VALUE", name, f"Missing value for --{name}.")
+            value = nxt
+            i += 1
+        if name in params:
+            raise ContractError("INVALID_VALUE", name, f"Parameter given more than once: {name}.")
+        params[name] = value
+        i += 1
+    return params
+
+
+def main(argv=None, stdout=None, stderr=None) -> int:
+    argv = sys.argv[1:] if argv is None else list(argv)
+    stdout = stdout or sys.stdout
+    stderr = stderr or sys.stderr
+    if "--version" in argv:
+        stdout.write(to_json_line(version_dict()) + "\n")
+        return EXIT_OK
+    try:
+        params = parse_argv(argv)
+    except ContractError as exc:
+        stdout.write(to_json_line(error_to_dict(exc.code, exc.field, exc.message)) + "\n")
+        return exc.exit_code
+    payload, code, stderr_text = run(params)
+    stdout.write(to_json_line(payload) + "\n")
+    if stderr_text:
+        stderr.write(stderr_text + "\n")
     return code
 
 

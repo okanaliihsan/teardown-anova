@@ -25,7 +25,7 @@ sürekli kökler k katlarına en yakın 0.11 uzaklıkta (A17 hariç, o alt sın�
 
 **U03 — Çok küçük f.** Parantez genişletmesine en fazla 200 adım (1.6^200 ≈ 1e40 kat)
 izin verildi; aşılırsa veya üst uç sonsuza giderse `SolverError` (girdi hatası değil,
-"hesaplanamıyor"; CLI çıkış kodu 3). Pratikte izinli en küçük f = 1e-6 ile bile
+"hesaplanamıyor"; Tur 5'ten beri CLI'de `NO_SOLUTION`, çıkış kodu 1). Pratikte izinli en küçük f = 1e-6 ile bile
 (N ≈ 9.6e12) sonuç üretiliyor ve hata çıkmıyor. Bu kadar büyük N'de değerlerin
 G*Power ile aynı olacağı doğrulanmadı. 300 iterasyon sınırı yalnızca Brent
 döngüsüne uygulanır, genişletme adımlarına değil.
@@ -43,8 +43,9 @@ Oracle'daki "Please note: " öneki G*Power arayüzünün bir parçası sayıldı
 metnine eklenmedi. <N> yuvarlanmış değerdir (P14: 160).
 
 **U06 — Gösterim hassasiyeti.** Motor tam duyarlıklı float döndürür. CLI JSON'da sayılar
-`JSON_DECIMALS = 7` ondalığa yuvarlanır (PROMPT'un istediği sabit). Testlerde
-karşılaştırma CSV'deki değerin ondalık hanesi kadardır (A17'de λ = "600" → 0 hane).
+`JSON_DECIMALS = 7` ondalığa yuvarlanıyordu (Tur 1–4). **Tur 5 (sözleşme):** yuvarlama
+kaldırıldı; JSON tam double yazar (json'un varsayılan repr'i). Oracle testleri hâlâ CSV'deki
+ondalık sayısına göre karşılaştırır.
 
 **U07 — A priori'de f = 0 (SPEC v1.1 R36 ile çözüldü).** Tek hata yolu var:
 `EffectSizeRangeError(field="f")`, metin "Effect size f is outside the admissible range
@@ -80,12 +81,58 @@ olduğu için metin "(0, 50)" olarak biçimlenir. Bu G*Power'da gözlenmedi, bir
   dağılım fonksiyonlarına verilir.
 - **Güç = α (A21).** Hedef güç α'ya eşitken g(k+1) > 0 olduğundan sonuç alt sınırdan
   gelir; oracle ile uyumlu.
-- **CLI hata kodları.** Girdi/argüman hatası 2, çözücü hatası 3. Hata JSON'u yalnızca
-  `error` alanını içerir; mesaj sorunlu seçeneğin adıyla başlar (R34), ör. `--alpha: ...`.
+- **CLI hata kodları.** Tur 5'ten beri sözleşmeye göre: geçersiz girdi 2, `NO_SOLUTION` 1.
+  Hata JSON'u `{"error","code","field"}`; `field` sözleşme alan adıdır (motorun `k` alanı
+  `groups` olur).
 - **Hata metinleri (R36).** Motor G*Power metinlerini birebir üretir; oracle'daki
   "Input error: " öneki arayüze ait sayıldı ve eklenmedi. CLI bunun önüne alan
   öneki koyar (`--alpha: Alpha is outside ...`). Sayı olmayan/NaN/sonsuz girdi de
   ilgili alanın aralık metniyle reddedilir; G*Power'da gözlenmedi, bir varsayım.
-- **R37 (gösterim).** JSON hâlâ 7 ondalığa yuvarlar; `json` modülü sondaki sıfırları
-  yazmadığı için 600.0 / 0.0 / 199.5 kısa görünür. Bu, G*Power'ın kısa gösterimiyle
-  sayıca uyumludur ama biçim (ör. "24.375" ↔ "24.3750000") birebir değildir.
+- **R37 (gösterim).** Tur 5'te JSON yuvarlaması kaldırıldı (bkz. U06). G*Power'ın 7 ondalık
+  gösterimi yalnızca testlerdeki karşılaştırma toleransını belirler.
+
+## Sözleşme ↔ G*Power ayrılıkları (Tur 5, CONTRACT.md v1.0.0)
+
+Motor (`engine.py`) G*Power'a sadık kalır. Sözleşmenin dış kabuğu (`cli.run`; CLI ve MCP
+ortak yolu) bazı girdileri motordan önce reddeder. Bu ayrılıklar bilinçlidir:
+
+| Durum | G*Power / motor | Sözleşme / CLI-MCP | Gerekçe |
+|---|---|---|---|
+| Kesirli k (X07 2.5, X09 2.4) | En yakın tam sayıya yuvarlar (R35) | `INVALID_VALUE` (field `groups`) | Sözleşme: "tam sayı gereken yerde ondalık → INVALID_VALUE" |
+| Kesirli N (P13 159.4, P14 159.6) | En yakın tam sayıya yuvarlar (R35) | `INVALID_VALUE` (field `n_total`) | Aynı kural |
+| Post hoc f = 0 (P07) | Kabul eder, güç = α (R19, R38) | `OUT_OF_RANGE` (field `f`), mesaj "Effect size f must be greater than 0." | Sözleşme §5: f > 0 |
+| Güç = α (A21) | Kabul eder (R07) | Kabul edilir (sözleşme yalnızca güç < α'yı INCONSISTENT sayar) | G*Power davranışı korundu; sözleşme notundaki "büyük olmalı" ifadesi katı eşitsizlik gibi okunabilir, ama motor sonucu G*Power'a sadık |
+| Tam sayı değerli ondalık ("3.0", "100.0") | — | Kabul edilir (= 3, 100) | **Varsayım:** değer tam sayıdır; "ondalık" sözleşmede kesirli değer anlamında okundu |
+| Çözücü başarısızlığı (SolverError) | — | `NO_SOLUTION`, çıkış 1, field `null` | Sözleşme: 1 = iç hata / hesap başarısız |
+
+Bu 5 vektörde (X07, X09, P13, P14, P07) G*Power davranışı motor düzeyinde
+`tests/test_spec.py` ile doğrulanmaya devam ediyor. CLI düzeyinde ise sözleşme hatası
+bekleniyor (`tests/test_cli.py`).
+
+Diğer Tur 5 varsayımları:
+- **Mesajlar.** Bir durumu hem G*Power hem sözleşme reddediyorsa G*Power metni kullanılır
+  (alpha 0/1, power 1, groups 1, f < 0, a priori'de f = 0, n_total 1). n_total = 1 için
+  G*Power metni "Sample size must be greater than the number of groups (k)." seçildi.
+  Kod ise sözleşmeye göre `OUT_OF_RANGE`'dir (N < 2), `INCONSISTENT` değildir.
+- **Sözleşme aralığında olup G*Power aralığı dışında kalan değerler** (ör. alpha = 1e-8,
+  f = 60) motorda reddedilir ve `OUT_OF_RANGE` olur.
+- **Sayı biçimi.** Yalnızca `[+-]rakamlar[.rakamlar][e±üs]` kabul edilir. "0,05",
+  "1_000", "nan" ve "inf" → `INVALID_VALUE` (Python `float()`'unun gevşekliği
+  kullanılmadı). MCP'de JSON number ya da aynı biçimde string kabul edilir; bool →
+  `INVALID_VALUE`.
+- **Argv ayrıştırma.** argparse kullanılmıyor, çünkü stdout'a kendi metnini yazabiliyor.
+  `--ad değer` ve `--ad=değer` biçimleri destekleniyor; `--f -0.25` biçimindeki negatif
+  sayı değer olarak alınıyor. Hatalı biçimler:
+  - Konumsal argüman → `UNKNOWN_PARAM` (field `null`).
+  - Değeri eksik seçenek → `INVALID_VALUE`.
+  - Aynı alanın tekrarı → `INVALID_VALUE`.
+  - `--help` tanınmayan bir alandır (değersiz olduğu için `INVALID_VALUE`).
+  - `--version` diğer argümanlardan bağımsız olarak önceliklidir.
+- **Harf duyarlılığı.** `test` ve `mode` kimlikleri birebir küçük harfle eşlenir
+  (`ANOVA-ONEWAY` → `UNSUPPORTED`). Tur 2'deki takma adlar kaldırıldı.
+- **Doğrulama sırası.** test → mode → bilinmeyen alan → eksik alan → değer tipi (sözleşme
+  alan sırasıyla) → §5 aralığı → motor.
+- **`--version` "name".** Takım adı olarak `teardown-anova` yazıldı (koordinatörün
+  verdiği değer).
+- **MCP uyarısı.** MCP'de uyarı yalnızca JSON'daki `warning` alanında yer alır; MCP
+  sunucusu stderr'e yazmaz.

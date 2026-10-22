@@ -1,276 +1,340 @@
-"""CLI uçtan uca testleri (subprocess)."""
+"""CLI testleri — hocanın sözleşmesi (CONTRACT.md v1.0.0; özet CONTRACT_NOTES.md).
+
+Uçtan uca testler subprocess ile; büyük matrisler hız için `cli.main` ile süreç içinde.
+"""
 from __future__ import annotations
 
+import io
 import json
+import math
 import os
 import subprocess
 import sys
 import unittest
 
-from oracle import ROOT, SRC, vector
+from oracle import ROOT, SRC, VECTORS
 
 from anova_clone import cli
 
-N = cli.NAMES
+# Sözleşme §9 referans vektörleri (CONTRACT_NOTES.md tablosu), anova-oneway
+REFERENCE_VECTORS = {
+    "REF-a-priori": (
+        {"test": "anova-oneway", "mode": "a-priori", "f": ".25", "alpha": ".05",
+         "power": ".95", "groups": "5"},
+        {"ncp": 19.0625000, "critical_f": 2.4017397, "df1": 4, "df2": 300,
+         "n_total": 305, "actual_power": 0.9521313}),
+    "REF-post-hoc": (
+        {"test": "anova-oneway", "mode": "post-hoc", "f": ".25", "alpha": ".05",
+         "n_total": "100", "groups": "5"},
+        {"ncp": 6.2500000, "critical_f": 2.4674936, "df1": 4, "df2": 95,
+         "power": 0.4663312}),
+    # Bonus modlar: bu motor desteklemiyor -> UNSUPPORTED
+    "REF-compromise": (
+        {"test": "anova-oneway", "mode": "compromise", "f": ".25",
+         "beta_alpha_ratio": "1", "n_total": "100", "groups": "5"}, None),
+    "REF-criterion": (
+        {"test": "anova-oneway", "mode": "criterion", "f": ".25", "power": ".95",
+         "n_total": "100", "groups": "5"}, None),
+    "REF-sensitivity": (
+        {"test": "anova-oneway", "mode": "sensitivity", "alpha": ".05", "power": ".95",
+         "n_total": "100", "groups": "5"}, None),
+}
+INTEGER_KEYS = {"df1", "df2", "n_total"}
 
 
-def run_cli(*args, via="module"):
+def argv_from(params: dict) -> list[str]:
+    """Sözleşme biçiminde argv: --test X --mode Y --alan değer ... ('=' biçimi,
+    negatif değerler için güvenli)."""
+    order = [k for k in ("test", "mode") if k in params] + \
+        [k for k in params if k not in ("test", "mode")]
+    return [f"--{k}={params[k]}" for k in order]
+
+
+def run_proc(args, env_extra=None, cwd=ROOT):
     env = dict(os.environ)
     env["PYTHONPATH"] = SRC + os.pathsep + env.get("PYTHONPATH", "")
-    if via == "module":
-        cmd = [sys.executable, "-m", "anova_clone.cli", *args]
-    else:
-        cmd = [os.path.join(ROOT, "gpower-clone"), *args]
-    return subprocess.run(cmd, capture_output=True, text=True, env=env,
-                          cwd=ROOT, timeout=60)
-
-
-def a_priori_args(f="0.25", alpha="0.05", power="0.95", groups="10"):
-    return [N["opt_test"], N["test_anova_oneway"], N["opt_mode"], N["mode_a_priori"],
-            N["opt_f"], f, N["opt_alpha"], alpha, N["opt_power"], power,
-            N["opt_groups"], groups]
-
-
-def post_hoc_args(f="0.25", alpha="0.05", n="390", groups="10"):
-    return [N["opt_test"], N["test_anova_oneway"], N["opt_mode"], N["mode_post_hoc"],
-            N["opt_f"], f, N["opt_alpha"], alpha, N["opt_n"], n,
-            N["opt_groups"], groups]
-
-
-class TestCli(unittest.TestCase):
-
-    def assert_single_line_json(self, proc):
-        lines = proc.stdout.splitlines()
-        self.assertEqual(len(lines), 1, f"tek satır bekleniyordu: {proc.stdout!r}")
-        return json.loads(lines[0])
-
-    def test_a_priori_basari_tek_satir_json_cikis_0(self):
-        p = run_cli(*a_priori_args())
-        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
-        out = self.assert_single_line_json(p)
-        a01 = vector("A01")
-        self.assertEqual(out[N["out_n_total"]], int(a01["n_total"]))
-        self.assertEqual(out[N["out_n_per_group"]], 39)
-        self.assertEqual(out[N["out_df1"]], int(a01["df1"]))
-        self.assertEqual(out[N["out_df2"]], int(a01["df2"]))
-        self.assertAlmostEqual(out[N["out_power_a_priori"]], float(a01["actual_power"]), places=7)
-        self.assertAlmostEqual(out[N["out_critical"]], float(a01["critical_F"]), places=7)
-        self.assertAlmostEqual(out[N["out_ncp"]], float(a01["lambda"]), places=7)
-        self.assertNotIn(N["out_warning"], out)
-
-    def test_post_hoc_basari_tek_satir_json(self):
-        p = run_cli(*post_hoc_args())
-        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
-        out = self.assert_single_line_json(p)
-        # Tur 2 sözleşmesi: güç her iki modda iki anahtarla yazılır
-        self.assertIn(N["out_power_post_hoc"], out)
-        self.assertIn(N["out_power_a_priori"], out)
-        self.assertEqual(out[N["out_power_post_hoc"]], out[N["out_power_a_priori"]])
-
-    def test_post_hoc_uyarili_basari(self):
-        p = run_cli(*post_hoc_args(n="100", groups="3"))
-        self.assertEqual(p.returncode, 0)
-        out = self.assert_single_line_json(p)
-        self.assertIn(N["out_warning"], out)
-        self.assertIsNone(out[N["out_n_per_group"]])
-        self.assertEqual(out[N["out_df2"]], 97)
-
-    def test_ondalik_basamak_sabiti(self):
-        p = run_cli(*post_hoc_args(n="100", groups="3"))
-        out = self.assert_single_line_json(p)
-        for key in (N["out_power_post_hoc"], N["out_critical"]):
-            text = repr(out[key])
-            decimals = len(text.split(".")[1]) if "." in text else 0
-            self.assertLessEqual(decimals, cli.JSON_DECIMALS)
-
-    def test_gecersiz_girdiler_hata_json_ve_sifirdan_farkli_cikis(self):
-        cases = {
-            "power<alpha": a_priori_args(power="0.04", groups="3"),
-            "f=0 a priori": a_priori_args(f="0"),
-            "f negatif": a_priori_args(f="-0.25"),
-            "alpha=0": a_priori_args(alpha="0"),
-            "alpha=1": a_priori_args(alpha="1"),
-            "power=1": a_priori_args(power="1"),
-            "k=1": a_priori_args(groups="1"),
-            # "k=2.5" çıkarıldı: SPEC v1.1 R35 ile kesirli k yuvarlanır (2.5 -> 3),
-            # hata değildir; yerine "k=1.4" (-> 1) eklendi.
-            "k=1.4 (R35 -> 1)": a_priori_args(groups="1.4"),
-            "N=k": post_hoc_args(n="3", groups="3"),
-            "N=3.4 (R35 -> 3 = k)": post_hoc_args(n="3.4", groups="3"),
-            "sayi degil": a_priori_args(f="abc"),
-            "eksik --power": [a for a in a_priori_args()[:8]] + [N["opt_groups"], "3"],
-            "bilinmeyen test": [N["opt_test"], "t-test"] + a_priori_args()[2:],
-        }
-        for name, args in cases.items():
-            with self.subTest(case=name):
-                p = run_cli(*args)
-                self.assertNotEqual(p.returncode, 0)
-                out = self.assert_single_line_json(p)
-                self.assertEqual(list(out), [N["out_error"]])
-                self.assertTrue(out[N["out_error"]])
-
-    def test_kesirli_k_ve_N_yuvarlanir_R35(self):
-        # X07: k=2.5 -> 3, sonuç A02 ile aynı
-        p = run_cli(*a_priori_args(power="0.8", groups="2.5"))
-        self.assertEqual(p.returncode, 0, p.stdout)
-        out = self.assert_single_line_json(p)
-        self.assertEqual(out[N["out_n_total"]], int(vector("X07")["n_total"]))
-        # P14: N=159.6 -> 160, uyarı metninde 160
-        p = run_cli(*post_hoc_args(n="159.6", groups="3"))
-        self.assertEqual(p.returncode, 0, p.stdout)
-        out = self.assert_single_line_json(p)
-        self.assertEqual(out[N["out_n_total"]], 160)
-        self.assertIn("(160)", out[N["out_warning"]])
-
-    def test_hata_metni_gpower_metnini_alan_onekiyle_tasir_R34_R36(self):
-        p = run_cli(*a_priori_args(alpha="0"))
-        self.assertEqual(json.loads(p.stdout)[N["out_error"]],
-                         f"{N['opt_alpha']}: Alpha is outside the admissible range (1e-07, 1).")
-
-    def test_hata_mesaji_sorunlu_alani_belirtir_R34(self):
-        p = run_cli(*a_priori_args(alpha="0"))
-        self.assertIn(N["opt_alpha"], json.loads(p.stdout)[N["out_error"]])
-        p = run_cli(*a_priori_args(groups="1"))
-        self.assertIn(N["opt_groups"], json.loads(p.stdout)[N["out_error"]])
-
-    @unittest.skipIf(os.name == "nt", "Unix sarmalayıcısı")
-    def test_gpower_clone_sarmalayicisi_kurulumsuz_calisir(self):
-        env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
-        p = subprocess.run([os.path.join(ROOT, "gpower-clone"), *a_priori_args()],
-                           capture_output=True, text=True, env=env, cwd="/", timeout=60)
-        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
-        self.assertEqual(self.assert_single_line_json(p)[N["out_n_total"]], 390)
+    return subprocess.run([sys.executable, "-m", "anova_clone.cli", *args],
+                          capture_output=True, text=True, env=env, cwd=cwd, timeout=60)
 
 
 def run_main(args):
-    """main()'i süreç içinde çalıştırır (takma ad matrisi için hızlı yol)."""
-    import io
-    buf = io.StringIO()
-    code = cli.main(list(args), stdout=buf)
-    return code, buf.getvalue()
+    out, err = io.StringIO(), io.StringIO()
+    code = cli.main(list(args), stdout=out, stderr=err)
+    return code, out.getvalue(), err.getvalue()
 
 
+def ap(**kw):
+    p = {"test": "anova-oneway", "mode": "a-priori", "f": "0.25", "alpha": "0.05",
+         "power": "0.8", "groups": "3"}
+    p.update(kw)
+    return {k: v for k, v in p.items() if v is not None}
 
 
-class TestCliAliases(unittest.TestCase):
-    """Tur 2: takma adlar, yok sayılan ek seçenekler, iki güç anahtarı."""
+def ph(**kw):
+    p = {"test": "anova-oneway", "mode": "post-hoc", "f": "0.25", "alpha": "0.05",
+         "n_total": "100", "groups": "5"}
+    p.update(kw)
+    return {k: v for k, v in p.items() if v is not None}
 
-    @classmethod
-    def setUpClass(cls):
-        code, text = run_main(a_priori_args())
-        assert code == 0, text
-        cls.a01 = json.loads(text)
-        code, text = run_main(post_hoc_args(n="100", groups="3"))
-        assert code == 0, text
-        cls.p02 = json.loads(text)
 
-    def _replace(self, args, canonical, alias):
-        out = list(args)
-        out[out.index(canonical)] = alias
+def oracle_params(row) -> dict:
+    p = {"test": "anova-oneway", "mode": row["mode"], "f": row["f"], "alpha": row["alpha"]}
+    if row["mode"] == "a-priori":
+        p["power"] = row["power_in"]
+    else:
+        p["n_total"] = row["n_in"]
+    p["groups"] = row["k"]
+    return p
+
+
+def close(actual: float, expected: float, tol=1e-6) -> bool:
+    d = abs(actual - expected)
+    return d <= tol or d <= tol * abs(expected)
+
+
+class ContractCase(unittest.TestCase):
+    def call(self, params):
+        code, out, err = run_main(argv_from(params))
+        lines = out.splitlines()
+        self.assertEqual(len(lines), 1, out)
+        return code, json.loads(lines[0]), err
+
+    def assert_error(self, params, code_name, field, exit_code=2):
+        code, out, _ = self.call(params)
+        self.assertEqual(code, exit_code, out)
+        self.assertEqual(set(out), {"error", "code", "field"})
+        self.assertEqual(out["code"], code_name, out)
+        self.assertEqual(out["field"], field, out)
+        self.assertTrue(out["error"])
         return out
 
-    def assert_same(self, args, expected):
-        code, text = run_main(args)
-        self.assertEqual(code, 0, text)
-        self.assertEqual(len(text.splitlines()), 1)
-        self.assertEqual(json.loads(text), expected)
 
-    def test_alias_sozlugu_beklenen_adlari_icerir(self):
-        expected = {
-            "opt_groups": {"--groups", "--k", "--k-groups", "--num-groups", "--number-of-groups"},
-            "opt_n": {"--n", "--n-total", "--n_total", "--total-n", "--sample-size", "--N"},
-            "opt_f": {"--f", "--effect-size", "--es"},
-            "opt_power": {"--power", "--target-power"},
-            "mode_a_priori": {"a-priori", "apriori", "a_priori"},
-            "mode_post_hoc": {"post-hoc", "posthoc", "post_hoc"},
-            "test_anova_oneway": {"anova-oneway", "anova_oneway", "anova"},
-        }
-        for key, names in expected.items():
-            with self.subTest(key=key):
-                self.assertEqual(set(cli.ALIASES[key]), names)
-                self.assertIn(N[key], cli.ALIASES[key])  # kanonik ad da takma ad listesinde
+# --------------------------------------------------------------------------
+class TestContractSuccess(ContractCase):
 
-    def test_grup_sayisi_takma_adlari(self):
-        for alias in cli.ALIASES["opt_groups"]:
+    def test_referans_vektorleri_tolerans_1e6(self):
+        for name, (params, expected) in REFERENCE_VECTORS.items():
+            if expected is None:
+                continue
+            with self.subTest(vector=name):
+                code, out, _ = self.call(params)
+                self.assertEqual(code, 0)
+                for key, exp in expected.items():
+                    if key in INTEGER_KEYS:
+                        self.assertIsInstance(out[key], int)
+                        self.assertEqual(out[key], exp)
+                    else:
+                        self.assertTrue(close(out[key], exp), f"{key}: {out[key]} vs {exp}")
+
+    def test_bonus_mod_referanslari_unsupported(self):
+        for name, (params, expected) in REFERENCE_VECTORS.items():
+            if expected is not None:
+                continue
+            with self.subTest(vector=name):
+                self.assert_error(params, "UNSUPPORTED", "mode")
+
+    def test_a_priori_anahtar_seti(self):
+        code, out, err = self.call(ap())
+        self.assertEqual(code, 0)
+        self.assertEqual(list(out), ["ncp", "critical_f", "df1", "df2", "n_total",
+                                     "actual_power", "n_per_group"])
+        self.assertEqual(err, "")
+
+    def test_post_hoc_anahtar_seti(self):
+        code, out, err = self.call(ph())
+        self.assertEqual(code, 0)
+        self.assertEqual(list(out), ["ncp", "critical_f", "df1", "df2", "power",
+                                     "n_total", "n_per_group"])
+        for old in ("critical", "actual_power"):
+            self.assertNotIn(old, out)
+        self.assertEqual(err, "")
+
+    def test_yuvarlama_yok_tam_double(self):
+        from anova_clone import engine
+        _, out, _ = self.call(ph(groups="3"))
+        r = engine.post_hoc(0.25, 0.05, 100, 3)
+        self.assertEqual(out["power"], r.power)
+        self.assertEqual(out["critical_f"], r.critical_f)
+        self.assertEqual(out["ncp"], 6.25)
+        self.assertGreater(len(repr(out["power"]).split(".")[1]), 7)
+
+    def test_uyari_json_ve_stderr(self):
+        code, out, err = self.call(ph(groups="3"))
+        self.assertEqual(code, 0)
+        self.assertEqual(out["warning"], err.strip())
+        self.assertIn("(100)", err)
+        self.assertIsNone(out["n_per_group"])
+
+    def test_tam_sayi_degerli_ondalik_kabul(self):
+        _, a, _ = self.call(ph(n_total="100.0", groups="5.0"))
+        _, b, _ = self.call(ph())
+        self.assertEqual(a, b)
+        self.assertIsInstance(a["n_total"], int)
+
+    def test_guc_alphaya_esit_kabul_edilir_gpower(self):
+        code, out, _ = self.call(ap(power="0.05"))
+        self.assertEqual(code, 0)
+        self.assertEqual(out["n_total"], 6)
+
+    def test_bosluklu_bicim_ve_negatif_deger(self):
+        args = ["--test", "anova-oneway", "--mode", "post-hoc", "--f", "-1",
+                "--alpha", "0.05", "--n_total", "100", "--groups", "3"]
+        code, out, _ = run_main(args)
+        self.assertEqual(code, 2)
+        self.assertEqual(json.loads(out)["code"], "OUT_OF_RANGE")
+
+
+class TestContractErrors(ContractCase):
+
+    def test_missing_param(self):
+        self.assert_error(ap(power=None), "MISSING_PARAM", "power")
+        self.assert_error(ph(n_total=None), "MISSING_PARAM", "n_total")
+        self.assert_error(ap(test=None), "MISSING_PARAM", "test")
+        self.assert_error(ap(mode=None), "MISSING_PARAM", "mode")
+
+    def test_unknown_param_taninmayan_ve_ilgisiz(self):
+        self.assert_error(ap(tails="2"), "UNKNOWN_PARAM", "tails")
+        self.assert_error(ap(power="0.8", n_total="100"), "UNKNOWN_PARAM", "n_total")
+        self.assert_error(ph(power="0.8"), "UNKNOWN_PARAM", "power")
+        # Tur 2 takma adları artık tanınmıyor
+        for alias in ("n", "k", "n-total", "effect-size", "es", "target-power"):
             with self.subTest(alias=alias):
-                self.assert_same(self._replace(a_priori_args(), N["opt_groups"], alias), self.a01)
+                self.assert_error(ph(**{alias: "3"}), "UNKNOWN_PARAM", alias)
 
-    def test_toplam_n_takma_adlari(self):
-        for alias in cli.ALIASES["opt_n"]:
-            with self.subTest(alias=alias):
-                self.assert_same(self._replace(post_hoc_args(n="100", groups="3"),
-                                               N["opt_n"], alias), self.p02)
+    def test_invalid_value(self):
+        self.assert_error(ap(f="abc"), "INVALID_VALUE", "f")
+        self.assert_error(ap(alpha="0,05"), "INVALID_VALUE", "alpha")
+        self.assert_error(ap(f="nan"), "INVALID_VALUE", "f")
+        self.assert_error(ap(f="inf"), "INVALID_VALUE", "f")
+        self.assert_error(ap(groups="2.5"), "INVALID_VALUE", "groups")
+        self.assert_error(ph(n_total="159.6", groups="3"), "INVALID_VALUE", "n_total")
 
-    def test_etki_buyuklugu_takma_adlari(self):
-        for alias in cli.ALIASES["opt_f"]:
-            with self.subTest(alias=alias):
-                self.assert_same(self._replace(a_priori_args(), N["opt_f"], alias), self.a01)
+    def test_out_of_range(self):
+        cases = [(ap(alpha="0"), "alpha"), (ap(alpha="1"), "alpha"),
+                 (ap(power="1"), "power"), (ap(f="0"), "f"), (ap(f="-1"), "f"),
+                 (ph(f="0"), "f"), (ap(groups="1"), "groups"), (ph(n_total="1"), "n_total"),
+                 (ap(f="60"), "f"), (ap(alpha="1e-8", power="0.5"), "alpha")]
+        for params, field in cases:
+            with self.subTest(params=params):
+                self.assert_error(params, "OUT_OF_RANGE", field)
 
-    def test_guc_takma_adlari(self):
-        for alias in cli.ALIASES["opt_power"]:
-            with self.subTest(alias=alias):
-                self.assert_same(self._replace(a_priori_args(), N["opt_power"], alias), self.a01)
+    def test_inconsistent(self):
+        out = self.assert_error(ap(power="0.04"), "INCONSISTENT", "power")
+        self.assertEqual(out["error"], "Power must be greater than or equal to alpha.")
+        out = self.assert_error(ph(n_total="3", groups="3"), "INCONSISTENT", "n_total")
+        self.assertEqual(out["error"],
+                         "Sample size must be greater than the number of groups (3).")
 
-    def test_mod_degerleri_buyuk_kucuk_harf_duyarsiz(self):
-        for alias in cli.ALIASES["mode_a_priori"]:
-            for variant in (alias, alias.upper(), alias.title()):
-                with self.subTest(mode=variant):
-                    self.assert_same(self._replace(a_priori_args(), N["mode_a_priori"], variant),
-                                     self.a01)
-        for alias in cli.ALIASES["mode_post_hoc"]:
-            for variant in (alias, alias.upper(), alias.title()):
-                with self.subTest(mode=variant):
-                    self.assert_same(self._replace(post_hoc_args(n="100", groups="3"),
-                                                   N["mode_post_hoc"], variant), self.p02)
+    def test_unsupported(self):
+        for t in ("t2-indep", "t-paired", "chi2-contingency", "multireg-r2", "foo",
+                  "ANOVA-ONEWAY", "anova"):
+            with self.subTest(test=t):
+                self.assert_error(ap(test=t), "UNSUPPORTED", "test")
+        for m in ("compromise", "criterion", "sensitivity", "posthoc"):
+            with self.subTest(mode=m):
+                self.assert_error(ap(mode=m), "UNSUPPORTED", "mode")
 
-    def test_test_degerleri_buyuk_kucuk_harf_duyarsiz(self):
-        for alias in cli.ALIASES["test_anova_oneway"]:
-            for variant in (alias, alias.upper(), alias.title()):
-                with self.subTest(test=variant):
-                    self.assert_same(self._replace(a_priori_args(), N["test_anova_oneway"], variant),
-                                     self.a01)
+    def test_no_solution_cikis_1(self):
+        from unittest import mock
+        from anova_clone.errors import SolverError
+        with mock.patch.object(cli.engine, "a_priori", side_effect=SolverError("x")):
+            out = self.assert_error(ap(), "NO_SOLUTION", None, exit_code=1)
+        self.assertEqual(out["field"], None)
 
-    def test_gecersiz_mod_ve_test_degerleri_hala_hata(self):
-        for args in (self._replace(a_priori_args(), N["mode_a_priori"], "sensitivity"),
-                     self._replace(a_priori_args(), N["test_anova_oneway"], "t-test")):
-            with self.subTest(args=args):
-                code, text = run_main(args)
-                self.assertNotEqual(code, 0)
-                self.assertEqual(list(json.loads(text)), [N["out_error"]])
+    def test_dogrulama_sirasi(self):
+        # test/mode > alan kümesi > değer > aralık > motor
+        self.assert_error(ap(test="t2-indep", f="abc", tails="1"), "UNSUPPORTED", "test")
+        self.assert_error(ap(f="abc", tails="1"), "UNKNOWN_PARAM", "tails")
+        self.assert_error(ap(f="abc", power=None), "MISSING_PARAM", "power")
+        self.assert_error(ap(alpha="0", f="abc"), "INVALID_VALUE", "f")
 
-    def test_bilinmeyen_ek_secenekler_yok_sayilir(self):
-        extras = [["--tails", "2"], ["--ratio", "1"], ["--tails=1", "--ratio=0.5"],
-                  ["--tails", "2", "--ratio", "1", "--allocation", "equal"], ["--verbose"]]
-        for extra in extras:
-            with self.subTest(extra=extra):
-                self.assert_same(a_priori_args() + extra, self.a01)
-                self.assert_same(extra + a_priori_args(), self.a01)
-                code, text = run_main(post_hoc_args(n="100", groups="3") + extra)
-                out = json.loads(text)
-                self.assertEqual(out, self.p02)
-                for e in extra:
-                    self.assertNotIn(e.lstrip("-").split("=")[0], out)
 
-    def test_iki_guc_anahtari_ve_alan_sirasi(self):
-        order_ok = ["n_total", "n_per_group", "actual_power", "power",
-                    "critical", "df1", "df2", "ncp"]
-        self.assertEqual(list(self.a01), order_ok)
-        self.assertEqual(list(self.p02), order_ok + ["warning"])
-        for out in (self.a01, self.p02):
-            self.assertEqual(out["actual_power"], out["power"])
-        self.assertAlmostEqual(self.a01["power"], float(vector("A01")["actual_power"]), places=7)
+class TestOracleVectorsViaCli(ContractCase):
+    """gpower_vectors.csv vektörleri CLI üzerinden (sözleşme kabuğu dahil)."""
 
-    def test_alias_ve_ek_secenek_uctan_uca_subprocess(self):
-        args = [ "--test", "ANOVA", "--mode", "PostHoc", "--effect-size", "0.25",
-                 "--alpha", "0.05", "--sample-size", "390", "--k", "10",
-                 "--tails", "2", "--ratio", "1"]
-        p = run_cli(*args)
-        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
-        out = json.loads(p.stdout)
+    # Sözleşme <-> G*Power ayrılığı: bu 5 vektörde G*Power sonuç verir ama sözleşme
+    # reddeder. G*Power davranışı motor düzeyinde test_spec.py'de doğrulanır.
+    CONTRACT_DIVERGENT = {"X07": ("INVALID_VALUE", "groups"),
+                          "X09": ("INVALID_VALUE", "groups"),
+                          "P13": ("INVALID_VALUE", "n_total"),
+                          "P14": ("INVALID_VALUE", "n_total"),
+                          "P07": ("OUT_OF_RANGE", "f")}
+    EXPECTED_ERRORS = {"A22": ("INCONSISTENT", "power"), "X01": ("OUT_OF_RANGE", "f"),
+                       "X02": ("OUT_OF_RANGE", "f"), "X03": ("OUT_OF_RANGE", "alpha"),
+                       "X04": ("OUT_OF_RANGE", "alpha"), "X05": ("OUT_OF_RANGE", "power"),
+                       "X06": ("OUT_OF_RANGE", "groups"), "X08": ("OUT_OF_RANGE", "groups"),
+                       "P04": ("INCONSISTENT", "n_total"), "P08": ("INCONSISTENT", "n_total")}
+    COLS = {"lambda": "ncp", "critical_F": "critical_f", "df1": "df1", "df2": "df2"}
+
+    def test_tum_oracle_vektorleri(self):
+        self.assertEqual(len(VECTORS), 50)
+        for vid, row in VECTORS.items():
+            with self.subTest(vector=vid):
+                params = oracle_params(row)
+                if vid in self.CONTRACT_DIVERGENT:
+                    self.assert_error(params, *self.CONTRACT_DIVERGENT[vid])
+                    continue
+                if vid in self.EXPECTED_ERRORS:
+                    self.assert_error(params, *self.EXPECTED_ERRORS[vid])
+                    continue
+                code, out, _ = self.call(params)
+                self.assertEqual(code, 0, out)
+                power_key = "actual_power" if row["mode"] == "a-priori" else "power"
+                cols = dict(self.COLS, n_total="n_total", actual_power=power_key)
+                for col, key in cols.items():
+                    text = row[col]
+                    if key in INTEGER_KEYS:
+                        self.assertEqual(out[key], int(text))
+                    else:
+                        d = len(text.split(".")[1]) if "." in text else 0
+                        self.assertTrue(math.isclose(round(out[key], d), float(text),
+                                                     abs_tol=10 ** -d * 1e-6),
+                                        f"{vid}.{col}: {out[key]} vs {text}")
+
+
+class TestCliProcess(unittest.TestCase):
+    """Gerçek alt süreçle: tek satır stdout, çıkış kodları, --version, sarmalayıcı."""
+
+    def test_version(self):
+        p = run_proc(["--version"])
+        self.assertEqual(p.returncode, 0)
         self.assertEqual(len(p.stdout.splitlines()), 1)
-        self.assertEqual(out["n_total"], 390)
-        self.assertEqual(out["actual_power"], out["power"])
-        self.assertAlmostEqual(out["power"], float(vector("A01")["actual_power"]), places=7)
+        v = json.loads(p.stdout)
+        self.assertEqual(v["contract_version"], "1.0.0")
+        self.assertEqual(v["name"], "teardown-anova")
+        self.assertRegex(v["engine"], r"^Python \d+\.\d+\.\d+ \+ scipy \d+\.\d+\.\d+")
+
+    def test_basari_tek_satir_cikis_0(self):
+        p = run_proc(argv_from(REFERENCE_VECTORS["REF-a-priori"][0]))
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertEqual(len(p.stdout.splitlines()), 1)
+        self.assertEqual(json.loads(p.stdout)["n_total"], 305)
+        self.assertEqual(p.stderr, "")
+
+    def test_uyari_stderr_e_gider_stdout_tek_satir(self):
+        p = run_proc(argv_from(ph(groups="3")))
+        self.assertEqual(p.returncode, 0)
+        self.assertEqual(len(p.stdout.splitlines()), 1)
+        self.assertIn("not a multiple", p.stderr)
+
+    def test_hatalar_tek_satir_json_sifirdan_farkli(self):
+        for args in (argv_from(ap(f="abc")), ["--help"], ["-x"], [], ["--test"],
+                     ["--test", "anova-oneway", "--mode", "a-priori", "positional"]):
+            with self.subTest(args=args):
+                p = run_proc(args)
+                self.assertEqual(p.returncode, 2, p.stdout)
+                lines = p.stdout.splitlines()
+                self.assertEqual(len(lines), 1, p.stdout)
+                self.assertEqual(set(json.loads(lines[0])), {"error", "code", "field"})
+
+    @unittest.skipIf(os.name == "nt", "Unix sarmalayıcısı")
+    def test_gpower_clone_sarmalayicisi(self):
+        env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+        p = subprocess.run([os.path.join(ROOT, "gpower-clone"),
+                            *argv_from(REFERENCE_VECTORS["REF-post-hoc"][0])],
+                           capture_output=True, text=True, env=env, cwd="/", timeout=60)
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        self.assertEqual(json.loads(p.stdout)["df2"], 95)
 
 
 if __name__ == "__main__":
